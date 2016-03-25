@@ -1,24 +1,21 @@
 package com.example.controller;
 
+import java.util.ArrayList;
 import java.util.TreeMap;
-
+import java.lang.Object;
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.lang.WordUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.client.RestTemplate;
 
 import com.example.dao.ILocationDAO;
 import com.example.dao.LocationDAO;
 import com.example.model.Car;
+import com.example.model.DayForcast;
 import com.example.model.Forcast;
-import com.example.model.Location;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 
 @Controller
 public class HomePageController {
@@ -44,14 +41,24 @@ public class HomePageController {
 		map.put(3, new Car("da", "12"));
 		map.put(4, new Car("ne", "2444"));
 		model.addAttribute("map", map);
+		String cityName =dao.getCityNameByIp(ipAddress);
+		System.out.println("1            "+cityName);
+		ArrayList<DayForcast> list = dao.getThreeDaysFromWUnderground(cityName);
+		model.addAttribute("city", WordUtils.capitalize(cityName));
+		model.addAttribute("list", list);
+		
+		
 		return "index";
 		
 	}
 	@RequestMapping("search")
 	String getDataForLocation(@RequestParam String search,Model model){
+		System.out.println("in search " + search);
 		if(!search.isEmpty()){
-			TreeMap<Integer,Forcast> location = dao.getLocationData(dao.getDataByCityName(search));
-			model.addAttribute("location", location);
+			
+			ArrayList<DayForcast> list = dao.getThreeDaysFromWUnderground(search);
+			model.addAttribute("list", list);
+			model.addAttribute("city",WordUtils.capitalize(search));
 			return "index";
 		}
 		return"index";

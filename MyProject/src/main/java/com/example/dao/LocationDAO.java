@@ -5,9 +5,11 @@ import java.util.TreeMap;
 
 import org.springframework.web.client.RestTemplate;
 
+import com.example.model.DayForcast;
 import com.example.model.Forcast;
 import com.example.model.Location;
 import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
@@ -17,14 +19,21 @@ public class LocationDAO implements ILocationDAO{
 	@Override
 	public JsonObject getDataByIP(String ip) {
 
+		String data = getCityNameByIp(ip);
+		System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"+data);
+		
+		JsonObject weatherData =getDataByCityName( data);
+		System.out.println(weatherData.toString());
+		return weatherData;
+	}
+
+	public String getCityNameByIp(String ip) {
+		
 		String ipToGeotag = "http://ip-api.com/json/";
 		RestTemplate restTemplate = new RestTemplate();
 		String data = restTemplate.getForObject(ipToGeotag+ip, String.class);
-		System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"+data);
 		String cityName = new JsonParser().parse(data).getAsJsonObject().get("city").getAsString();
-		JsonObject weatherData =getDataByCityName( cityName);
-		System.out.println(weatherData.toString());
-		return weatherData;
+		return cityName;
 	}
 
 	@Override
@@ -95,6 +104,56 @@ public class LocationDAO implements ILocationDAO{
 		JsonObject weatherData = new JsonParser().parse(restTemplate.getForObject(weatherApiUrl, String.class)).getAsJsonObject();
 		System.out.println(weatherData.toString());
 		return weatherData;
+	}
+
+	@Override
+	public ArrayList<DayForcast> getThreeDaysFromWUnderground(String search) {
+		System.out.println("2          "+search);
+		RestTemplate restTemplate = new RestTemplate();
+		ArrayList<DayForcast> threeDayForcast = new ArrayList<>();
+		String wundergroundKey = "ba6800955f5db321";
+		String wundergroungUrl = "http://api.wunderground.com/api/ba6800955f5db321/forecast/q/"+search+".json";
+		JsonObject weatherData = new JsonParser().parse(restTemplate.getForObject(wundergroungUrl, String.class)).getAsJsonObject();
+		System.out.println(weatherData.toString());
+		JsonArray array = weatherData.get("forecast").getAsJsonObject().get("simpleforecast").getAsJsonObject().get("forecastday").getAsJsonArray();
+		for(int i =0;i<array.size();i++){
+			threeDayForcast.add(createDay(array.get(i).getAsJsonObject()));
+		}
+		
+		
+		
+		return threeDayForcast;
+	}
+
+	private DayForcast createDay(JsonObject jsonElement) {
+		DayForcast forcast = new DayForcast();
+		
+		System.out.println(jsonElement.toString());
+		forcast.setConditions(jsonElement.get("conditions").getAsString());
+		
+		forcast.setWeekday(jsonElement.get("date").getAsJsonObject().get("weekday").getAsString());;
+		forcast.setEpoch(jsonElement.get("date").getAsJsonObject().get("epoch").getAsLong());
+		forcast.setIcon_url(jsonElement.get("icon_url").getAsString());
+		forcast.setMaxwind_degrees(jsonElement.get("maxwind").getAsJsonObject().get("degrees").getAsDouble());
+		forcast.setMaxwind_dir(jsonElement.get("maxwind").getAsJsonObject().get("dir").getAsString());
+		forcast.setMaxwind_kph(jsonElement.get("maxwind").getAsJsonObject().get("kph").getAsDouble());
+		forcast.setMaxwind_mph(jsonElement.get("maxwind").getAsJsonObject().get("mph").getAsDouble());
+		forcast.setMonthName(jsonElement.get("date").getAsJsonObject().get("monthname").getAsString());
+		forcast.setPretty(jsonElement.get("date").getAsJsonObject().get("pretty").getAsString());
+		forcast.setQpf_alldayIn(jsonElement.get( "qpf_allday").getAsJsonObject().get("in").getAsDouble());
+		forcast.setQpf_alldayMM(jsonElement.get( "qpf_allday").getAsJsonObject().get("mm").getAsDouble());
+		forcast.setSnow_alldayIn(jsonElement.get("snow_allday").getAsJsonObject().get("in").getAsDouble());
+		forcast.setSnow_alldayMM(jsonElement.get("snow_allday").getAsJsonObject().get("cm").getAsDouble());
+		forcast.setTempHighCel(jsonElement.get("high").getAsJsonObject().get("celsius").getAsString());
+		forcast.setTempHighFahr(jsonElement.get("high").getAsJsonObject().get("fahrenheit").getAsString());
+		forcast.setTempLowCel(jsonElement.get("low").getAsJsonObject().get("celsius").getAsString());
+		forcast.setTempLowFahr(jsonElement.get("low").getAsJsonObject().get("fahrenheit").getAsString());
+		forcast.setAvehumidity(jsonElement.get("avehumidity").getAsDouble());
+		forcast.setMaxhumidity(jsonElement.get("maxhumidity").getAsDouble());
+		forcast.setMinhumidity(jsonElement.get("minhumidity").getAsDouble());
+
+		
+		return forcast;
 	}
 	
 	

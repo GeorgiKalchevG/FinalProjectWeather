@@ -36,35 +36,37 @@
 	integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS"
 	crossorigin="anonymous"></script>
 
+
+
+s
 </head>
 <body>
 
 	<!-- heading start -->
 	<div class="row">
 		<div class="col-sm-12" style="background-color: black;">
-
 			<nav class="navbar navbar-inverse">
-			<div class="container-fluid">
-				<div class="col-sm-4" align="left">
-					<a class="navbar-brand" href="#"><img
-						src="https://cdn4.iconfinder.com/data/icons/iconsimple-freebies/512/umbrella.png"
-						alt="Mountain View" style="width: 50px; height: 50px;"></a>
-					<h4 style="color: white; padding-top: 10px">Ime na saita</h4>
+				<div class="container-fluid">
+					<div class="col-sm-4" align="left">
+						<a class="navbar-brand" href="#"><img
+							src="https://cdn4.iconfinder.com/data/icons/iconsimple-freebies/512/umbrella.png"
+							alt="Mountain View" style="width: 50px; height: 50px;"></a>
+						<h4 style="color: white; padding-top: 10px">Ime na saita</h4>
+					</div>
+					
+					<div class="col-sm-6" align="right" style="padding-top: 10px;">
+						<form class="form-inline" role="form" action="search" >
+							<input type="text" placeholder="search city" class="form-control" id="email" name="search">
+							<button type="submit" class="btn btn-default">Search</button>
+						</form>
+					</div>
+					<div class="col-sm-2" align="right" style="padding-top: 10px;">
+						<button type="submit" class="btn btn-default" align="right">change
+							language</button>
+						<button type="submit" class="btn btn-default" align="right">F/C</button>
+					</div>
+					
 				</div>
-				<div class="col-sm-4" align="right" style="padding-top: 10px;">
-					<button type="submit" class="btn btn-default" align="right">change
-						language</button>
-					<button type="submit" class="btn btn-default" align="right">F/C</button>
-				</div>
-				<div class="col-sm-4" align="center" style="padding-top: 10px;">
-					<form class="form-inline" role="form">
-						<input type="email" placeholder="search city" class="form-control"
-							id="email">
-						<button type="submit" class="btn btn-default">Search</button>
-					</form>
-				</div>
-
-			</div>
 			</nav>
 		</div>
 	</div>
@@ -84,7 +86,7 @@
 			</nav>
 		</div>
 	</div>
-	</div>
+
 	<!-- heading end -->
 	<div class="row">
 		<div class="col-sm-8" style="background-color: lavender;">
@@ -92,49 +94,74 @@
 				<h2>Grad kojto tarsish</h2>
 				<h5>Posledno update time za toq grad</h5>
 				<ul class="nav nav-tabs">
-					<li class="active"><a data-toggle="tab" href="#home">Home</a></li>
+					<li class="active"><a data-toggle="tab" href="#home">${city}</a></li>
 					<li><a data-toggle="tab" href="#menu1">24 hours</a></li>
 					<li><a data-toggle="tab" href="#menu2">Weekend</a></li>
 					<li><a data-toggle="tab" href="#menu3">5-days</a></li>
 				</ul>
 				<div class="tab-content">
 					<div id="home" class="tab-pane fade in active">
-						<table class="table" style="width:100%">
-								<tr>
-									<th rowspan="3"><img alt="" src="http://m.netinfo.bg/sinoptik/icons/big/d000.png"/> </th>
-									<th>dnes</th>
-									<th>sled den</th>
-									<th>sled 2</th>
-								</tr>
-								<tr>
-									<c:forEach items="${location}" var="entry">
-									<th>vidyt na obla4nosta:  ${entry.value.time} </th>
-							<!-- 		<th>vidyt na obla4nosta sled den</th>
-									<th>vidyt na obla4nosta sled 2 dena</th> -->
+						<table class="table" style="width: 100%">
+							<tr>
+<!-- trqbwa da napravim kolekciq ot gif za razli4noto vreme -->	
+							<th rowspan="3" background="http://www.auplod.com/u/ulopad78451.gif" width="240" height="160"><img alt=""	src=""  />
+										<h3 style="color: white;">Max Temp: ${list[0].tempHighCel} &#8451</h3>
+										
+								</th>
+									
+									<c:forEach items="${list}" var="entry">
+										<th>
+											
+												<img src="${entry.icon_url}">
+												${entry.weekday}
+											</th>
 									</c:forEach>
 									
-								</tr>
-								<tr>
-								<c:forEach items="${location}" var="entry">
-									<th>vidyt na obla4nosta:  ${entry.value.forcast} </th>
-							<!-- 		<th>vidyt na obla4nosta sled den</th>
+							<!--	dnes</th>
+								<th>sled den</th>
+								<th>sled 2</th>  -->	
+							</tr>
+							<tr>
+								<c:forEach items="${list}" var="entry">
+									<th>${entry.conditions}</th>
+								</c:forEach>
+
+							</tr>
+							<tr>
+								<c:forEach items="${list}" var="entry">
+									<th>
+										<p>Max : ${entry.tempHighCel} &#8451
+											Min : ${entry.tempLowCel} &#8451
+									</th>
+								</c:forEach>
+							</tr>
+							<tr>
+								<c:forEach items="${list}" var="entry">
+									<th>
+										Wind Speed: ${entry.maxwind_kph}
+										Wind Direction: ${entry.maxwind_dir}
+									
+									</th>
+									<!-- 		<th>vidyt na obla4nosta sled den</th>
 									<th>vidyt na obla4nosta sled 2 dena</th> -->
-									</c:forEach>
-								</tr>
-								<tr>
-									<th >vqtyr</th>
-									<th >vqtyr za denq </th>
-									<th>vqtyr sled den</th>
-									<th>vqtyr sled 2 dena</th>
-								</tr>
-								<tr>
-									<th >koli4estvo valeji</th>
-									<th >koli4estvo valeji za denq </th>
-									<th>koli4estvo valeji sled den</th>
-									<th>koli4estvo valeji sled 2 dena</th>
-								</tr>
+								</c:forEach>
+							</tr>
+							<tr>
+								<th>vqtyr</th>
+								<th>vqtyr za denq</th>
+								<th>vqtyr sled den</th>
+								<th>vqtyr sled 2 dena</th>
+							</tr>
+							<tr>
+								<th>koli4estvo valeji</th>
+								<th>koli4estvo valeji za denq</th>
+								<th>koli4estvo valeji sled den</th>
+								<th>koli4estvo valeji sled 2 dena</th>
+							</tr>
 						</table>
 					</div>
+					<div id="menu1" class="tab-pane fade">tablica sus 24 chasa
+						info</div>
 					<div id="menu2" class="tab-pane fade">tablica sus weekend
 						info</div>
 					<div id="menu3" class="tab-pane fade">tablica sus 5 dni info
@@ -183,8 +210,7 @@
 		</div>
 
 	</div>
-	</div>
-
+	
 
 </body>
 </html>
