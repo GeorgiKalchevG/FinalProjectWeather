@@ -93,10 +93,10 @@ s
 	<div class="row">
 		<div class="col-sm-8" style="background-color: lavender;">
 			<div class="container">
-				<h2>Grad kojto tarsish</h2>
+				<h2>${city}</h2>
 				<h5>Posledno update time za toq grad</h5>
 				<ul class="nav nav-tabs">
-					<li class="active"><a data-toggle="tab" href="#home">${city}</a></li>
+					<li class="active"><a data-toggle="tab" href="#home">Now</a></li>
 					<li><a data-toggle="tab" href="#menu1">24 hours</a></li>
 					<li><a data-toggle="tab" href="#menu2">Weekend</a></li>
 					<li><a data-toggle="tab" href="#menu3">5-days</a></li>

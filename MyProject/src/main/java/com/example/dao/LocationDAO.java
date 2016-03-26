@@ -29,9 +29,9 @@ public class LocationDAO implements ILocationDAO{
 	}
 
 	public String getCityNameByIp(String ip) {
-		String ipToGeotag = "http://ip-api.com/json/";
+		String ipToGeotag = "http://api.db-ip.com/addrinfo?addr="+ip+"&api_key=2847ed47c9cf4242bb2e09a10aeb3c313c5ebb06";
 		RestTemplate restTemplate = new RestTemplate();
-		String data = restTemplate.getForObject(ipToGeotag+ip, String.class);
+		String data = restTemplate.getForObject(ipToGeotag, String.class);
 		String cityName = new JsonParser().parse(data).getAsJsonObject().get("city").getAsString();
 		return cityName;
 	}
