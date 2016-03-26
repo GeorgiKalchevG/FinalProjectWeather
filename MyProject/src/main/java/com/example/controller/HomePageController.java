@@ -17,13 +17,13 @@ import com.example.dao.LocationDAO;
 import com.example.model.Car;
 import com.example.model.DayForcast;
 import com.example.model.Forcast;
+import com.example.model.HourForcast;
 
 @Controller
 public class HomePageController {
 	ILocationDAO dao = new LocationDAO();
 	@RequestMapping(value="index")
 	String loadHomePage(Model model, HttpServletRequest request ){
-		
 		 String weatherApiUrl = "http://api.openweathermap.org/data/2.5/weather?q=";
 		 String ipAddress = request.getHeader("X-FORWARDED-FOR");  
 		   if (ipAddress == null) {  
@@ -49,6 +49,9 @@ public class HomePageController {
 		
 		if(!search.isEmpty()){
 			ArrayList<DayForcast> list = dao.getThreeDaysFromWUnderground(search);
+			ArrayList<HourForcast> list24hours= dao.getDayFromWUnderground(search);
+			System.out.println("Size of the list 24 hours: " + list24hours.size());
+			session.setAttribute("list24hours", list24hours);
 			session.setAttribute("list", list);
 			session.setAttribute("city",WordUtils.capitalize(search));
 			return "index";

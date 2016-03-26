@@ -7,6 +7,7 @@ import org.springframework.web.client.RestTemplate;
 
 import com.example.model.DayForcast;
 import com.example.model.Forcast;
+import com.example.model.HourForcast;
 import com.example.model.Location;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
@@ -28,7 +29,6 @@ public class LocationDAO implements ILocationDAO{
 	}
 
 	public String getCityNameByIp(String ip) {
-		
 		String ipToGeotag = "http://ip-api.com/json/";
 		RestTemplate restTemplate = new RestTemplate();
 		String data = restTemplate.getForObject(ipToGeotag+ip, String.class);
@@ -120,7 +120,48 @@ public class LocationDAO implements ILocationDAO{
 		}
 		return threeDayForcast;
 	}
-
+	public ArrayList<HourForcast> getDayFromWUnderground(String search) {
+		System.out.println("2          "+search);
+		RestTemplate restTemplate = new RestTemplate();
+		ArrayList<HourForcast> DayForcast = new ArrayList<>();
+		String wundergroungUrl = "http://api.wunderground.com/api/ba6800955f5db321/hourly/q/"+search+".json";
+		JsonObject weatherData = new JsonParser().parse(restTemplate.getForObject(wundergroungUrl, String.class)).getAsJsonObject();
+		System.out.println(weatherData.toString());
+		JsonArray array = weatherData.get("hourly_forecast").getAsJsonArray();
+		for(int i =0;i<24;i++){
+			DayForcast.add(createHour(array.get(i).getAsJsonObject()));
+		}
+		return DayForcast;
+	}
+	private HourForcast createHour(JsonObject jsonElement){
+		HourForcast forcast = new HourForcast();
+		forcast.setHour(Integer.parseInt(jsonElement.get("FCTTIME").getAsJsonObject().get("hour").getAsString()));
+		forcast.setYear(Integer.parseInt(jsonElement.get("FCTTIME").getAsJsonObject().get("year").getAsString()));
+		forcast.setMonth(Integer.parseInt(jsonElement.get("FCTTIME").getAsJsonObject().get("mon").getAsString()));
+		forcast.setDay(Integer.parseInt(jsonElement.get("FCTTIME").getAsJsonObject().get("mday").getAsString()));
+		forcast.setWeekday(jsonElement.get("FCTTIME").getAsJsonObject().get("weekday_name").getAsString());
+		forcast.setTempC(Integer.parseInt(jsonElement.get("temp").getAsJsonObject().get("metric").getAsString()));
+		forcast.setTempFH(Integer.parseInt(jsonElement.get("temp").getAsJsonObject().get("english").getAsString()));
+		forcast.setConditions(jsonElement.get("wx").getAsString());
+		forcast.setIcon_url(jsonElement.get("icon_url").getAsString());
+		forcast.setSky(Integer.parseInt(jsonElement.get("sky").getAsString()));
+		forcast.setWindKPH(Integer.parseInt(jsonElement.get("wspd").getAsJsonObject().get("metric").getAsString()));
+		forcast.setWindMPH(Integer.parseInt(jsonElement.get("wspd").getAsJsonObject().get("english").getAsString()));
+		forcast.setDir(jsonElement.get("wdir").getAsJsonObject().get("dir").getAsString());
+		forcast.setDirDegrees(Integer.parseInt(jsonElement.get("wdir").getAsJsonObject().get("degrees").getAsString()));
+		forcast.setUvIndex(Integer.parseInt(jsonElement.get("uvi").getAsString()));
+		forcast.setHumidity(Integer.parseInt(jsonElement.get("humidity").getAsString()));
+		forcast.setFeelsLikeC(Integer.parseInt(jsonElement.get("feelslike").getAsJsonObject().get("metric").getAsString()));
+		forcast.setFeelsLikeFH(Integer.parseInt(jsonElement.get("feelslike").getAsJsonObject().get("english").getAsString()));
+		forcast.setQpfIN(Double.parseDouble(jsonElement.get("qpf").getAsJsonObject().get("english").getAsString()));
+		forcast.setQpfMM(Integer.parseInt(jsonElement.get("qpf").getAsJsonObject().get("metric").getAsString()));
+		forcast.setSnowIN(Double.parseDouble(jsonElement.get("snow").getAsJsonObject().get("english").getAsString()));
+		forcast.setSnowMM(Integer.parseInt(jsonElement.get("snow").getAsJsonObject().get("metric").getAsString()));
+		forcast.setPop(Integer.parseInt(jsonElement.get("pop").getAsString()));
+		forcast.setMslphinHg(Double.parseDouble(jsonElement.get("mslp").getAsJsonObject().get("english").getAsString()));
+		forcast.setMslphPa(Integer.parseInt(jsonElement.get("mslp").getAsJsonObject().get("metric").getAsString()));
+		return forcast;
+	}
 	private DayForcast createDay(JsonObject jsonElement) {
 		DayForcast forcast = new DayForcast();
 		System.out.println(jsonElement.toString());
@@ -149,8 +190,6 @@ public class LocationDAO implements ILocationDAO{
 		forcast.setAvehumidity(jsonElement.get("avehumidity").getAsDouble());
 		forcast.setMaxhumidity(jsonElement.get("maxhumidity").getAsDouble());
 		forcast.setMinhumidity(jsonElement.get("minhumidity").getAsDouble());
-
-		
 		return forcast;
 	}
 	

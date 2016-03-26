@@ -7,6 +7,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html lang="en">
 <head>
+
 <title>Weather</title>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -102,7 +103,7 @@ s
 				</ul>
 				<div class="tab-content">
 					<div id="home" class="tab-pane fade in active">
-						<table class="table" style="width: 75%">
+						<table class="table" style="width: 75%;">
 							<tr>
 								<!-- trqbwa da napravim kolekciq ot gif za razli4noto vreme -->
 								<th rowspan="4"
@@ -150,19 +151,87 @@ s
 							<tr>
 								<th>Количество валежи:</th>
 								<c:forEach items="${list}" var="entry">
-									<th>${entry.qpf_alldayMM} mm</th>
+									<th>${entry.qpf_alldayMM}mm</th>
 								</c:forEach>
 							</tr>
 							<tr>
 								<th>Влажност:</th>
 								<c:forEach items="${list}" var="entry">
-									<th>${entry.avehumidity}% </th>
+									<th>${entry.avehumidity}%</th>
 								</c:forEach>
 							</tr>
 						</table>
 					</div>
-					<div id="menu1" class="tab-pane fade">tablica sus 24 chasa
-						info</div>
+					<div id="menu1" class="tab-pane fade" style="overflow: auto;">
+						<table class="table"
+							style="width: 75%; display:block; overflow-x:auto;">
+							<tr>
+								<!-- trqbwa da napravim kolekciq ot gif za razli4noto vreme -->
+								<th rowspan="1" width="240" height="160"><img alt="" src="" />
+									<h3 style="color: black;">Прогноза за
+										${list24hours[0].day}.${list24hours[0].month}.${list24hours[0].year}</h3></th>
+								<c:forEach items="${list24hours}" var="entry">
+									<th>${entry.hour}:00<img src="${entry.icon_url}">
+									</th>
+								</c:forEach>
+							</tr>
+							<tr>
+								<th>Температура:</th>
+								<c:forEach items="${list24hours}" var="entry">
+									<th>${entry.tempC}</th>
+								</c:forEach>
+							</tr>
+							<tr>
+								<th>Усеща се:</th>
+								<c:forEach items="${list24hours}" var="entry">
+									<th>${entry.feelsLikeC}</th>
+								</c:forEach>
+
+							</tr>
+							<tr>
+								<c:forEach items="${list24hours}" var="entry">
+									<th>${entry.conditions}</th>
+								</c:forEach>
+							</tr>
+							<tr>
+								<th>Вятър:</th>
+								<c:forEach items="${list24hours}" var="entry">
+									<th>Wind Speed: ${entry.windKPH} Wind Direction:
+										${entry.dir}</th>
+								</c:forEach>
+							</tr>
+							<tr>
+								<th>Вероятност за валежи:</th>
+								<c:forEach items="${list24hours}" var="entry">
+									<th>${entry.pop}%</th>
+								</c:forEach>
+							</tr>
+							<tr>
+								<th>Количество валежи:</th>
+								<c:forEach items="${list24hours}" var="entry">
+									<th>${entry.qpfMM}mm</th>
+								</c:forEach>
+							</tr>
+							<tr>
+								<th>Атмосферно налягане:</th>
+								<c:forEach items="${list24hours}" var="entry">
+									<th>${entry.mslphPa}hPa</th>
+								</c:forEach>
+							</tr>
+							<tr>
+								<th>Влажност:</th>
+								<c:forEach items="${list24hours}" var="entry">
+									<th>${entry.humidity}%</th>
+								</c:forEach>
+							</tr>
+							<tr>
+								<th>Облачност:</th>
+								<c:forEach items="${list24hours}" var="entry">
+									<th>${entry.sky}%</th>
+								</c:forEach>
+							</tr>
+						</table>
+					</div>
 					<div id="menu2" class="tab-pane fade">tablica sus weekend
 						info</div>
 					<div id="menu3" class="tab-pane fade">tablica sus 5 dni info

@@ -5,6 +5,7 @@ import java.util.TreeMap;
 
 import com.example.model.DayForcast;
 import com.example.model.Forcast;
+import com.example.model.HourForcast;
 import com.example.model.Location;
 import com.google.gson.JsonObject;
 
@@ -14,5 +15,7 @@ public interface ILocationDAO {
 	JsonObject getDataByCityName(String cityName);
 	TreeMap<Integer,Forcast> getLocationData(JsonObject obj);
 	ArrayList<DayForcast> getThreeDaysFromWUnderground(String search);
+	ArrayList<HourForcast> getDayFromWUnderground(String search);
 	String getCityNameByIp(String ip);
+	
 }
