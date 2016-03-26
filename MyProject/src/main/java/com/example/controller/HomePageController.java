@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.TreeMap;
 import java.lang.Object;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang.WordUtils;
 import org.springframework.stereotype.Controller;
@@ -31,18 +32,9 @@ public class HomePageController {
 		   ipAddress = "46.10.58.161";
 		model.addAttribute("ipAddress",ipAddress);
 		TreeMap<Integer,Forcast> location = dao.getLocationData(dao.getDataByIP(ipAddress));
-		//System.out.println("from controler");
-		//System.out.println("from controler"+location.getCity());
 		model.addAttribute("location", location);
-		
-		TreeMap<Integer, Car> map = new TreeMap<>();
-		map.put(1, new Car("toyota", "corolla"));
-		map.put(2,	new Car("ferrari", "f431"));
-		map.put(3, new Car("da", "12"));
-		map.put(4, new Car("ne", "2444"));
-		model.addAttribute("map", map);
 		String cityName =dao.getCityNameByIp(ipAddress);
-		System.out.println("1            "+cityName);
+		System.out.println("1 "+cityName);
 		ArrayList<DayForcast> list = dao.getThreeDaysFromWUnderground(cityName);
 		model.addAttribute("city", WordUtils.capitalize(cityName));
 		model.addAttribute("list", list);
@@ -52,13 +44,13 @@ public class HomePageController {
 		
 	}
 	@RequestMapping("search")
-	String getDataForLocation(@RequestParam String search,Model model){
+	String getDataForLocation(@RequestParam String search,HttpSession session){
 		System.out.println("in search " + search);
+		
 		if(!search.isEmpty()){
-			
 			ArrayList<DayForcast> list = dao.getThreeDaysFromWUnderground(search);
-			model.addAttribute("list", list);
-			model.addAttribute("city",WordUtils.capitalize(search));
+			session.setAttribute("list", list);
+			session.setAttribute("city",WordUtils.capitalize(search));
 			return "index";
 		}
 		return"index";

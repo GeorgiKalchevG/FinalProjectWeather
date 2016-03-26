@@ -35,11 +35,17 @@ public class DayForcast {
 	private double avehumidity;
 	private double maxhumidity;
 	private double minhumidity;
+	private int pop;
 	
 	
 	
 	
-	
+	public double getPop() {
+		return pop;
+	}
+	public void setPop(int pop) {
+		this.pop = pop;
+	}
 	public double getAvehumidity() {
 		return avehumidity;
 	}

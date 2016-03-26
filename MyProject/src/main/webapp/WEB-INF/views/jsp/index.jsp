@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="ISO-8859-1"%>
+	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 
@@ -46,27 +46,28 @@ s
 	<div class="row">
 		<div class="col-sm-12" style="background-color: black;">
 			<nav class="navbar navbar-inverse">
-				<div class="container-fluid">
-					<div class="col-sm-4" align="left">
-						<a class="navbar-brand" href="#"><img
-							src="https://cdn4.iconfinder.com/data/icons/iconsimple-freebies/512/umbrella.png"
-							alt="Mountain View" style="width: 50px; height: 50px;"></a>
-						<h4 style="color: white; padding-top: 10px">Ime na saita</h4>
-					</div>
-					
-					<div class="col-sm-6" align="right" style="padding-top: 10px;">
-						<form class="form-inline" role="form" action="search" >
-							<input type="text" placeholder="search city" class="form-control" id="email" name="search">
-							<button type="submit" class="btn btn-default">Search</button>
-						</form>
-					</div>
-					<div class="col-sm-2" align="right" style="padding-top: 10px;">
-						<button type="submit" class="btn btn-default" align="right">change
-							language</button>
-						<button type="submit" class="btn btn-default" align="right">F/C</button>
-					</div>
-					
+			<div class="container-fluid">
+				<div class="col-sm-4" align="left">
+					<a class="navbar-brand" href="#"><img
+						src="https://cdn4.iconfinder.com/data/icons/iconsimple-freebies/512/umbrella.png"
+						alt="Mountain View" style="width: 50px; height: 50px;"></a>
+					<h4 style="color: white; padding-top: 10px">Ime na saita</h4>
 				</div>
+
+				<div class="col-sm-6" align="right" style="padding-top: 10px;">
+					<form class="form-inline" role="form" action="search">
+						<input type="text" placeholder="search city" class="form-control"
+							id="email" name="search">
+						<button type="submit" class="btn btn-default">Search</button>
+					</form>
+				</div>
+				<div class="col-sm-2" align="right" style="padding-top: 10px;">
+					<button type="submit" class="btn btn-default" align="right">change
+						language</button>
+					<button type="submit" class="btn btn-default" align="right">F/C</button>
+				</div>
+
+			</div>
 			</nav>
 		</div>
 	</div>
@@ -101,25 +102,23 @@ s
 				</ul>
 				<div class="tab-content">
 					<div id="home" class="tab-pane fade in active">
-						<table class="table" style="width: 100%">
+						<table class="table" style="width: 75%">
 							<tr>
-<!-- trqbwa da napravim kolekciq ot gif za razli4noto vreme -->	
-							<th rowspan="3" background="http://www.auplod.com/u/ulopad78451.gif" width="240" height="160"><img alt=""	src=""  />
-										<h3 style="color: white;">Max Temp: ${list[0].tempHighCel} &#8451</h3>
-										
-								</th>
-									
-									<c:forEach items="${list}" var="entry">
-										<th>
-											
-												<img src="${entry.icon_url}">
-												${entry.weekday}
-											</th>
-									</c:forEach>
-									
-							<!--	dnes</th>
-								<th>sled den</th>
-								<th>sled 2</th>  -->	
+								<!-- trqbwa da napravim kolekciq ot gif za razli4noto vreme -->
+								<th rowspan="4"
+									background="http://www.auplod.com/u/ulopad78451.gif"
+									width="240" height="160"><img alt="" src="" />
+									<h3 style="color: white;">Max Temp: ${list[0].tempHighCel}
+										&#8451</h3></th>
+								<c:forEach items="${list}" var="entry">
+									<th><img src="${entry.icon_url}"> ${entry.weekday}</th>
+								</c:forEach>
+							</tr>
+							<tr>
+								<c:forEach items="${list}" var="entry">
+									<th>${entry.day}.${entry.month}.${entry.year}</th>
+								</c:forEach>
+
 							</tr>
 							<tr>
 								<c:forEach items="${list}" var="entry">
@@ -130,33 +129,35 @@ s
 							<tr>
 								<c:forEach items="${list}" var="entry">
 									<th>
-										<p>Max : ${entry.tempHighCel} &#8451
-											Min : ${entry.tempLowCel} &#8451
+										<p>Max : ${entry.tempHighCel} &#8451 Min :
+											${entry.tempLowCel} &#8451
 									</th>
 								</c:forEach>
 							</tr>
 							<tr>
+								<th>Вятър:</th>
 								<c:forEach items="${list}" var="entry">
-									<th>
-										Wind Speed: ${entry.maxwind_kph}
-										Wind Direction: ${entry.maxwind_dir}
-									
-									</th>
-									<!-- 		<th>vidyt na obla4nosta sled den</th>
-									<th>vidyt na obla4nosta sled 2 dena</th> -->
+									<th>Wind Speed: ${entry.maxwind_kph} Wind Direction:
+										${entry.maxwind_dir}</th>
 								</c:forEach>
 							</tr>
 							<tr>
-								<th>vqtyr</th>
-								<th>vqtyr za denq</th>
-								<th>vqtyr sled den</th>
-								<th>vqtyr sled 2 dena</th>
+								<th>Вероятност за валежи:</th>
+								<c:forEach items="${list}" var="entry">
+									<th>${entry.pop}%</th>
+								</c:forEach>
 							</tr>
 							<tr>
-								<th>koli4estvo valeji</th>
-								<th>koli4estvo valeji za denq</th>
-								<th>koli4estvo valeji sled den</th>
-								<th>koli4estvo valeji sled 2 dena</th>
+								<th>Количество валежи:</th>
+								<c:forEach items="${list}" var="entry">
+									<th>${entry.qpf_alldayMM} mm</th>
+								</c:forEach>
+							</tr>
+							<tr>
+								<th>Влажност:</th>
+								<c:forEach items="${list}" var="entry">
+									<th>${entry.avehumidity}% </th>
+								</c:forEach>
 							</tr>
 						</table>
 					</div>
@@ -210,7 +211,7 @@ s
 		</div>
 
 	</div>
-	
+
 
 </body>
 </html>

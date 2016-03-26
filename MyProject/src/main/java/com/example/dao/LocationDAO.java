@@ -50,9 +50,9 @@ public class LocationDAO implements ILocationDAO{
 		long time = currently.get("time").getAsLong();
 		String summary = currently.get("summary").getAsString();
 		double wind1 = currently.get("windSpeed").getAsDouble();
-		String wind = wind1+"";
+		String wind = String.valueOf(wind1);
 		String rain1 = currently.get("humidity").getAsString();
-		String rain = rain1+"";
+		String rain = String.valueOf(rain1);
 		threeDays.put(1, new Forcast(time,summary,wind,rain));
 		JsonObject daily = obj.get("daily").getAsJsonObject();
 		JsonArray data = daily.get("data").getAsJsonArray();
@@ -111,29 +111,27 @@ public class LocationDAO implements ILocationDAO{
 		System.out.println("2          "+search);
 		RestTemplate restTemplate = new RestTemplate();
 		ArrayList<DayForcast> threeDayForcast = new ArrayList<>();
-		String wundergroundKey = "ba6800955f5db321";
 		String wundergroungUrl = "http://api.wunderground.com/api/ba6800955f5db321/forecast/q/"+search+".json";
 		JsonObject weatherData = new JsonParser().parse(restTemplate.getForObject(wundergroungUrl, String.class)).getAsJsonObject();
 		System.out.println(weatherData.toString());
 		JsonArray array = weatherData.get("forecast").getAsJsonObject().get("simpleforecast").getAsJsonObject().get("forecastday").getAsJsonArray();
-		for(int i =0;i<array.size();i++){
+		for(int i =0;i<array.size()-1;i++){
 			threeDayForcast.add(createDay(array.get(i).getAsJsonObject()));
 		}
-		
-		
-		
 		return threeDayForcast;
 	}
 
 	private DayForcast createDay(JsonObject jsonElement) {
 		DayForcast forcast = new DayForcast();
-		
 		System.out.println(jsonElement.toString());
 		forcast.setConditions(jsonElement.get("conditions").getAsString());
-		
-		forcast.setWeekday(jsonElement.get("date").getAsJsonObject().get("weekday").getAsString());;
+		forcast.setWeekday(jsonElement.get("date").getAsJsonObject().get("weekday").getAsString());
+		forcast.setDay(jsonElement.get("date").getAsJsonObject().get("day").getAsInt());
+		forcast.setMonth(jsonElement.get("date").getAsJsonObject().get("month").getAsInt());
+		forcast.setYear(jsonElement.get("date").getAsJsonObject().get("year").getAsInt());
 		forcast.setEpoch(jsonElement.get("date").getAsJsonObject().get("epoch").getAsLong());
 		forcast.setIcon_url(jsonElement.get("icon_url").getAsString());
+		forcast.setPop(jsonElement.get("pop").getAsInt());
 		forcast.setMaxwind_degrees(jsonElement.get("maxwind").getAsJsonObject().get("degrees").getAsDouble());
 		forcast.setMaxwind_dir(jsonElement.get("maxwind").getAsJsonObject().get("dir").getAsString());
 		forcast.setMaxwind_kph(jsonElement.get("maxwind").getAsJsonObject().get("kph").getAsDouble());
