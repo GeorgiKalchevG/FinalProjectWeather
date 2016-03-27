@@ -82,9 +82,10 @@ public class LocationDAO implements ILocationDAO{
 		forcast.setMslphPa(Integer.parseInt(jsonElement.get("mslp").getAsJsonObject().get("metric").getAsString()));
 		return forcast;
 	}
-	private DayForcast createDay(JsonObject jsonElement) {
+	private DayForcast createDay(JsonObject jsonElement, String cityName) {
 		DayForcast forcast = new DayForcast();
 		System.out.println(jsonElement.toString());
+		forcast.setCityName(cityName);
 		forcast.setConditions(jsonElement.get("conditions").getAsString());
 		forcast.setWeekday(jsonElement.get("date").getAsJsonObject().get("weekday").getAsString());
 		forcast.setDay(jsonElement.get("date").getAsJsonObject().get("day").getAsInt());
@@ -130,7 +131,7 @@ public class LocationDAO implements ILocationDAO{
 			return null;
 		}
 		for(int i =0;i<array.size()-1;i++){
-			threeDayForcast.add(createDay(array.get(i).getAsJsonObject()));
+			threeDayForcast.add(createDay(array.get(i).getAsJsonObject(),city));
 		}
 		return threeDayForcast;
 	}

@@ -36,7 +36,7 @@
 	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"
 	integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS"
 	crossorigin="anonymous"></script>
-
+<link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/themes/base/jquery-ui.css" type="text/css" media="all">
 
 </head>
 <body>
@@ -46,10 +46,10 @@
 			<nav class="navbar navbar-inverse ">
 			<div class="container-fluid main-nav">
 				<div class="col-sm-4" align="left">
-					<a class="navbar-brand" href="#"><img
+					<a class="navbar-brand" href="index.jsp"><img
 						src="https://cdn4.iconfinder.com/data/icons/iconsimple-freebies/512/umbrella.png"
 						alt="Mountain View" style="width: 50px; height: 50px;"></a>
-					<h4 style="color: white; padding-top: 10px">Ime na saita</h4>
+					<h4 style="color: white; padding-top: 10px">Weather</h4>
 				</div>
 
 				<div class="col-sm-6" align="right">
@@ -87,7 +87,7 @@
 			<div class="container-fluid second-nav">
 				<ul class="nav navbar-nav">
 					<li class="active"><a href="index">Home</a></li>
-					<li><a href="#">Plan your trip!</a></li>
+					<li><a href="planner">Plan your trip!</a></li>
 					<li><a href="#">World map?</a></li>
 					<li><a href="#">Shukarii</a></li>
 				</ul>
@@ -98,7 +98,7 @@
 
 	<!-- heading end -->
 	<div class="city-weather">
-		<c:import url="cityInfo.jsp"></c:import>
+		<c:import url="${sessionScope.page}"/>
 	</div>
 
 </body>
@@ -227,7 +227,7 @@
 						}
 					});
 
-	$('.search-result').on('click', '.searched-city', function() {
+	$('.search-result').on('click','.searched-city', function() {
 		$.ajax({
 			url : "search",
 			type : 'POST',
@@ -238,11 +238,13 @@
 			success : function(response) {
 				$(".city-weather").text('');
 				$(".city-weather").append(response);
+				$('.cities').removeClass('opened');
 			},
 			fail : function() {
 
 			}
 		});
+		
 	});
 	function changeLanguage() {
 		$.POST("ChangeLanguage", function(result) {

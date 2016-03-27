@@ -2,7 +2,10 @@ package com.example.controller;
 
 import org.springframework.web.bind.annotation.CrossOrigin;
 import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.Queue;
 import java.util.TreeMap;
+import java.util.concurrent.LinkedBlockingQueue;
 import java.lang.Object;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -31,136 +34,129 @@ import com.google.gson.JsonParser;
 @Controller
 public class HomePageController {
 	ILocationDAO dao = new LocationDAO();
-	@RequestMapping(value="index")
-	String loadHomePage(Model model, HttpServletRequest request,HttpSession session){
-			if(session.getAttribute("language")==null){
-				session.setAttribute("language", "BU");
-			}
-			if(session.getAttribute("blqblq")==null){
-				System.out.println("setvam units na true");
-				session.setAttribute("blqblq", "true");
-			}
-		 String ipAddress = request.getHeader("X-FORWARDED-FOR");  
-		   if (ipAddress == null) {  
-			   ipAddress = request.getRemoteAddr();  
-			   System.out.println(ipAddress);
-		   }
-		   if(ipAddress.equals("0:0:0:0:0:0:0:1")){
-			   ipAddress = "46.10.58.161";
-		   }
-		   else{
-			   session.setAttribute("ipAddress",ipAddress);
-		   }
+
+	@RequestMapping(value = "index")
+	String loadHomePage(Model model, HttpServletRequest request, HttpSession session) {
+		if (session.getAttribute("language") == null) {
+			session.setAttribute("language", "EN");
+		}
+		
+		session.setAttribute("page", "cityInfo.jsp");
+	
+		if (session.getAttribute("blqblq") == null) {
+			System.out.println("setvam units na true");
+			session.setAttribute("blqblq", "true");
+		}
+		String ipAddress = request.getHeader("X-FORWARDED-FOR");
+		if (ipAddress == null) {
+			ipAddress = request.getRemoteAddr();
+			System.out.println(ipAddress);
+		}
+		if (ipAddress.equals("0:0:0:0:0:0:0:1")) {
+			ipAddress = "46.10.58.161";
+		} else {
+			session.setAttribute("ipAddress", ipAddress);
+		}
 		System.out.println(ipAddress);
-		//TreeMap<Integer,Forcast> location = dao.getLocationData(dao.getDataByIP(ipAddress));
-		//model.addAttribute("location", location);
-		
-			String cityName =dao.getCityNameByIp(ipAddress);
-			System.out.println("What city name we got from getcITYNAMEBYIP IN HPC "+cityName);
-		
-			ArrayList<DayForcast> list = dao.getThreeDaysFromWUnderground(cityName.split("/")[0], cityName.split("/")[1],session.getAttribute("language").toString());
-			session.setAttribute("city", WordUtils.capitalize(cityName));
-			session.setAttribute("list", list);
-			ArrayList<HourForcast> list24hours= dao.getDayFromWUnderground(cityName.split("/")[0], cityName.split("/")[1],session.getAttribute("language").toString());
-			session.setAttribute("list24hours", list24hours);
-		
-//		
-//		String apiKey = "9885a830e31d144089368b0a44b2f9f7";
-//		
-//		RestTemplate restTemplate = new RestTemplate();
-//		String city ="sofia";
-//		JsonObject weatherData = new JsonParser().parse(restTemplate.getForObject(weatherApiUrl+city+"&appid="+apiKey, String.class)).getAsJsonObject();
-//		JsonObject coord = weatherData.get("coord").getAsJsonObject();
-//		
-//		double lon = coord.get("lon").getAsDouble();
-//		double lat = coord.get("lat").getAsDouble();
-//		
-//		
-//		model.addAttribute("lon", lon);
-//		model.addAttribute("lat", lat);
+		String cityName = dao.getCityNameByIp(ipAddress);
+		System.out.println("What city name we got from getcITYNAMEBYIP IN HPC " + cityName);
+		ArrayList<DayForcast> list = dao.getThreeDaysFromWUnderground(cityName.split("/")[0], cityName.split("/")[1],
+				session.getAttribute("language").toString());
+		session.setAttribute("city", WordUtils.capitalize(cityName));
+		session.setAttribute("list", list);
+		ArrayList<HourForcast> list24hours = dao.getDayFromWUnderground(cityName.split("/")[0], cityName.split("/")[1],
+				session.getAttribute("language").toString());
+		session.setAttribute("list24hours", list24hours);
+		if (session.getAttribute("queueforCities") == null) {
+			LinkedList<DayForcast> queueCities = new LinkedList<>();
+			queueCities.add(list.get(0));
+			session.setAttribute("queueforCities", queueCities);
+		}
 		return "index";
-		
+
 	}
+
 	@CrossOrigin(origins = "http://localhost:8080")
 	@RequestMapping("search")
-	String getDataForLocation(HttpSession session,@RequestParam String city,@RequestParam String country){
-		//System.out.println("in search " + search);
-		
-		if(!city.isEmpty()){
-			ArrayList<DayForcast> searchedList = dao.getThreeDaysFromWUnderground(country,city,session.getAttribute("language").toString());
-			if(searchedList==null){
+	String getDataForLocation(HttpSession session, @RequestParam String city, @RequestParam String country) {
+
+		if (!city.isEmpty()) {
+			ArrayList<DayForcast> searchedList = dao.getThreeDaysFromWUnderground(country, city,
+					session.getAttribute("language").toString());
+			if (searchedList == null) {
 				session.setAttribute("city", "Couldnt find this city");
 				session.setAttribute("list24hours", null);
 				session.setAttribute("list", null);
-			}
-			else{
-		//	ArrayList<DayForcast> list = dao.getThreeDaysFromWUnderground(search);
-			ArrayList<HourForcast> list24hours= dao.getDayFromWUnderground(country,city,session.getAttribute("language").toString());
-		//	System.out.println("Size of the list 24 hours: " + list24hours.size());
-			//session.setAttribute("list24hours", list24hours);
-		//	session.setAttribute("list", searchedList);
-			session.setAttribute("list24hours", list24hours);
-			session.setAttribute("list", searchedList);
-			session.setAttribute("city",WordUtils.capitalize(city));
+			} else {
+				ArrayList<HourForcast> list24hours = dao.getDayFromWUnderground(country, city,
+						session.getAttribute("language").toString());
+				session.setAttribute("list24hours", list24hours);
+				session.setAttribute("list", searchedList);
+				session.setAttribute("city", WordUtils.capitalize(city));
+				LinkedList<DayForcast> queueCities = (LinkedList<DayForcast>) session.getAttribute("queueforCities");
+				if(queueCities.size()>2){
+					queueCities.removeLast();
+					}
+				queueCities.addFirst(searchedList.get(0));;
+		
+				
+			
+				session.setAttribute("queueforCities", queueCities);
 			}
 			return "cityInfo";
 		}
-		return"index";
+		return "index";
 	}
-	
 
 	@CrossOrigin(origins = "http://localhost:8080")
-	@RequestMapping(value="add", method = RequestMethod.POST)
-	public @ResponseBody String buildList(HttpServletRequest request){
-		String query = "http://autocomplete.wunderground.com/aq?query="+request.getParameter("city");
-		
+	@RequestMapping(value = "add", method = RequestMethod.POST)
+	public @ResponseBody String buildList(HttpServletRequest request) {
+		String query = "http://autocomplete.wunderground.com/aq?query=" + request.getParameter("city");
+
 		RestTemplate restTemplate = new RestTemplate();
 		String data = restTemplate.getForObject(query, String.class);
-		System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!"+data);
-		
+		System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!" + data);
+
 		JsonObject object = new JsonObject();
-		
-//		System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~" + object.toString());
-	    return data; ///return actual list
+
+		// System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~" +
+		// object.toString());
+		return data; /// return actual list
 	}
-	
 
 	@CrossOrigin(origins = "http://localhost:8080")
-	@RequestMapping(value="ChangeLanguage", method = RequestMethod.POST)
-	public String changeLanguage(HttpSession session){
-		System.out.println("ezikyt v momenta e "+ session.getAttribute("language"));
-		if(session.getAttribute("language").equals("BU")){
+	@RequestMapping(value = "ChangeLanguage", method = RequestMethod.POST)
+	public String changeLanguage(HttpSession session) {
+		System.out.println("ezikyt v momenta e " + session.getAttribute("language"));
+		if (session.getAttribute("language").equals("EN")) {
 			System.out.println("smenqm ot bulgarksi na angliiski");
-			session.setAttribute("language", "EN");
-			return "redirect:index?language=en";
-		}
-		else{
-			System.out.println("smenqm ot angliiski na bulgarski");
 			session.setAttribute("language", "BU");
+			return "redirect:index?language=en";
+		} else {
+			System.out.println("smenqm ot angliiski na bulgarski");
+			session.setAttribute("language", "EN");
 			return "redirect:index?language=es";
 		}
-		
-		
-		
-		
+
 	}
+
 	@CrossOrigin(origins = "http://localhost:8080")
-	@RequestMapping(value="ChangeUnits", method = RequestMethod.GET)
-	public String ChangeUnits(HttpSession session){
-		System.out.println("Sega e "+ session.getAttribute("blqblq"));
-		if(session.getAttribute("blqblq").equals("true")){
+	@RequestMapping(value = "ChangeUnits", method = RequestMethod.GET)
+	public String ChangeUnits(HttpSession session) {
+		System.out.println("Sega e " + session.getAttribute("blqblq"));
+		if (session.getAttribute("blqblq").equals("true")) {
 			System.out.println("ot true na false");
-			session.setAttribute("blqblq",  "false");
-		}
-		else{
+			session.setAttribute("blqblq", "false");
+		} else {
 			System.out.println("smenqm ot false na true");
 			session.setAttribute("blqblq", "true");
 		}
 		return "index";
 	}
+	@RequestMapping(value = "planner")
+	public String loadPlanner(HttpSession session) {
+		session.setAttribute("page", "planner.jsp");
+		
+		return "index";
+	}
 }
-
-
-
-
-

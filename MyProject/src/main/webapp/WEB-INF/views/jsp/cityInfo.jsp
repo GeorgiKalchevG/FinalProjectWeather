@@ -180,33 +180,33 @@
 						<div class="panel-heading">
 							<h4 class="panel-title">
 								<a data-toggle="collapse" data-parent="#accordion"
-									href="#collapse1">Collapsible Group 1</a>
+									href="#collapse1">${queueforCities[0].cityName}</a>
 							</h4>
 						</div>
 						<div id="collapse1" class="panel-collapse collapse in">
-							<div class="panel-body">1</div>
+							<div class="panel-body">${queueforCities[0].tempHighCel}</div>
 						</div>
 					</div>
 					<div class="panel panel-default">
 						<div class="panel-heading">
 							<h4 class="panel-title">
 								<a data-toggle="collapse" data-parent="#accordion"
-									href="#collapse2">Collapsible Group 2</a>
+									href="#collapse2">${queueforCities[1].cityName}</a>
 							</h4>
 						</div>
 						<div id="collapse2" class="panel-collapse collapse">
-							<div class="panel-body">2</div>
+							<div class="panel-body">${queueforCities[1].tempHighCel}</div>
 						</div>
 					</div>
 					<div class="panel panel-default">
 						<div class="panel-heading">
 							<h4 class="panel-title">
 								<a data-toggle="collapse" data-parent="#accordion"
-									href="#collapse3">Collapsible Group 3</a>
+									href="#collapse3">${queueforCities[2].cityName}</a>
 							</h4>
 						</div>
 						<div id="collapse3" class="panel-collapse collapse">
-							<div class="panel-body">3</div>
+							<div class="panel-body">${queueforCities[2].tempHighCel}</div>
 						</div>
 					</div>
 				</div>
