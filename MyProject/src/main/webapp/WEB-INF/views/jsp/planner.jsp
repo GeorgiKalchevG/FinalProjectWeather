@@ -20,12 +20,12 @@
 
 				
 				
-				<form class="form-inline" role="form" action="search" method="post">
+				<form class="form-inline" role="form" action="search" method="post" class = "date">
 				<div class="col-xs-4">
-					<label for="from"><spring:message  code="planner.start"/>: </label> <input type="text" id="from" name="from" />
+					<label for="from"><spring:message  code="planner.start"/>: </label> <input class="from" type="text" id="from" name="from" />
 				</div>
 				<div class="col-xs-4">
-					<label for="to"><spring:message  code="planner.end"/>: </label><input type="text" id="to" name="to" >
+					<label for="to"><spring:message  code="planner.end"/>: </label><input class="to" type="text" id="to" name="to" >
 				</div>
 				<div class="col-xs-4">
 					<label for="select"><spring:message  code="planner.select"/>: </label><input id="search-city1" type="text" placeholder="search city" class="form-control1" id="email" name="city"></div>
@@ -179,7 +179,7 @@
 						}
 					});
 
-	$('.search-result1','.from','.to').on('click', '.searched-city1','.from','.to', function() {
+	$(".search-result1,.from,.to").on('click', '.searched-city1,.from,.to', function() {
 		$.ajax({
 			url : "plan",
 			type : 'POST',
@@ -188,7 +188,7 @@
 				to : $(this).attr('to'),
 				city : $(this).attr('city'),
 				country : $(this).attr('country')
-				
+		
 			},
 			success : function(response) {
 				$(".city-weather").text('');

@@ -22,10 +22,10 @@ public class SearchController {
 	@CrossOrigin(origins = "http://localhost:8080")
 	@RequestMapping(value="/plan", method = RequestMethod.POST)
 	public @ResponseBody ArrayList<Loc> buildList(@RequestBody String from,@RequestBody String to,@RequestBody String city,@RequestBody String country){
-		System.out.println(from);
-		System.out.println(to);
-		System.out.println(city);
-		System.out.println(country);
+		System.out.println("From planner "+from);
+		System.out.println("From planner "+to);
+		System.out.println("From planner "+city);
+		System.out.println("From planner "+country);
 	    return new ArrayList<>(); ///return actual list
 	}
 	
