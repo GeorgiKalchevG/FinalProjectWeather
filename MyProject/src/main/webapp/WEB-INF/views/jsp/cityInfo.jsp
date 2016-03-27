@@ -30,7 +30,10 @@
 												background="http://www.auplod.com/u/ulopad78451.gif"
 												width="240" height="160"><img alt="" src="" />
 												<h3 style="color: white;">Max Temp:
-													${list[0].tempHighCel} &#8451</h3></th>
+												<c:set var="ff" scope="session" value="${blqblq}" />
+												
+												${ ff =='true' ?  list[0].tempHighCel : list[0].tempHighFahr}
+												<!---	${list[0].tempHighCel} &#8451---></h3></th>
 											<c:forEach items="${list}" var="entry">
 												<th><img src="${entry.icon_url}">
 													${entry.weekday}</th>
@@ -63,7 +66,7 @@
 								<div class="additional-info">
 									<table class="table" style="width: 75%;">
 										<tr>
-											<th>Вятър:</th>
+											<th><spring:message code="weather.wind"/></th>
 											<c:forEach items="${list}" var="entry">
 												<th>Wind Speed: ${entry.maxwind_kph} Wind Direction:
 													${entry.maxwind_dir}</th>

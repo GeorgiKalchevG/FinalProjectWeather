@@ -3,6 +3,7 @@ package com.example.dao;
 import java.util.ArrayList;
 import java.util.TreeMap;
 
+import org.apache.catalina.connector.Request;
 import org.springframework.web.client.RestTemplate;
 
 import com.example.model.DayForcast;
@@ -17,23 +18,15 @@ import com.google.gson.JsonParser;
 public class LocationDAO implements ILocationDAO{
 	 String apiKey = "9885a830e31d144089368b0a44b2f9f7";
 	 
-	@Override
-	public JsonObject getDataByIP(String ip) {
-
-		String data = getCityNameByIp(ip);
-		System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"+data);
-		
-		JsonObject weatherData =getDataByCityName( data);
-		System.out.println(weatherData.toString());
-		return weatherData;
-	}
-
+	
+	 @Override
 	public String getCityNameByIp(String ip) {
-		String ipToGeotag = "http://ip-api.com/json/";
+		String ipToGeotag = "http://api.db-ip.com/addrinfo?addr="+ip+"&api_key=2847ed47c9cf4242bb2e09a10aeb3c313c5ebb06";
 		RestTemplate restTemplate = new RestTemplate();
-		String data = restTemplate.getForObject(ipToGeotag+ip, String.class);
+		String data = restTemplate.getForObject(ipToGeotag, String.class);
 		String cityName = new JsonParser().parse(data).getAsJsonObject().get("city").getAsString();
-		return cityName;
+		String countryName = new JsonParser().parse(data).getAsJsonObject().get("country").getAsString();
+		return countryName+"/"+cityName;
 	}
 
 	@Override
@@ -42,89 +35,16 @@ public class LocationDAO implements ILocationDAO{
 		return null;
 	}
 
-	@Override
-	public TreeMap<Integer,Forcast> getLocationData(JsonObject obj) {
-		System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"+obj.toString());
-		TreeMap<Integer,Forcast> threeDays = new TreeMap<Integer,Forcast>();
-		JsonObject currently = obj.get("currently").getAsJsonObject();
-		long time = currently.get("time").getAsLong();
-		String summary = currently.get("summary").getAsString();
-		double wind1 = currently.get("windSpeed").getAsDouble();
-		String wind = String.valueOf(wind1);
-		String rain1 = currently.get("humidity").getAsString();
-		String rain = String.valueOf(rain1);
-		threeDays.put(1, new Forcast(time,summary,wind,rain));
-		JsonObject daily = obj.get("daily").getAsJsonObject();
-		JsonArray data = daily.get("data").getAsJsonArray();
-		for(int i =0 ; i < 3;i++){
-			time = ((JsonObject) data.get(i)).get("time").getAsLong();
-			summary = ((JsonObject) data.get(i)).get("summary").getAsString();
-			wind = ((JsonObject) data.get(i)).get("windSpeed").getAsString();
-			rain = ((JsonObject) data.get(i)).get("humidity").getAsString();
-			threeDays.put(i, new Forcast(time,summary,wind,rain));
-		}
-		//JsonObject coord = obj.get("coord").getAsJsonObject();
-		//JsonArray weather = obj.get("weather").getAsJsonArray();
-		//JsonObject main = obj.get("main").getAsJsonObject();
-//		JsonObject wind = obj.get("wind").getAsJsonObject();
-		//JsonObject clouds = obj.get("clouds").getAsJsonObject();
-		//JsonObject sys = obj.get("sys").getAsJsonObject();
-		
-		//Location location = new Location();
-		//for(int i = 0;i<weather.size();i++){
-		//	
-		//	location.setForcast(weather.get(i).getAsJsonObject().get("main").getAsString());
-		//	location.setForcastDesc(weather.get(i).getAsJsonObject().get("description").getAsString());
-		//	location.setImage(weather.get(i).getAsJsonObject().get("icon").getAsString());
-		//}
-//		System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"+obj.get("name").getAsString());
-//		location.setCity(obj.get("name").getAsString());
-//		location.setCloudPercent(clouds.get("all").getAsDouble());
-//		location.setCountry(sys.get("country").getAsString());
-//		
-//		location.setHumidity(main.get("humidity").getAsDouble());
-//		location.setLat(coord.get( "lat").getAsDouble());
-//		location.setLon(coord.get("lon").getAsDouble());
-//		location.setPressure(main.get("pressure").getAsDouble());
-//		location.setSunRise(sys.get("sunrise").getAsLong());
-//		location.setSunSet(sys.get("sunset").getAsLong());
-//		location.setTemperature(main.get("temp").getAsDouble());
-//		location.setTimeOfLastMeasurement(obj.get("dt").getAsLong());
-		//location.setWindSpeed(wind.get("speed").getAsDouble());
-		//location.setDownwind(wind.get("deg").getAsDouble());
-		
-		
-		return threeDays;
-	}
+
+	
 
 	@Override
-	public JsonObject getDataByCityName(String cityName) {
-		RestTemplate restTemplate = new RestTemplate();
-		String weatherApiUrl = "https://api.forecast.io/forecast/034143e2c674af082f9336e044c19312/42.637877,23.366836?units=si&exclude=minutely,hourly,alerts,flags";
-		JsonObject weatherData = new JsonParser().parse(restTemplate.getForObject(weatherApiUrl, String.class)).getAsJsonObject();
-		System.out.println(weatherData.toString());
-		return weatherData;
-	}
-
-	@Override
-	public ArrayList<DayForcast> getThreeDaysFromWUnderground(String search) {
-		System.out.println("2          "+search);
-		RestTemplate restTemplate = new RestTemplate();
-		ArrayList<DayForcast> threeDayForcast = new ArrayList<>();
-		String wundergroungUrl = "http://api.wunderground.com/api/ba6800955f5db321/forecast/q/"+search+".json";
-		JsonObject weatherData = new JsonParser().parse(restTemplate.getForObject(wundergroungUrl, String.class)).getAsJsonObject();
-		System.out.println(weatherData.toString());
-		JsonArray array = weatherData.get("forecast").getAsJsonObject().get("simpleforecast").getAsJsonObject().get("forecastday").getAsJsonArray();
-		for(int i =0;i<array.size()-1;i++){
-			threeDayForcast.add(createDay(array.get(i).getAsJsonObject()));
-		}
-		return threeDayForcast;
-	}
-	public ArrayList<HourForcast> getDayFromWUnderground(String search) {
-		System.out.println("2          "+search);
+	public ArrayList<HourForcast> getDayFromWUnderground(String country, String city,String language) {
+		System.out.println("2          "+city.replace(' ','_')+"/"+country.replace(' ','_')+".json");
 		RestTemplate restTemplate = new RestTemplate();
 		ArrayList<HourForcast> DayForcast = new ArrayList<>();
-		String wundergroungUrl = "http://api.wunderground.com/api/ba6800955f5db321/hourly/q/"+search+".json";
+
+		String wundergroungUrl = "http://api.wunderground.com/api/ba6800955f5db321/hourly/lang:"+language+"/q/"+country.replace(' ','_')+"/"+city.replace(' ','_')+".json";
 		JsonObject weatherData = new JsonParser().parse(restTemplate.getForObject(wundergroungUrl, String.class)).getAsJsonObject();
 		System.out.println(weatherData.toString());
 		JsonArray array = weatherData.get("hourly_forecast").getAsJsonArray();
@@ -142,7 +62,7 @@ public class LocationDAO implements ILocationDAO{
 		forcast.setWeekday(jsonElement.get("FCTTIME").getAsJsonObject().get("weekday_name").getAsString());
 		forcast.setTempC(Integer.parseInt(jsonElement.get("temp").getAsJsonObject().get("metric").getAsString()));
 		forcast.setTempFH(Integer.parseInt(jsonElement.get("temp").getAsJsonObject().get("english").getAsString()));
-		forcast.setConditions(jsonElement.get("wx").getAsString());
+		forcast.setConditions(jsonElement.get("condition").getAsString());
 		forcast.setIcon_url(jsonElement.get("icon_url").getAsString());
 		forcast.setSky(Integer.parseInt(jsonElement.get("sky").getAsString()));
 		forcast.setWindKPH(Integer.parseInt(jsonElement.get("wspd").getAsJsonObject().get("metric").getAsString()));
@@ -194,15 +114,21 @@ public class LocationDAO implements ILocationDAO{
 	}
 
 	@Override
-	public ArrayList<DayForcast> getThreeDaysFromWUnderground(String city, String country) {
-
+	public ArrayList<DayForcast> getThreeDaysFromWUnderground(String country, String city,String language){
+		System.out.println("city "+city + "country "+ country);
 		
 		RestTemplate restTemplate = new RestTemplate();
 		ArrayList<DayForcast> threeDayForcast = new ArrayList<>();
-		String wundergroungUrl = "http://api.wunderground.com/api/ba6800955f5db321/forecast/q/"+country.replace(' ','_')+"/"+city.replace(' ','_')+".json";
+		String wundergroungUrl = "http://api.wunderground.com/api/ba6800955f5db321/forecast/lang:"+language+"/q/"+country.replace(' ','_')+"/"+city.replace(' ','_')+".json";
 		JsonObject weatherData = new JsonParser().parse(restTemplate.getForObject(wundergroungUrl, String.class)).getAsJsonObject();
 		System.out.println(weatherData.toString());
-		JsonArray array = weatherData.get("forecast").getAsJsonObject().get("simpleforecast").getAsJsonObject().get("forecastday").getAsJsonArray();
+		JsonArray array;
+		try{
+			array = weatherData.get("forecast").getAsJsonObject().get("simpleforecast").getAsJsonObject().get("forecastday").getAsJsonArray();
+		}
+		catch(NullPointerException e){
+			return null;
+		}
 		for(int i =0;i<array.size()-1;i++){
 			threeDayForcast.add(createDay(array.get(i).getAsJsonObject()));
 		}

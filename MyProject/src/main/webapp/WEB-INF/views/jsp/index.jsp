@@ -54,8 +54,9 @@
 
 				<div class="col-sm-6" align="right">
 					<form class="form-inline" role="form" action="search" method="post">
-						<input id="search-city" type="text" placeholder="search city" class="form-control"	id="email" name="city">
-						
+						<input id="search-city" type="text" placeholder="search city"
+							class="form-control" id="email" name="city">
+
 						<button type="submit" class="btn btn-default">Search</button>
 					</form>
 					<div class="cities">
@@ -63,9 +64,15 @@
 					</div>
 				</div>
 				<div class="col-sm-2" align="right">
-					<button type="submit" class="btn btn-default" align="right">change
-						language</button>
-					<button type="submit" class="btn btn-default" align="right">F/C</button>
+					<form class="form-inline" role="form" action="ChangeLanguage"
+						method="POST">
+						<button type="submit" class="btn btn-default" align="right"" >change
+							language</button>
+					</form>
+					<form class="form-inline" role="form" action="ChangeUnits"
+						method="get">
+						<button type="submit" class="btn btn-default" align="right">F/C</button>
+					</form>
 				</div>
 
 			</div>
@@ -79,7 +86,7 @@
 			<nav class="navbar navbar-inverse second-nav">
 			<div class="container-fluid second-nav">
 				<ul class="nav navbar-nav">
-					<li class="active"><a href="#">${city}</a></li>
+					<li class="active"><a href="index">Home</a></li>
 					<li><a href="#">Plan your trip!</a></li>
 					<li><a href="#">World map?</a></li>
 					<li><a href="#">Shukarii</a></li>
@@ -114,14 +121,13 @@
 	height: 0px;
 	overflow: scroll;
 	position: absolute;
-    top: 55px;
-    left: 399px;
-    text-align: left;
-    z-index: 2;
-    background-color: white;
-    line-height: 30px;
-    
-    transition-property: all;
+	top: 55px;
+	left: 399px;
+	text-align: left;
+	z-index: 2;
+	background-color: white;
+	line-height: 30px;
+	transition-property: all;
 	transition-duration: .5s;
 	transition-timing-function: cubic-bezier(0, 1, 0.5, 1);
 }
@@ -129,21 +135,20 @@
 .cities.opened {
 	overflow: hidden;
 	height: 150px;
-	
 	transition-property: all;
 	transition-duration: .5s;
 	transition-timing-function: cubic-bezier(0, 1, 0.5, 1);
 }
 
 .search-result {
-    height: 150px;
-    overflow-y: scroll;
-    list-style-type: none;
-    padding: 5px;
+	height: 150px;
+	overflow-y: scroll;
+	list-style-type: none;
+	padding: 5px;
 }
 
 .search-result li {
-	border-bottom: 1px solid rgb(200,200,200);
+	border-bottom: 1px solid rgb(200, 200, 200);
 }
 
 .search-result li:hover {
@@ -158,19 +163,17 @@
 .additional-info {
 	height: 0px;
 	overflow: hidden;
-	
 	transition-property: all;
 	transition-duration: .5s;
 	transition-timing-function: cubic-bezier(0, 1, 0.5, 1);
 }
 
 .additional-info.opened {
-	 height: 200px;
-    overflow: hidden;
-    list-style-type: none;
-    padding: 5px;
-    
-    transition-property: all;
+	height: 200px;
+	overflow: hidden;
+	list-style-type: none;
+	padding: 5px;
+	transition-property: all;
 	transition-duration: .5s;
 	transition-timing-function: cubic-bezier(0, 1, 0.5, 1);
 }
@@ -184,56 +187,66 @@
 		$('.additional-info').toggleClass('opened');
 		console.log('ds');
 	}); */
-	
-	$('#search-city').on('keyup', function() {
-		var city = $(this).val();
-		if ( city.length >= 3) {
-			console.log(city);
-			 $.ajax({
-				 url: "add",
-				 type: 'POST',
-				 data: {
-					 city: city,
-				 },
-				 success: function(response){
-					 var response = JSON.parse(response);
-					 var cities = response.RESULTS;
-					 					 $('.search-result').text('');
-					for (var city in cities) {
-						var name = cities[city].name;
-						// Create a variable to contain the array
-						var names = name.split(", ");
-						
-						var list = '<li class="searched-city" city="' + names[0] + '" country="'+ names[1] +'">' + cities[city].name + '</li>';
-						$('.search-result').append(list);
-					}
-					 $('.cities').addClass('opened');
-					 
-					 
-			    },
-			    fail: function() {
-			    	
-			    }});
-		}
-	});
-	
+
+	$('#search-city')
+			.on(
+					'keyup',
+					function() {
+						var city = $(this).val();
+						if (city.length >= 3) {
+							console.log(city);
+							$
+									.ajax({
+										url : "add",
+										type : 'POST',
+										data : {
+											city : city,
+										},
+										success : function(response) {
+											var response = JSON.parse(response);
+											var cities = response.RESULTS;
+											$('.search-result').text('');
+											for ( var city in cities) {
+												var name = cities[city].name;
+												// Create a variable to contain the array
+												var names = name.split(", ");
+
+												var list = '<li class="searched-city" city="' + names[0] + '" country="'+ names[1] +'">'
+														+ cities[city].name
+														+ '</li>';
+												$('.search-result')
+														.append(list);
+											}
+											$('.cities').addClass('opened');
+
+										},
+										fail : function() {
+
+										}
+									});
+						}
+					});
+
 	$('.search-result').on('click', '.searched-city', function() {
-		 $.ajax({
-			 url: "search",
-			 type: 'POST',
-			 data: {
-				 city: $(this).attr('city'),
-				 country: $(this).attr('country')
-			 },
-			 success: function(response){
-				 $(".city-weather").text('');
-				 $(".city-weather").append(response);
-		    },
-		    fail: function() {
-		    	
-		    }});
+		$.ajax({
+			url : "search",
+			type : 'POST',
+			data : {
+				city : $(this).attr('city'),
+				country : $(this).attr('country')
+			},
+			success : function(response) {
+				$(".city-weather").text('');
+				$(".city-weather").append(response);
+			},
+			fail : function() {
+
+			}
+		});
 	});
-	
-	
+	function changeLanguage() {
+		$.POST("ChangeLanguage", function(result) {
+		});
+	}
 </script>
 </html>
