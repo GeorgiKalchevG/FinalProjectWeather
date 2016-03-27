@@ -192,6 +192,22 @@ public class LocationDAO implements ILocationDAO{
 		forcast.setMinhumidity(jsonElement.get("minhumidity").getAsDouble());
 		return forcast;
 	}
+
+	@Override
+	public ArrayList<DayForcast> getThreeDaysFromWUnderground(String city, String country) {
+
+		
+		RestTemplate restTemplate = new RestTemplate();
+		ArrayList<DayForcast> threeDayForcast = new ArrayList<>();
+		String wundergroungUrl = "http://api.wunderground.com/api/ba6800955f5db321/forecast/q/"+country.replace(' ','_')+"/"+city.replace(' ','_')+".json";
+		JsonObject weatherData = new JsonParser().parse(restTemplate.getForObject(wundergroungUrl, String.class)).getAsJsonObject();
+		System.out.println(weatherData.toString());
+		JsonArray array = weatherData.get("forecast").getAsJsonObject().get("simpleforecast").getAsJsonObject().get("forecastday").getAsJsonArray();
+		for(int i =0;i<array.size()-1;i++){
+			threeDayForcast.add(createDay(array.get(i).getAsJsonObject()));
+		}
+		return threeDayForcast;
+	}
 	
 	
 

@@ -15,6 +15,7 @@ public interface ILocationDAO {
 	JsonObject getDataByCityName(String cityName);
 	TreeMap<Integer,Forcast> getLocationData(JsonObject obj);
 	ArrayList<DayForcast> getThreeDaysFromWUnderground(String search);
+	ArrayList<DayForcast> getThreeDaysFromWUnderground(String city,String country);
 	ArrayList<HourForcast> getDayFromWUnderground(String search);
 	String getCityNameByIp(String ip);
 	

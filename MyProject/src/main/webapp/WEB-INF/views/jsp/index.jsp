@@ -30,7 +30,7 @@
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css"
 	integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r"
 	crossorigin="anonymous">
-
+<link href="<c:url value="index.css" />" rel="stylesheet">
 <!-- Latest compiled and minified JavaScript -->
 <script
 	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"
@@ -38,16 +38,13 @@
 	crossorigin="anonymous"></script>
 
 
-
-s
 </head>
 <body>
-
 	<!-- heading start -->
 	<div class="row">
-		<div class="col-sm-12" style="background-color: black;">
-			<nav class="navbar navbar-inverse">
-			<div class="container-fluid">
+		<div class="col-sm-12">
+			<nav class="navbar navbar-inverse ">
+			<div class="container-fluid main-nav">
 				<div class="col-sm-4" align="left">
 					<a class="navbar-brand" href="#"><img
 						src="https://cdn4.iconfinder.com/data/icons/iconsimple-freebies/512/umbrella.png"
@@ -55,14 +52,17 @@ s
 					<h4 style="color: white; padding-top: 10px">Ime na saita</h4>
 				</div>
 
-				<div class="col-sm-6" align="right" style="padding-top: 10px;">
-					<form class="form-inline" role="form" action="search">
-						<input type="text" placeholder="search city" class="form-control"
-							id="email" name="search">
+				<div class="col-sm-6" align="right">
+					<form class="form-inline" role="form" action="search" method="post">
+						<input id="search-city" type="text" placeholder="search city" class="form-control"	id="email" name="city">
+						
 						<button type="submit" class="btn btn-default">Search</button>
 					</form>
+					<div class="cities">
+						<ul class="search-result"></ul>
+					</div>
 				</div>
-				<div class="col-sm-2" align="right" style="padding-top: 10px;">
+				<div class="col-sm-2" align="right">
 					<button type="submit" class="btn btn-default" align="right">change
 						language</button>
 					<button type="submit" class="btn btn-default" align="right">F/C</button>
@@ -75,11 +75,11 @@ s
 	<!-- heading end -->
 	<!-- heading start -->
 	<div class="row">
-		<div class="col-sm-12" style="background-color: white;">
-			<nav class="navbar navbar-inverse">
-			<div class="container-fluid">
+		<div class="col-sm-12">
+			<nav class="navbar navbar-inverse second-nav">
+			<div class="container-fluid second-nav">
 				<ul class="nav navbar-nav">
-					<li class="active"><a href="#">Home</a></li>
+					<li class="active"><a href="#">${city}</a></li>
 					<li><a href="#">Plan your trip!</a></li>
 					<li><a href="#">World map?</a></li>
 					<li><a href="#">Shukarii</a></li>
@@ -90,197 +90,150 @@ s
 	</div>
 
 	<!-- heading end -->
-	<div class="row">
-		<div class="col-sm-8" style="background-color: lavender;">
-			<div class="container">
-				<h2>Grad kojto tarsish</h2>
-				<h5>Posledno update time za toq grad</h5>
-				<ul class="nav nav-tabs">
-					<li class="active"><a data-toggle="tab" href="#home">${city}</a></li>
-					<li><a data-toggle="tab" href="#menu1">24 hours</a></li>
-					<li><a data-toggle="tab" href="#menu2">Weekend</a></li>
-					<li><a data-toggle="tab" href="#menu3">5-days</a></li>
-				</ul>
-				<div class="tab-content">
-					<div id="home" class="tab-pane fade in active">
-						<table class="table" style="width: 75%;">
-							<tr>
-								<!-- trqbwa da napravim kolekciq ot gif za razli4noto vreme -->
-								<th rowspan="4"
-									background="http://www.auplod.com/u/ulopad78451.gif"
-									width="240" height="160"><img alt="" src="" />
-									<h3 style="color: white;">Max Temp: ${list[0].tempHighCel}
-										&#8451</h3></th>
-								<c:forEach items="${list}" var="entry">
-									<th><img src="${entry.icon_url}"> ${entry.weekday}</th>
-								</c:forEach>
-							</tr>
-							<tr>
-								<c:forEach items="${list}" var="entry">
-									<th>${entry.day}.${entry.month}.${entry.year}</th>
-								</c:forEach>
-
-							</tr>
-							<tr>
-								<c:forEach items="${list}" var="entry">
-									<th>${entry.conditions}</th>
-								</c:forEach>
-
-							</tr>
-							<tr>
-								<c:forEach items="${list}" var="entry">
-									<th>
-										<p>Max : ${entry.tempHighCel} &#8451 Min :
-											${entry.tempLowCel} &#8451
-									</th>
-								</c:forEach>
-							</tr>
-							<tr>
-								<th>Вятър:</th>
-								<c:forEach items="${list}" var="entry">
-									<th>Wind Speed: ${entry.maxwind_kph} Wind Direction:
-										${entry.maxwind_dir}</th>
-								</c:forEach>
-							</tr>
-							<tr>
-								<th>Вероятност за валежи:</th>
-								<c:forEach items="${list}" var="entry">
-									<th>${entry.pop}%</th>
-								</c:forEach>
-							</tr>
-							<tr>
-								<th>Количество валежи:</th>
-								<c:forEach items="${list}" var="entry">
-									<th>${entry.qpf_alldayMM}mm</th>
-								</c:forEach>
-							</tr>
-							<tr>
-								<th>Влажност:</th>
-								<c:forEach items="${list}" var="entry">
-									<th>${entry.avehumidity}%</th>
-								</c:forEach>
-							</tr>
-						</table>
-					</div>
-					<div id="menu1" class="tab-pane fade" style="overflow: auto;">
-						<table class="table"
-							style="width: 75%; display:block; overflow-x:auto;">
-							<tr>
-								<!-- trqbwa da napravim kolekciq ot gif za razli4noto vreme -->
-								<th rowspan="1" width="240" height="160"><img alt="" src="" />
-									<h3 style="color: black;">Прогноза за
-										${list24hours[0].day}.${list24hours[0].month}.${list24hours[0].year}</h3></th>
-								<c:forEach items="${list24hours}" var="entry">
-									<th>${entry.hour}:00<img src="${entry.icon_url}">
-									</th>
-								</c:forEach>
-							</tr>
-							<tr>
-								<th>Температура:</th>
-								<c:forEach items="${list24hours}" var="entry">
-									<th>${entry.tempC}</th>
-								</c:forEach>
-							</tr>
-							<tr>
-								<th>Усеща се:</th>
-								<c:forEach items="${list24hours}" var="entry">
-									<th>${entry.feelsLikeC}</th>
-								</c:forEach>
-
-							</tr>
-							<tr>
-								<c:forEach items="${list24hours}" var="entry">
-									<th>${entry.conditions}</th>
-								</c:forEach>
-							</tr>
-							<tr>
-								<th>Вятър:</th>
-								<c:forEach items="${list24hours}" var="entry">
-									<th>Wind Speed: ${entry.windKPH} Wind Direction:
-										${entry.dir}</th>
-								</c:forEach>
-							</tr>
-							<tr>
-								<th>Вероятност за валежи:</th>
-								<c:forEach items="${list24hours}" var="entry">
-									<th>${entry.pop}%</th>
-								</c:forEach>
-							</tr>
-							<tr>
-								<th>Количество валежи:</th>
-								<c:forEach items="${list24hours}" var="entry">
-									<th>${entry.qpfMM}mm</th>
-								</c:forEach>
-							</tr>
-							<tr>
-								<th>Атмосферно налягане:</th>
-								<c:forEach items="${list24hours}" var="entry">
-									<th>${entry.mslphPa}hPa</th>
-								</c:forEach>
-							</tr>
-							<tr>
-								<th>Влажност:</th>
-								<c:forEach items="${list24hours}" var="entry">
-									<th>${entry.humidity}%</th>
-								</c:forEach>
-							</tr>
-							<tr>
-								<th>Облачност:</th>
-								<c:forEach items="${list24hours}" var="entry">
-									<th>${entry.sky}%</th>
-								</c:forEach>
-							</tr>
-						</table>
-					</div>
-					<div id="menu2" class="tab-pane fade">tablica sus weekend
-						info</div>
-					<div id="menu3" class="tab-pane fade">tablica sus 5 dni info
-					</div>
-				</div>
-			</div>
-		</div>
-		<div class="col-sm-4" style="background-color: lavenderblush;">
-			<h2>Last 3 cities visited</h2>
-			<div class="panel-group" id="accordion">
-				<div class="panel panel-default">
-					<div class="panel-heading">
-						<h4 class="panel-title">
-							<a data-toggle="collapse" data-parent="#accordion"
-								href="#collapse1">Collapsible Group 1</a>
-						</h4>
-					</div>
-					<div id="collapse1" class="panel-collapse collapse in">
-						<div class="panel-body">1</div>
-					</div>
-				</div>
-				<div class="panel panel-default">
-					<div class="panel-heading">
-						<h4 class="panel-title">
-							<a data-toggle="collapse" data-parent="#accordion"
-								href="#collapse2">Collapsible Group 2</a>
-						</h4>
-					</div>
-					<div id="collapse2" class="panel-collapse collapse">
-						<div class="panel-body">2</div>
-					</div>
-				</div>
-				<div class="panel panel-default">
-					<div class="panel-heading">
-						<h4 class="panel-title">
-							<a data-toggle="collapse" data-parent="#accordion"
-								href="#collapse3">Collapsible Group 3</a>
-						</h4>
-					</div>
-					<div id="collapse3" class="panel-collapse collapse">
-						<div class="panel-body">3</div>
-					</div>
-				</div>
-			</div>
-
-		</div>
-
+	<div class="city-weather">
+		<c:import url="cityInfo.jsp"></c:import>
 	</div>
 
-
 </body>
+<style>
+.row {
+	width: 75%;
+	margin: 0 auto;
+}
+
+.navbar-inverse {
+	margin-bottom: 0;
+}
+
+.container-fluid.main-nav {
+	line-height: 75px;
+	height: 75px;
+}
+
+.cities {
+	height: 0px;
+	overflow: scroll;
+	position: absolute;
+    top: 55px;
+    left: 399px;
+    text-align: left;
+    z-index: 2;
+    background-color: white;
+    line-height: 30px;
+    
+    transition-property: all;
+	transition-duration: .5s;
+	transition-timing-function: cubic-bezier(0, 1, 0.5, 1);
+}
+
+.cities.opened {
+	overflow: hidden;
+	height: 150px;
+	
+	transition-property: all;
+	transition-duration: .5s;
+	transition-timing-function: cubic-bezier(0, 1, 0.5, 1);
+}
+
+.search-result {
+    height: 150px;
+    overflow-y: scroll;
+    list-style-type: none;
+    padding: 5px;
+}
+
+.search-result li {
+	border-bottom: 1px solid rgb(200,200,200);
+}
+
+.search-result li:hover {
+	background: #FFFAC2;
+	cursor: pointer;
+}
+
+.main-container {
+	padiing: 0 15px;
+}
+
+.additional-info {
+	height: 0px;
+	overflow: hidden;
+	
+	transition-property: all;
+	transition-duration: .5s;
+	transition-timing-function: cubic-bezier(0, 1, 0.5, 1);
+}
+
+.additional-info.opened {
+	 height: 200px;
+    overflow: hidden;
+    list-style-type: none;
+    padding: 5px;
+    
+    transition-property: all;
+	transition-duration: .5s;
+	transition-timing-function: cubic-bezier(0, 1, 0.5, 1);
+}
+
+.table th {
+	width: 25%;
+}
+</style>
+<script>
+	/* $('.open-additional-info').on('click', function() {
+		$('.additional-info').toggleClass('opened');
+		console.log('ds');
+	}); */
+	
+	$('#search-city').on('keyup', function() {
+		var city = $(this).val();
+		if ( city.length >= 3) {
+			console.log(city);
+			 $.ajax({
+				 url: "add",
+				 type: 'POST',
+				 data: {
+					 city: city,
+				 },
+				 success: function(response){
+					 var response = JSON.parse(response);
+					 var cities = response.RESULTS;
+					 					 $('.search-result').text('');
+					for (var city in cities) {
+						var name = cities[city].name;
+						// Create a variable to contain the array
+						var names = name.split(", ");
+						
+						var list = '<li class="searched-city" city="' + names[0] + '" country="'+ names[1] +'">' + cities[city].name + '</li>';
+						$('.search-result').append(list);
+					}
+					 $('.cities').addClass('opened');
+					 
+					 
+			    },
+			    fail: function() {
+			    	
+			    }});
+		}
+	});
+	
+	$('.search-result').on('click', '.searched-city', function() {
+		 $.ajax({
+			 url: "search",
+			 type: 'POST',
+			 data: {
+				 city: $(this).attr('city'),
+				 country: $(this).attr('country')
+			 },
+			 success: function(response){
+				 $(".city-weather").text('');
+				 $(".city-weather").append(response);
+		    },
+		    fail: function() {
+		    	
+		    }});
+	});
+	
+	
+</script>
 </html>

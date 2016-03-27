@@ -32,3 +32,10 @@ body, .form-control{
 .custom-width {
     width: 80px !important;
 }
+
+.additional-info {
+	display: none;
+}
+.additional-info.opened {
+	display: block;
+}

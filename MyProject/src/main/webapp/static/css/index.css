@@ -1,0 +1,6 @@
+.additional-info {
+	display: none;
+}
+.additional-info.opened {
+	display: block;
+}

@@ -1,5 +1,6 @@
 package com.example.controller;
 
+import org.springframework.web.bind.annotation.CrossOrigin;
 import java.util.ArrayList;
 import java.util.TreeMap;
 import java.lang.Object;
@@ -9,8 +10,12 @@ import javax.servlet.http.HttpSession;
 import org.apache.commons.lang.WordUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.client.RestTemplate;
 
 import com.example.dao.ILocationDAO;
 import com.example.dao.LocationDAO;
@@ -18,6 +23,9 @@ import com.example.model.Car;
 import com.example.model.DayForcast;
 import com.example.model.Forcast;
 import com.example.model.HourForcast;
+import com.example.model.Loc;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
 @Controller
 public class HomePageController {
@@ -40,24 +48,58 @@ public class HomePageController {
 		model.addAttribute("list", list);
 		
 		
+		String apiKey = "9885a830e31d144089368b0a44b2f9f7";
+		
+		RestTemplate restTemplate = new RestTemplate();
+		String city ="sofia";
+		JsonObject weatherData = new JsonParser().parse(restTemplate.getForObject(weatherApiUrl+city+"&appid="+apiKey, String.class)).getAsJsonObject();
+	JsonObject coord = weatherData.get("coord").getAsJsonObject();
+		
+		double lon = coord.get("lon").getAsDouble();
+		double lat = coord.get("lat").getAsDouble();
+		
+		
+		model.addAttribute("lon", lon);
+		model.addAttribute("lat", lat);
 		return "index";
 		
 	}
+	@CrossOrigin(origins = "http://localhost:8080")
 	@RequestMapping("search")
-	String getDataForLocation(@RequestParam String search,HttpSession session){
-		System.out.println("in search " + search);
+	String getDataForLocation(HttpSession session,@RequestParam String city,@RequestParam String country){
+		//System.out.println("in search " + search);
 		
-		if(!search.isEmpty()){
-			ArrayList<DayForcast> list = dao.getThreeDaysFromWUnderground(search);
-			ArrayList<HourForcast> list24hours= dao.getDayFromWUnderground(search);
-			System.out.println("Size of the list 24 hours: " + list24hours.size());
-			session.setAttribute("list24hours", list24hours);
-			session.setAttribute("list", list);
-			session.setAttribute("city",WordUtils.capitalize(search));
-			return "index";
+		if(!city.isEmpty()){
+			ArrayList<DayForcast> searchedList = dao.getThreeDaysFromWUnderground(city,country);
+		//	ArrayList<DayForcast> list = dao.getThreeDaysFromWUnderground(search);
+		//	ArrayList<HourForcast> list24hours= dao.getDayFromWUnderground(search);
+		//	System.out.println("Size of the list 24 hours: " + list24hours.size());
+			//session.setAttribute("list24hours", list24hours);
+		//	session.setAttribute("list", list);
+			session.setAttribute("list", searchedList);
+			session.setAttribute("city",WordUtils.capitalize(city));
+			return "cityInfo";
 		}
 		return"index";
 	}
+	
+
+	@CrossOrigin(origins = "http://localhost:8080")
+	@RequestMapping(value="add", method = RequestMethod.POST)
+	public @ResponseBody String buildList(HttpServletRequest request){
+		String query = "http://autocomplete.wunderground.com/aq?query="+request.getParameter("city");
+		
+		RestTemplate restTemplate = new RestTemplate();
+		String data = restTemplate.getForObject(query, String.class);
+		System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!"+data);
+		
+		JsonObject object = new JsonObject();
+		object.addProperty("eho", "smyrt");
+//		System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~" + object.toString());
+	    return data; ///return actual list
+	}
+	
+	
 	
 }
 /*
