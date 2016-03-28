@@ -60,16 +60,18 @@ public class HomePageController {
 		System.out.println(ipAddress);
 		String cityName = dao.getCityNameByIp(ipAddress);
 		System.out.println("What city name we got from getcITYNAMEBYIP IN HPC " + cityName);
-		ArrayList<DayForcast> list = dao.getThreeDaysFromWUnderground(cityName.split("/")[0], cityName.split("/")[1],
+		ArrayList<ArrayList<DayForcast>> forTheThreeTablesAtOnce = dao.getFiveDaysFromWUnderground(cityName.split("/")[0], cityName.split("/")[1],
 				session.getAttribute("language").toString());
 		session.setAttribute("city", WordUtils.capitalize(cityName));
-		session.setAttribute("list", list);
+		session.setAttribute("list3days", forTheThreeTablesAtOnce.get(0));
+		session.setAttribute("listweekenddays", forTheThreeTablesAtOnce.get(1));
+		session.setAttribute("list5days", forTheThreeTablesAtOnce.get(2));
 		ArrayList<HourForcast> list24hours = dao.getDayFromWUnderground(cityName.split("/")[0], cityName.split("/")[1],
 				session.getAttribute("language").toString());
 		session.setAttribute("list24hours", list24hours);
 		if (session.getAttribute("queueforCities") == null) {
 			LinkedList<DayForcast> queueCities = new LinkedList<>();
-			queueCities.add(list.get(0));
+			queueCities.add(forTheThreeTablesAtOnce.get(0).get(0));
 			session.setAttribute("queueforCities", queueCities);
 		}
 		return "index";
@@ -81,26 +83,27 @@ public class HomePageController {
 	String getDataForLocation(HttpSession session, @RequestParam String city, @RequestParam String country) {
 
 		if (!city.isEmpty()) {
-			ArrayList<DayForcast> searchedList = dao.getThreeDaysFromWUnderground(country, city,
+			ArrayList<ArrayList<DayForcast>> forTheThreeTablesAtOnce = dao.getFiveDaysFromWUnderground(country, city,
 					session.getAttribute("language").toString());
-			if (searchedList == null) {
+			if (forTheThreeTablesAtOnce == null) {
 				session.setAttribute("city", "Couldnt find this city");
 				session.setAttribute("list24hours", null);
-				session.setAttribute("list", null);
+				session.setAttribute("list3days", null);
+				session.setAttribute("listweekenddays", null);
+				session.setAttribute("list5days", null);
 			} else {
 				ArrayList<HourForcast> list24hours = dao.getDayFromWUnderground(country, city,
 						session.getAttribute("language").toString());
 				session.setAttribute("list24hours", list24hours);
-				session.setAttribute("list", searchedList);
+				session.setAttribute("list3days", forTheThreeTablesAtOnce.get(0));
+				session.setAttribute("listweekenddays", forTheThreeTablesAtOnce.get(1));
+				session.setAttribute("list5days", forTheThreeTablesAtOnce.get(2));
 				session.setAttribute("city", WordUtils.capitalize(city));
 				LinkedList<DayForcast> queueCities = (LinkedList<DayForcast>) session.getAttribute("queueforCities");
 				if(queueCities.size()>2){
 					queueCities.removeLast();
 					}
-				queueCities.addFirst(searchedList.get(0));;
-		
-				
-			
+				queueCities.addFirst(forTheThreeTablesAtOnce.get(0).get(0));
 				session.setAttribute("queueforCities", queueCities);
 			}
 			return "cityInfo";

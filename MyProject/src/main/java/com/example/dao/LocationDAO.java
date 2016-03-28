@@ -1,6 +1,7 @@
 package com.example.dao;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.TreeMap;
 
 import org.apache.catalina.connector.Request;
@@ -115,12 +116,14 @@ public class LocationDAO implements ILocationDAO{
 	}
 
 	@Override
-	public ArrayList<DayForcast> getThreeDaysFromWUnderground(String country, String city,String language){
+	public ArrayList<ArrayList<DayForcast>> getFiveDaysFromWUnderground(String country, String city,String language){
 		System.out.println("city "+city + "country "+ country);
-		
+		ArrayList<ArrayList<DayForcast>> forTheThreeTablesAtOnce =new ArrayList<ArrayList<DayForcast>>();
 		RestTemplate restTemplate = new RestTemplate();
 		ArrayList<DayForcast> threeDayForcast = new ArrayList<>();
-		String wundergroungUrl = "http://api.wunderground.com/api/ba6800955f5db321/forecast/lang:"+language+"/q/"+country.replace(' ','_')+"/"+city.replace(' ','_')+".json";
+		ArrayList<DayForcast> fiveDayForcast = new ArrayList<>();
+		ArrayList<DayForcast> weekendDayForcast = new ArrayList<>();
+		String wundergroungUrl = "http://api.wunderground.com/api/ba6800955f5db321/forecast10day/lang:"+language+"/q/"+country.replace(' ','_')+"/"+city.replace(' ','_')+".json";
 		JsonObject weatherData = new JsonParser().parse(restTemplate.getForObject(wundergroungUrl, String.class)).getAsJsonObject();
 		System.out.println(weatherData.toString());
 		JsonArray array;
@@ -130,10 +133,34 @@ public class LocationDAO implements ILocationDAO{
 		catch(NullPointerException e){
 			return null;
 		}
-		for(int i =0;i<array.size()-1;i++){
+		Calendar c = Calendar.getInstance();
+		c.getTime();
+		int dayOfWeek = c.get(Calendar.DAY_OF_WEEK)-1;
+		//ako e 1 + 4 =5 
+		//ako e 2 + 3 = 5
+		//ako e 3 + 2 =5
+		//ako e 4 + 1 =5
+		//ako e 5 + 7 = 12 
+		//ako e 6 + 6 = 12
+		//ako e 7 + 5 = 12
+		//(5-1)
+	//	i+(5-i)            proverqvam kolko dni ima do weekenda i vzimam dnite samoza weekenda v tozi for
+		dayOfWeek=dayOfWeek<5?(5-dayOfWeek):(12-dayOfWeek);
+		for(int i=dayOfWeek;i<dayOfWeek+3;i++){
+			weekendDayForcast.add(createDay(array.get(i).getAsJsonObject(),city));
+		}
+		for(int i =0;i<3;i++){ // vrushta prognoza za 5 dena i go puham v purvoto pole na arraylista
 			threeDayForcast.add(createDay(array.get(i).getAsJsonObject(),city));
 		}
-		return threeDayForcast;
+		forTheThreeTablesAtOnce.add(threeDayForcast);
+		// addvam trite dni v 5-cata da ne pravq crateday otnovo i advam trite dni v arraylista s progonozatakato 
+		fiveDayForcast.addAll(threeDayForcast);
+		for(int i=3;i<5;i++){
+			fiveDayForcast.add(createDay(array.get(i).getAsJsonObject(),city));
+		}
+		forTheThreeTablesAtOnce.add(weekendDayForcast);
+		forTheThreeTablesAtOnce.add(fiveDayForcast);
+		return forTheThreeTablesAtOnce; // na pyrvo mqsto s index 0 e 3dnevna index 1 e za weekenda index 2 e 5dnevnna
 	}
 
 	@Override

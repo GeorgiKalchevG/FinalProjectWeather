@@ -12,7 +12,7 @@ import com.google.gson.JsonObject;
 public interface ILocationDAO {
 	
 	ArrayList<Location> collectMajorCitys(String ip);
-	ArrayList<DayForcast> getThreeDaysFromWUnderground(String country,String city,String language);
+	ArrayList<ArrayList<DayForcast>> getFiveDaysFromWUnderground(String country,String city,String language);
 	ArrayList<HourForcast> getDayFromWUnderground(String country, String city,String language);
 	String getCityNameByIp(String ip);
 	String plannerResponse(String from, String to, String city, String country);
