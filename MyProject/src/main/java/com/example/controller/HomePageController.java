@@ -40,28 +40,38 @@ public class HomePageController {
 		if (session.getAttribute("language") == null) {
 			session.setAttribute("language", "EN");
 		}
-		
 		session.setAttribute("page", "cityInfo.jsp");
-	
-		if (session.getAttribute("blqblq") == null) {
+		if (session.getAttribute("units") == null) {
 			System.out.println("setvam units na true");
-			session.setAttribute("blqblq", "true");
+			session.setAttribute("units", "true");
 		}
-		String ipAddress = request.getHeader("X-FORWARDED-FOR");
-		if (ipAddress == null) {
+		System.out.println("zarejdam vednuj indexa");
+		String ipAddress=(String) session.getAttribute("ipAddress");
+		if (ipAddress==null) {
 			ipAddress = request.getRemoteAddr();
-			System.out.println(ipAddress);
-		}
-		if (ipAddress.equals("0:0:0:0:0:0:0:1")) {
-			ipAddress = "46.10.58.161";
-		} else {
+			if (ipAddress.equals("0:0:0:0:0:0:0:1")) {
+				ipAddress = "46.10.58.161";
+			} 
 			session.setAttribute("ipAddress", ipAddress);
+			System.out.println(ipAddress);
 		}
 		System.out.println(ipAddress);
 		String cityName = dao.getCityNameByIp(ipAddress);
 		System.out.println("What city name we got from getcITYNAMEBYIP IN HPC " + cityName);
-		ArrayList<ArrayList<DayForcast>> forTheThreeTablesAtOnce = dao.getFiveDaysFromWUnderground(cityName.split("/")[0], cityName.split("/")[1],
-				session.getAttribute("language").toString());
+		ArrayList<ArrayList<DayForcast>> forTheThreeTablesAtOnce = null;
+		if(session.getAttribute(cityName+session.getAttribute("language"))!=null){
+			forTheThreeTablesAtOnce = (ArrayList<ArrayList<DayForcast>>) session.getAttribute(cityName+session.getAttribute("language"));
+			session.setAttribute("city", WordUtils.capitalize(cityName));
+			session.setAttribute(cityName+session.getAttribute("language"), forTheThreeTablesAtOnce);
+			session.setAttribute("list3days", forTheThreeTablesAtOnce.get(0));
+			session.setAttribute("listweekenddays", forTheThreeTablesAtOnce.get(1));
+			session.setAttribute("list5days", forTheThreeTablesAtOnce.get(2));
+			ArrayList<HourForcast> list24hours = (ArrayList<HourForcast>) session.getAttribute(cityName+session.getAttribute("language")+"24");
+			session.setAttribute("list24hours", list24hours);
+		}else{
+		forTheThreeTablesAtOnce = dao.getFiveDaysFromWUnderground(
+				cityName.split("/")[0], cityName.split("/")[1], session.getAttribute("language").toString());
+		session.setAttribute(cityName+session.getAttribute("language"), forTheThreeTablesAtOnce);
 		session.setAttribute("city", WordUtils.capitalize(cityName));
 		session.setAttribute("list3days", forTheThreeTablesAtOnce.get(0));
 		session.setAttribute("listweekenddays", forTheThreeTablesAtOnce.get(1));
@@ -69,6 +79,8 @@ public class HomePageController {
 		ArrayList<HourForcast> list24hours = dao.getDayFromWUnderground(cityName.split("/")[0], cityName.split("/")[1],
 				session.getAttribute("language").toString());
 		session.setAttribute("list24hours", list24hours);
+		session.setAttribute(cityName+session.getAttribute("language")+"24", list24hours);
+		}
 		if (session.getAttribute("queueforCities") == null) {
 			LinkedList<DayForcast> queueCities = new LinkedList<>();
 			queueCities.add(forTheThreeTablesAtOnce.get(0).get(0));
@@ -100,15 +112,14 @@ public class HomePageController {
 				session.setAttribute("list5days", forTheThreeTablesAtOnce.get(2));
 				session.setAttribute("city", WordUtils.capitalize(city));
 				LinkedList<DayForcast> queueCities = (LinkedList<DayForcast>) session.getAttribute("queueforCities");
-				if(queueCities.size()>2){
+				if (queueCities.size() > 2) {
 					queueCities.removeLast();
-					}
+				}
 				queueCities.addFirst(forTheThreeTablesAtOnce.get(0).get(0));
 				session.setAttribute("queueforCities", queueCities);
 			}
-			return "cityInfo";
 		}
-		return "index";
+		return "cityInfo";
 	}
 
 	@CrossOrigin(origins = "http://localhost:8080")
@@ -132,13 +143,13 @@ public class HomePageController {
 	public String changeLanguage(HttpSession session) {
 		System.out.println("ezikyt v momenta e " + session.getAttribute("language"));
 		if (session.getAttribute("language").equals("EN")) {
-			System.out.println("smenqm ot bulgarksi na angliiski");
-			session.setAttribute("language", "BU");
-			return "redirect:index?language=en";
-		} else {
 			System.out.println("smenqm ot angliiski na bulgarski");
-			session.setAttribute("language", "EN");
+			session.setAttribute("language", "BU");
 			return "redirect:index?language=es";
+		} else {
+			System.out.println("smenqm ot bulgarski na angliiski");
+			session.setAttribute("language", "EN");
+			return "redirect:index?language=en";
 		}
 
 	}
@@ -146,20 +157,21 @@ public class HomePageController {
 	@CrossOrigin(origins = "http://localhost:8080")
 	@RequestMapping(value = "ChangeUnits", method = RequestMethod.GET)
 	public String ChangeUnits(HttpSession session) {
-		System.out.println("Sega e " + session.getAttribute("blqblq"));
-		if (session.getAttribute("blqblq").equals("true")) {
+		System.out.println("Sega e " + session.getAttribute("units"));
+		if (session.getAttribute("units").equals("true")) {
 			System.out.println("ot true na false");
-			session.setAttribute("blqblq", "false");
+			session.setAttribute("units", "false");
 		} else {
 			System.out.println("smenqm ot false na true");
-			session.setAttribute("blqblq", "true");
+			session.setAttribute("units", "true");
 		}
 		return "index";
 	}
+
 	@RequestMapping(value = "planner")
 	public String loadPlanner(HttpSession session) {
 		session.setAttribute("page", "planner.jsp");
-		
+
 		return "index";
 	}
 }
