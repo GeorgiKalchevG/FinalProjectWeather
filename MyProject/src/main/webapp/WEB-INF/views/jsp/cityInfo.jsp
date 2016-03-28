@@ -12,12 +12,12 @@
 		<div class="col-sm-8" style="background-color: lavender;">
 			<div class="container">
 				<h2>${city}</h2>
-				<h5>Posledno update time za toq grad</h5>
+				<h5><spring:message code="menu.last_update" /></h5>
 				<ul class="nav nav-tabs">
 					<li class="active"><a data-toggle="tab" href="#home">${city}</a></li>
-					<li><a data-toggle="tab" href="#menu1">24 hours</a></li>
-					<li><a data-toggle="tab" href="#menu2">Weekend</a></li>
-					<li><a data-toggle="tab" href="#menu3">5-days</a></li>
+					<li><a data-toggle="tab" href="#menu1"><spring:message code="menu.24hours" /></a></li>
+					<li><a data-toggle="tab" href="#menu2"><spring:message code="menu.weekend" /></a></li>
+					<li><a data-toggle="tab" href="#menu3"><spring:message code="menu.5days" /></a></li>
 				</ul>
 				<div class="tab-content">
 					<div id="home" class="tab-pane fade in active">
@@ -31,7 +31,7 @@
 											width="240" height="160"><img alt="" src="" />
 											<h3 style="color: white;">
 												Max Temp:
-												<c:set var="ff" scope="session" value="${blqblq}" />
+												<c:set var="ff" scope="session" value="${units}" />
 												${ ff =='true' ?  list3days[0].tempHighCel : list3days[0].tempHighFahr}
 											</h3></th>
 										<c:forEach items="${list3days}" var="entry">
@@ -65,26 +65,26 @@
 							<div class="additional-info">
 								<table class="table" style="width: 75%;">
 									<tr>
-										<th><spring:message code="weather.wind" /></th>
+										<th><spring:message code="weather.wind" />:</th>
 										<c:forEach items="${list3days}" var="entry">
 											<th>Wind Speed: ${entry.maxwind_kph} Wind Direction:
 												${entry.maxwind_dir}</th>
 										</c:forEach>
 									</tr>
 									<tr>
-										<th>Вероятност за валежи:</th>
+										<th><spring:message code="weather.rain_chance" />:</th>
 										<c:forEach items="${list3days}" var="entry">
 											<th>${entry.pop}%</th>
 										</c:forEach>
 									</tr>
 									<tr>
-										<th>Количество валежи:</th>
+										<th><spring:message code="weather.quantity_of_rain" />:</th>
 										<c:forEach items="${list3days}" var="entry">
 											<th>${entry.qpf_alldayMM}mm</th>
 										</c:forEach>
 									</tr>
 									<tr>
-										<th>Влажност:</th>
+										<th><spring:message code="weather.humidity" />:</th>
 										<c:forEach items="${list3days}" var="entry">
 											<th>${entry.avehumidity}%</th>
 										</c:forEach>
@@ -100,7 +100,7 @@
 							<tr>
 								<!-- trqbwa da napravim kolekciq ot gif za razli4noto vreme -->
 								<th rowspan="1" width="240" height="160"><img alt="" src="" />
-									<h3 style="color: black;">Прогноза за
+									<h3 style="color: black;"><spring:message code="weather.forcast_for" /> 
 										${list24hours[0].day}.${list24hours[0].month}.${list24hours[0].year}</h3></th>
 								<c:forEach items="${list24hours}" var="entry">
 									<th>${entry.hour}:00<img src="${entry.icon_url}">
@@ -108,56 +108,57 @@
 								</c:forEach>
 							</tr>
 							<tr>
-								<th>Температура:</th>
+								<th><spring:message code="weather.temp" /> :</th>
 								<c:forEach items="${list24hours}" var="entry">
 									<th>${entry.tempC}</th>
 								</c:forEach>
 							</tr>
 							<tr>
-								<th>Усеща се:</th>
+								<th><spring:message code="weather.feels_like" /> :</th>
 								<c:forEach items="${list24hours}" var="entry">
 									<th>${entry.feelsLikeC}</th>
 								</c:forEach>
 
 							</tr>
 							<tr>
+								<th><spring:message code="weather.sky" /> :</th>
 								<c:forEach items="${list24hours}" var="entry">
 									<th>${entry.conditions}</th>
 								</c:forEach>
 							</tr>
 							<tr>
-								<th>Вятър:</th>
+								<th><spring:message code="weather.wind" /> :</th>
 								<c:forEach items="${list24hours}" var="entry">
 									<th>Wind Speed: ${entry.windKPH} Wind Direction:
 										${entry.dir}</th>
 								</c:forEach>
 							</tr>
 							<tr>
-								<th>Вероятност за валежи:</th>
+								<th><spring:message code="weather.rain_chance" /> :</th>
 								<c:forEach items="${list24hours}" var="entry">
 									<th>${entry.pop}%</th>
 								</c:forEach>
 							</tr>
 							<tr>
-								<th>Количество валежи:</th>
+								<th><spring:message code="weather.quantity_of_rain" /> :</th>
 								<c:forEach items="${list24hours}" var="entry">
 									<th>${entry.qpfMM}mm</th>
 								</c:forEach>
 							</tr>
 							<tr>
-								<th>Атмосферно налягане:</th>
+								<th><spring:message code="weather.pressure" /> :</th>
 								<c:forEach items="${list24hours}" var="entry">
 									<th>${entry.mslphPa}hPa</th>
 								</c:forEach>
 							</tr>
 							<tr>
-								<th>Влажност:</th>
+								<th><spring:message code="weather.humidity" /> :</th>
 								<c:forEach items="${list24hours}" var="entry">
 									<th>${entry.humidity}%</th>
 								</c:forEach>
 							</tr>
 							<tr>
-								<th>Облачност:</th>
+								<th><spring:message code="weather.cloudy" /> :</th>
 								<c:forEach items="${list24hours}" var="entry">
 									<th>${entry.sky}%</th>
 								</c:forEach>
@@ -174,7 +175,7 @@
 									width="240" height="160"><img alt="" src="" />
 									<h3 style="color: white;">
 										Max Temp:
-										<c:set var="ff" scope="session" value="${blqblq}" />
+										<c:set var="ff" scope="session" value="${units}" />
 										${ ff =='true' ?  listweekenddays[0].tempHighCel : listweekenddays[0].tempHighFahr}
 										<!---	${list[0].tempHighCel} &#8451--->
 									</h3></th>
@@ -209,19 +210,19 @@
 								</c:forEach>
 							</tr>
 							<tr>
-								<th>Вероятност за валежи:</th>
+								<th><spring:message code="weather.rain_chance" /> :</th>
 								<c:forEach items="${listweekenddays}" var="entry">
 									<th>${entry.pop}%</th>
 								</c:forEach>
 							</tr>
 							<tr>
-								<th>Количество валежи:</th>
+								<th><spring:message code="weather.quantity_of_rain" /> :</th>
 								<c:forEach items="${listweekenddays}" var="entry">
 									<th>${entry.qpf_alldayMM}mm</th>
 								</c:forEach>
 							</tr>
 							<tr>
-								<th>Влажност:</th>
+								<th><spring:message code="weather.humidity" /> :</th>
 								<c:forEach items="${listweekenddays}" var="entry">
 									<th>${entry.avehumidity}%</th>
 								</c:forEach>
@@ -238,7 +239,7 @@
 									width="240" height="160"><img alt="" src="" />
 									<h3 style="color: white;">
 										Max Temp:
-										<c:set var="ff" scope="session" value="${blqblq}" />
+										<c:set var="ff" scope="session" value="${units}" />
 										${ ff =='true' ?  list5days[0].tempHighCel : list5days[0].tempHighFahr}
 										<!---	${list[0].tempHighCel} &#8451--->
 									</h3></th>
@@ -273,19 +274,19 @@
 								</c:forEach>
 							</tr>
 							<tr>
-								<th>Вероятност за валежи:</th>
+								<th><spring:message code="weather.rain_chance" /> :</th>
 								<c:forEach items="${list5days}" var="entry">
 									<th>${entry.pop}%</th>
 								</c:forEach>
 							</tr>
 							<tr>
-								<th>Количество валежи:</th>
+								<th><spring:message code="weather.quantity_of_rain" /> :</th>
 								<c:forEach items="${list5days}" var="entry">
 									<th>${entry.qpf_alldayMM}mm</th>
 								</c:forEach>
 							</tr>
 							<tr>
-								<th>Влажност:</th>
+								<th><spring:message code="weather.humidity" /> :</th>
 								<c:forEach items="${list5days}" var="entry">
 									<th>${entry.avehumidity}%</th>
 								</c:forEach>
