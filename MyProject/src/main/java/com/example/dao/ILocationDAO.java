@@ -15,5 +15,5 @@ public interface ILocationDAO {
 	ArrayList<DayForcast> getThreeDaysFromWUnderground(String country,String city,String language);
 	ArrayList<HourForcast> getDayFromWUnderground(String country, String city,String language);
 	String getCityNameByIp(String ip);
-	
+	String plannerResponse(String from, String to, String city, String country);
 }

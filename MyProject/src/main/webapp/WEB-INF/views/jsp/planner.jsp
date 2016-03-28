@@ -13,30 +13,46 @@
 	src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
 <script type="text/javascript"
 	src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.18/jquery-ui.min.js"></script>
- 
 <div class="row">
 	<div class="col-sm-12">
-		<h1><spring:message code="planner.greatemessage"/> </h1>
 
-				
-				
-				<form class="form-inline" role="form" action="search" method="post" class = "date">
-				<div class="col-xs-4">
-					<label for="from"><spring:message  code="planner.start"/>: </label> <input class="from" type="text" id="from" name="from" />
-				</div>
-				<div class="col-xs-4">
-					<label for="to"><spring:message  code="planner.end"/>: </label><input class="to" type="text" id="to" name="to" >
-				</div>
-				<div class="col-xs-4">
-					<label for="select"><spring:message  code="planner.select"/>: </label><input id="search-city1" type="text" placeholder="search city" class="form-control1" id="email" name="city"></div>
-				
-					</form>
-					<div class="cities1">
-						<ul class="search-result1"></ul>
-					</div>
-		 	
+		<h1>
+			<spring:message code="planner.greatemessage" />
+		</h1>
+
 	</div>
 </div>
+<div class="row">
+	<div class="col-sm-12">
+
+		<form class="form-inline" role="form" action="search" method="post"
+			class="date">
+			<div class="col-xs-3">
+				<label for="from"><spring:message code="planner.start" />:
+				</label> <input class="from" type="text" id="from" name="from" />
+			</div>
+			<div class="col-xs-3">
+				<label for="to"><spring:message code="planner.end" />: </label><input
+					class="to" type="text" id="to" name="to">
+			</div>
+			<div class="col-xs-3">
+
+				<label for="select"><spring:message code="planner.select" />:
+				</label><input id="search-city1" type="text" placeholder="search city"
+					class="form-control1" id="email" name="city">
+			</div>
+			<div class="col-xs-3">
+			<label for="select">find staff for city </label>
+				<input class="search-for-city" type="button" value="imeto na butona">
+			</div>
+		</form>
+		<div class="cities1">
+			<ul class="search-result1"></ul>
+		</div>
+
+	</div>
+</div>
+
 <style>
 .row {
 	width: 75%;
@@ -67,7 +83,7 @@
 	transition-timing-function: cubic-bezier(0, 1, 0.5, 1);
 }
 
-.cities1.opened1{
+.cities1.opened1 {
 	overflow: hidden;
 	height: 150px;
 	transition-property: all;
@@ -118,22 +134,38 @@
 }
 </style>
 
+
 <script>
-    var dateToday = new Date();
-    var dates = $("#from, #to").datepicker({
-       
-        changeMonth: true,
-        numberOfMonths: 1,
-        minDate: dateToday,
-        onSelect: function(selectedDate) {
-            var option = this.id == "from" ? "minDate" : "maxDate",
-                instance = $(this).data("datepicker"),
-                date = $.datepicker.parseDate(instance.settings.dateFormat || $.datepicker._defaults.dateFormat, selectedDate, instance.settings);
-            dates.not(this).datepicker("option", option, date);
-        }
-    });
-    
-    
+	function initMap() {
+		var mapDiv = document.getElementById('map');
+		var map = new google.maps.Map(mapDiv, {
+			center : {
+				lat : 42.696552,
+				lng : 23.32601
+			},
+			zoom : 12
+		});
+	}
+
+	var dateToday = new Date();
+	var dates = $("#from, #to")
+			.datepicker(
+					{
+
+						changeMonth : true,
+						numberOfMonths : 1,
+						minDate : dateToday,
+						onSelect : function(selectedDate) {
+							var option = this.id == "from" ? "minDate"
+									: "maxDate", instance = $(this).data(
+									"datepicker"), date = $.datepicker
+									.parseDate(
+											instance.settings.dateFormat
+													|| $.datepicker._defaults.dateFormat,
+											selectedDate, instance.settings);
+							dates.not(this).datepicker("option", option, date);
+						}
+					});
 
 	/* $('.open-additional-info').on('click', function() {
 		$('.additional-info').toggleClass('opened');
@@ -166,8 +198,8 @@
 												var list = '<li class="searched-city1" city="' + names[0] + '" country="'+ names[1] +'">'
 														+ cities[city].name
 														+ '</li>';
-												$('.search-result1')
-														.append(list);
+												$('.search-result1').append(
+														list);
 											}
 											$('.cities1').addClass('opened1');
 
@@ -178,27 +210,49 @@
 									});
 						}
 					});
-
-	$(".search-result1,.from,.to").on('click', '.searched-city1,.from,.to', function() {
-		$.ajax({
-			url : "plan",
-			type : 'POST',
-			data : {
-				form : $(this).attr('from'),
-				to : $(this).attr('to'),
-				city : $(this).attr('city'),
-				country : $(this).attr('country')
-		
-			},
-			success : function(response) {
-				$(".city-weather").text('');
-				$(".city-weather").append(response);
-				$('.cities').removeClass('opened');
-			},
-			fail : function() {
-
-			}
-		});
-		
+	$('.search-result1').on('click', '.searched-city1', function() {
+		$('#search-city1').val($(this).text());
+		$('.cities1').removeClass('opened1');
 	});
+	$(".search-for-city").on(
+			'click',
+			function() {
+				var names = $('#search-city1').val().split(", ");
+
+				var dateFrom = $(".from").val();
+				var dateTo = $(".to").val();
+				if (names.length <= 0) {
+					var city = '';
+					var country = '';
+				} else {
+					var city = names[0];
+					var country = names[1];
+				}
+
+				if (dateFrom.lenght <= 0 || dateTo.lenght <= 0
+						|| city.lenght <= 0 || country.lenght <= 0) {
+					console.log('molq popylnete vsicki poleta');
+				} else {
+					$.ajax({
+						url : "plan",
+						type : 'POST',
+						data : {
+							from : dateFrom,
+							to : dateTo,
+							city : city,
+							country : country
+
+						},
+						success : function(response) {
+							$(".city-weather").text('');
+							$(".city-weather").append(response);
+
+						},
+						fail : function() {
+
+						}
+					});
+				}
+
+			});
 </script>

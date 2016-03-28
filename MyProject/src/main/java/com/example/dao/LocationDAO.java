@@ -135,6 +135,16 @@ public class LocationDAO implements ILocationDAO{
 		}
 		return threeDayForcast;
 	}
+
+	@Override
+	public String plannerResponse(String from, String to, String city, String country) {
+		String url = "http://api.wunderground.com/api/ba6800955f5db321/planner_"+from.split("/")[0]+from.split("/")[1]+to.split("/")[0]+to.split("/")[1]+"/q/"+country+"/"+city+".json";
+		System.out.println(url);
+		RestTemplate restTemplate = new RestTemplate();
+		JsonObject obj = new JsonParser().parse(restTemplate.getForObject(url, String.class)).getAsJsonObject();
+		System.out.println(obj.toString());
+		return null;
+	}
 	
 	
 
