@@ -126,7 +126,6 @@ public class HomePageController {
 	@RequestMapping(value = "add", method = RequestMethod.POST)
 	public @ResponseBody String buildList(HttpServletRequest request) {
 		String query = "http://autocomplete.wunderground.com/aq?query=" + request.getParameter("city");
-
 		RestTemplate restTemplate = new RestTemplate();
 		String data = restTemplate.getForObject(query, String.class);
 		System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!" + data);
@@ -172,6 +171,11 @@ public class HomePageController {
 	public String loadPlanner(HttpSession session) {
 		session.setAttribute("page", "planner.jsp");
 
+		return "index";
+	}
+	@RequestMapping(value = "shukarii")
+	public String loadShukarii(HttpSession session) {
+		session.setAttribute("page", "fb.jsp");
 		return "index";
 	}
 }

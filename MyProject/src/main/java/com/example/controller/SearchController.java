@@ -20,6 +20,7 @@ import com.example.model.DayForcast;
 import com.example.model.HourForcast;
 import com.example.model.Loc;
 import com.example.model.Location;
+import com.google.gson.JsonObject;
 
 
 @Controller
@@ -39,6 +40,15 @@ public class SearchController {
 	
 	
 
+
+	@CrossOrigin(origins = "http://localhost:8080")
+	@RequestMapping(value="/facebook", method = RequestMethod.POST)
+	public @ResponseBody ArrayList<Loc> facebook( @RequestParam("ivanshishman") String resp){
+		System.out.println("kvo");
+		System.out.println("From planner "+resp);
+		
+	    return new ArrayList<>(); ///return actual list
+	}
 	
 
 

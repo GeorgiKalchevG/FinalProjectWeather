@@ -89,7 +89,7 @@
 					<li class="active"><a href="index">Home</a></li>
 					<li><a href="planner">Plan your trip!</a></li>
 					<li><a href="#">World map?</a></li>
-					<li><a href="#">Shukarii</a></li>
+					<li><a href="shukarii">Shukarii</a></li>
 				</ul>
 			</div>
 			</nav>
