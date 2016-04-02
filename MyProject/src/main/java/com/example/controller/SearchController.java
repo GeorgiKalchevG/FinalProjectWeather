@@ -1,6 +1,7 @@
 package com.example.controller;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -61,7 +62,31 @@ public class SearchController {
 	String loadChart(){
 		return "polarChart";
 	}
-
+	@CrossOrigin(origins = "http://localhost:8080")
+	@RequestMapping(value = "searchInSpecificCountry", method = RequestMethod.POST)
+	String searchInSpecificCountry(HttpServletRequest request,HttpSession session,@RequestParam("country") String country) {
+		String city= session.getAttribute("cityForCurrentSearch").toString();
+		System.out.println("vuv searchInSpecifiCountry city "+city+"   country   "+country);
+		ArrayList<ArrayList<DayForcast>> forTheThreeTablesAtOnce = dao.getFiveDaysFromWUnderground(country, city,
+				session.getAttribute("language").toString());
+		ArrayList<HourForcast> list24hours = dao.getDayFromWUnderground(country, city,
+				session.getAttribute("language").toString());
+		session.setAttribute("city", country+"/"+city);
+		session.setAttribute("list24hours", list24hours);
+		session.setAttribute("list3days", forTheThreeTablesAtOnce.get(0));
+		session.setAttribute("listweekenddays", forTheThreeTablesAtOnce.get(1));
+		session.setAttribute("list5days", forTheThreeTablesAtOnce.get(2));
+		LinkedList<DayForcast> queueCities = (LinkedList<DayForcast>) session.getAttribute("queueforCities");
+		if (queueCities.size() > 2) {
+			queueCities.removeLast();
+		}
+		queueCities.addFirst(forTheThreeTablesAtOnce.get(0).get(0));
+		session.setAttribute("queueforCities", queueCities);
+		session.removeAttribute("availableCities");
+		session.removeAttribute("cityForCurrentSearch");
+		session.setAttribute("page", "cityInfo.jsp");
+		return "index";
+	}
 
 
 }

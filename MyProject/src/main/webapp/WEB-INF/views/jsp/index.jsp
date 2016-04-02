@@ -48,7 +48,7 @@
 			<nav class="navbar navbar-inverse ">
 			<div class="container-fluid main-nav">
 				<div class="col-sm-4" align="left">
-					<a class="navbar-brand" href="index.jsp"><img
+					<a class="navbar-brand" href="index"><img
 						src="https://cdn4.iconfinder.com/data/icons/iconsimple-freebies/512/umbrella.png"
 						alt="Mountain View" style="width: 50px; height: 50px;"></a>
 					<h4 style="color: white; padding-top: 10px">Weather</h4>
@@ -58,7 +58,7 @@
 					<form class="form-inline" role="form" action="search" method="post">
 						<input id="search-city" type="text" placeholder="search city"
 							class="form-control" id="email" name="city">
-
+<input name="country" type="hidden">
 						<button type="submit" class="btn btn-default">Search</button>
 					</form>
 					<div class="cities">

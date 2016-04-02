@@ -139,7 +139,21 @@ public class LocationDAO implements ILocationDAO {
 			array = weatherData.get("forecast").getAsJsonObject().get("simpleforecast").getAsJsonObject()
 					.get("forecastday").getAsJsonArray();
 		} catch (NullPointerException e) {
-			return null;
+			try{
+				array = weatherData.get("response").getAsJsonObject().get("results").getAsJsonArray();
+				ArrayList<DayForcast> arrayWithCities = new ArrayList<>();
+				for(int i=0;i<array.size();i++){
+					DayForcast currLocation = new DayForcast();
+					JsonObject currObjectLocation= array.get(i).getAsJsonObject();
+					currLocation.setCountryName(currObjectLocation.get("country_name").getAsString());
+					arrayWithCities.add(currLocation);
+				}
+				forTheThreeTablesAtOnce.add(arrayWithCities);
+				return forTheThreeTablesAtOnce;
+			}
+			catch(NullPointerException e1){
+				return null;
+			}
 		}
 		Calendar c = Calendar.getInstance();
 		c.getTime();

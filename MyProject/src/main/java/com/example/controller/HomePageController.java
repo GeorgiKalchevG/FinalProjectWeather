@@ -95,6 +95,8 @@ public class HomePageController {
 	String getDataForLocation(HttpSession session, @RequestParam String city, @RequestParam String country) {
 
 		if (!city.isEmpty()) {
+			System.out.println("city name: "+city);
+			System.out.println("country name: "+country);
 			ArrayList<ArrayList<DayForcast>> forTheThreeTablesAtOnce = dao.getFiveDaysFromWUnderground(country, city,
 					session.getAttribute("language").toString());
 			if (forTheThreeTablesAtOnce == null) {
@@ -103,7 +105,20 @@ public class HomePageController {
 				session.setAttribute("list3days", null);
 				session.setAttribute("listweekenddays", null);
 				session.setAttribute("list5days", null);
-			} else {
+				System.out.println("vrushta ako e null pri city info");
+				return "index";
+			}
+			else if(forTheThreeTablesAtOnce.get(0).get(0).getIcon_url()==null){
+				session.setAttribute("cityForCurrentSearch", WordUtils.capitalize(city));
+				session.setAttribute("list24hours", null);
+				session.setAttribute("list3days", null);
+				session.setAttribute("listweekenddays", null);
+				session.setAttribute("list5days", null);
+				session.setAttribute("availableCities", forTheThreeTablesAtOnce.get(0));
+				System.out.println("vrushta ako e nqma url snimka  pri chooseCityPage");
+				session.setAttribute("page", "chooseCityPage.jsp");
+				return "index"; 
+			}else {
 				ArrayList<HourForcast> list24hours = dao.getDayFromWUnderground(country, city,
 						session.getAttribute("language").toString());
 				session.setAttribute("list24hours", list24hours);
@@ -118,8 +133,17 @@ public class HomePageController {
 				queueCities.addFirst(forTheThreeTablesAtOnce.get(0).get(0));
 				session.setAttribute("queueforCities", queueCities);
 			}
+			if(country.equals("")){
+				System.out.println("vrushta sled celiq if pri index");
+				return "index";
+			}
+			System.out.println("vrushta sled celiq if pri city info");
+			return "cityInfo";
+			
 		}
-		return "cityInfo";
+		System.out.println("vrushta sled krainiq if pri index");
+		return "index";
+
 	}
 
 	@CrossOrigin(origins = "http://localhost:8080")
