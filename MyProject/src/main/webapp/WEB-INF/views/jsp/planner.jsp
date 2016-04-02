@@ -6,6 +6,7 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 
 
+
 <link rel="stylesheet" type="text/css"
 	href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css" />
 
@@ -25,7 +26,7 @@
 <div class="row">
 	<div class="col-sm-12">
 
-		<form class="form-inline" role="form" action="search" method="post"
+		<form class="form-inline" role="form" action="plan" method="post"
 			class="date">
 			<div class="col-xs-3">
 				<label for="from"><spring:message code="planner.start" />:
@@ -42,8 +43,8 @@
 					class="form-control1" id="email" name="city">
 			</div>
 			<div class="col-xs-3">
-			<label for="select">find staff for city </label>
-				<input class="search-for-city" type="button" value="imeto na butona">
+			<label for="select">Submit your query </label>
+				<input class="search-for-city" type="submit" value="		GO!			">
 			</div>
 		</form>
 		<div class="cities1">
@@ -53,6 +54,19 @@
 	</div>
 </div>
 
+<div class="row">
+	<div class="col-sm-8">
+	<label for="PieChart"> Chance of type of weather in percent</label>
+		<%--  <div id="loadHere">
+		 
+		 <c:import url="polarChart.jsp"></c:import>
+		 </div> --%>
+		<%-- <c:import url="polarChart.jsp"></c:import>	 --%>
+			
+			
+		
+	</div>
+</div>
 <style>
 .row {
 	width: 75%;
@@ -136,16 +150,7 @@
 
 
 <script>
-	function initMap() {
-		var mapDiv = document.getElementById('map');
-		var map = new google.maps.Map(mapDiv, {
-			center : {
-				lat : 42.696552,
-				lng : 23.32601
-			},
-			zoom : 12
-		});
-	}
+
 
 	var dateToday = new Date();
 	var dates = $("#from, #to")
@@ -243,10 +248,15 @@
 							country : country
 
 						},
-						success : function(response) {
-							$(".city-weather").text('');
-							$(".city-weather").append(response);
-
+						success : function() {
+							/* var od =JSON.parse(response);
+							sessionStorage.setItem("result", response);
+							console.log(sessionStorage.result);
+							
+							var path = "${pageContext.request.contextPath}/polarChart.jsp";
+							console.log(path);
+						
+							 */
 						},
 						fail : function() {
 

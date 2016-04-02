@@ -118,10 +118,10 @@ function getFromFB(){
   the FB.login() function when clicked.
 -->
 login
-<fb:login-button scope="user_events,public_profile,email,user_actions.fitness" onlogin="checkLoginState();">
+<fb:login-button scope="user_events,public_profile,email" onlogin="checkLoginState();">
 </fb:login-button>
 logout 1
-<fb:login-button scope="user_events,public_profile,email,user_actions.fitness" onlogin="logoutFromFB();">
+<fb:login-button scope="user_events,public_profile,email" onlogin="logoutFromFB();">
 </fb:login-button>
 <button onclick="getFromFB()">Click me</button>
 

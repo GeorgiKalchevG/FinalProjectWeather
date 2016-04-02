@@ -35,6 +35,7 @@ public class SpringWebConfig extends WebMvcConfigurerAdapter {
         registry.addResourceHandler("/pdfs/**").addResourceLocations("/static/pdf/");
         registry.addResourceHandler("/imgs/**").addResourceLocations("/static/img/");
         registry.addResourceHandler("/htmls/**").addResourceLocations("/static/htmls/");
+        registry.addResourceHandler("/js/**").addResourceLocations("/static/js/");
     }
 	
 	@Bean

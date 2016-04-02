@@ -3,6 +3,7 @@ package com.example.controller;
 import java.util.ArrayList;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,11 +17,14 @@ import org.springframework.web.client.RestTemplate;
 
 import com.example.dao.ILocationDAO;
 import com.example.dao.LocationDAO;
+import com.example.model.ChanceOfTypeOfWeather;
 import com.example.model.DayForcast;
 import com.example.model.HourForcast;
 import com.example.model.Loc;
 import com.example.model.Location;
 import com.google.gson.JsonObject;
+
+
 
 
 @Controller
@@ -29,13 +33,16 @@ public class SearchController {
 	
 	@CrossOrigin(origins = "http://localhost:8080")
 	@RequestMapping(value="/plan", method = RequestMethod.POST)
-	public @ResponseBody ArrayList<Loc> buildList( @RequestParam("from") String from, @RequestParam("to") String to, @RequestParam("city") String city, @RequestParam("country") String country){
+	String buildPlan(@RequestParam("from") String from, @RequestParam("to") String to, @RequestParam("city") String city, HttpSession session){
 		System.out.println("From planner "+from);
 		System.out.println("From planner "+to);
-		System.out.println("From planner "+city);
-		System.out.println("From planner "+country);
-		dao.plannerResponse(from, to, city, country);
-	    return new ArrayList<>(); ///return actual list
+		System.out.println("From planner "+city.split(", ")[0]);
+		System.out.println("From planner "+city.split(", ")[1]);
+		
+		String plan  = dao.plannerResponse(from, to, city.split(", ")[0], city.split(", ")[1]);
+		session.setAttribute("plan", plan);
+		session.setAttribute("page", "polarChart.jsp");
+	    return "index"; ///return actual list
 	}
 	
 	
@@ -49,7 +56,11 @@ public class SearchController {
 		
 	    return new ArrayList<>(); ///return actual list
 	}
-	
+	@CrossOrigin(origins = "http://localhost:8080")
+	@RequestMapping(value = "/charts", method=RequestMethod.POST)
+	String loadChart(){
+		return "polarChart";
+	}
 
 
 

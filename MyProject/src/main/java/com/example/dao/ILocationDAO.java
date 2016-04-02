@@ -3,6 +3,7 @@ package com.example.dao;
 import java.util.ArrayList;
 import java.util.TreeMap;
 
+import com.example.model.ChanceOfTypeOfWeather;
 import com.example.model.DayForcast;
 import com.example.model.Forcast;
 import com.example.model.HourForcast;
