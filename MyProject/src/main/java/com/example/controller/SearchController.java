@@ -41,6 +41,9 @@ public class SearchController {
 		System.out.println("From planner "+city.split(", ")[1]);
 		
 		String plan  = dao.plannerResponse(from, to, city.split(", ")[0], city.split(", ")[1]);
+		System.out.println("Printing the plan /*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*");
+		System.out.println(plan);
+		session.setAttribute("location", city);
 		session.setAttribute("plan", plan);
 		session.setAttribute("page", "polarChart.jsp");
 	    return "index"; ///return actual list

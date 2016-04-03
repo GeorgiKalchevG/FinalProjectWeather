@@ -10,28 +10,64 @@
 <c:import url="planner.jsp"></c:import>
 <div class="row">
 	<div class="col-sm-6">
-	
-			<div id="info"></div>
-		<div id="canvas-holder" style="width: 100%; background-color: #893d54;">
-
+		<div id="text-descr" ></div>
+	</div>
+	<div class="col-sm-6">
+		<div id="info"></div>
+	</div>
+</div>
+<div class="row">
+	<div class="col-sm-6">
+		
+		<div id="canvas-holder"
+			style="width: 100%; background-color: #FFEF8D; ">
 			<div id="period"></div>
-		
-		
-
-		<canvas id="chart-area" width="300" height="300"></canvas>
+			<canvas id="chart-area" width="210px" height="120px"></canvas>
 		</div>
 	</div>
 	<div class="col-sm-6">
-		<div style="width: 50%">
-			<canvas id="canvas" height="450" width="600"></canvas>
-		</div>
+	<h1>Variation in temperature in &deg;C and precipitation in cm</h1>
+	<div class="row">	
+<div class="col-sm-6">	
+		<ul class="legend">
+		    <li><span class="lowest"></span> Lowest Measured</li>
+		    <li><span class="average"></span> Average</li>
+		    <li><span class="highest"></span> Highest Measured</li>
+		
+		</ul>
+	</div>
+</div>
+		<canvas id="canvas" height="120px" width="210px"></canvas>
 
 	</div>
 </div>
+<style>
+.legend { list-style: none; }
+.legend li { float: left; margin-right: 10px; }
+.legend span { border: 1px solid #ccc; float: left; width: 12px; height: 12px; margin: 2px; }
+/* your colors */
+.legend .lowest { background-color: rgba(63, 191, 191, 0.5) ; }
+
+.legend .average { background-color: rgba(63, 127, 191, 0.5); }
+.legend .highest { background-color: rgba(255, 119, 20, 0.5); }
+
+</style>
 <script>
 	var data = ${plan};
+	var forecast = ["Warm","Partly Cloudy","Precipitation", "Rain", "Cool","Sunny","Cloudy","Fog","Windy","Thunderstorms","Hail","Ground Snow","Tornado","Sweltering","Humid","Freezing", "Hot","Snow"];
 	var title = '<h1>'+data.title+'</h1>';
-	var clouds = '<h1>'+data.cloudCover+'</h1>';
+	var clouds = '<h1>For the selected period <br/>the weather in '.concat("${location}").concat(' will be ') + data.cloudCover + '</h1>';
+	$('#text-descr').append("<h3>There is a ");
+	for (i = 0; i < forecast.length; i++) {
+		console.log(data.array[i]);
+		if (data.array[i] > 33) {
+			$('#text-descr').append('<h3>'+data.array[i] + '% chance the forecast be ' + forecast[i] + '</h3>');
+			console.log(data.array[i] + '% chance the forecast be' + forecast[i] + '<br/>');
+		}
+
+	}
+	
+	$('#text-descr').append('</h3>');
 	$('#period').append(title);
 	$('#info').append(clouds);
 	console.log(data.array);
@@ -41,91 +77,91 @@
 		value : data.array[0],
 		color : "#0033cc",
 		highlight : "#1a53ff",
-		label : "Precipitation"
+		label : "Warm"
 	}, {
 		value : data.array[1],
 		color : "#46BFBD",
 		highlight : "#5AD3D1",
-		label : "Cool"
-	}, {
-		value : data.array[2],
-		color : "#4d79ff",
-		highlight : "#99b3ff",
-		label : "Rain"
-	}, {
-		value : data.array[3],
-		color : "#949FB1",
-		highlight : "#A8B3C5",
 		label : "Partly Cloudy"
 	}, {
+		value : data.array[2],
+		color : "#46BFBD",
+		highlight : "#5AD3D1",
+		label : "Precipitation"
+	}, {
+		value : data.array[3],
+		color : "#46BFBD",
+		highlight : "#5AD3D1",
+		label : "Rain"
+	}, {
 		value : data.array[4],
-		color : "#ffcc00",
-		highlight : "#ffdb4d",
-		label : "Warm"
+		color : "#4d79ff",
+		highlight : "#99b3ff",
+		label : "Cool"
 	}, {
 		value : data.array[5],
-		color : "#b3b3b3",
-		highlight : "#b4b6af",
-		label : "Cloudy"
-	}, {
-		value : data.array[6],
-		color : "#ffff80",
-		highlight : "#ffffb3",
+		color : "#949FB1",
+		highlight : "#A8B3C5",
 		label : "Sunny"
 	}, {
-		value : data.array[7],
-		color : "#4D5360",
-		highlight : "#616774",
-		label : "Windy"
+		value : data.array[6],
+		color : "#ffcc00",
+		highlight : "#ffdb4d",
+		label : "Cloudy"
 	}, {
-		value : data.array[8],
-		color : "#4d4d00",
-		highlight : "#666600",
+		value : data.array[7],
+		color : "#b3b3b3",
+		highlight : "#b4b6af",
 		label : "Fog"
 	}, {
+		value : data.array[8],
+		color : "#ffff80",
+		highlight : "#ffffb3",
+		label : "Windy"
+	}, {
 		value : data.array[9],
-		color : "#1B1E17",
-		highlight : "#C8C7CF",
+		color : "#4D5360",
+		highlight : "#616774",
 		label : "Thunderstorms"
 	}, {
 		value : data.array[10],
-		color : "#919AB4",
-		highlight : "#B4BDD3",
+		color : "#4d4d00",
+		highlight : "#666600",
 		label : "Hail"
 	}, {
 		value : data.array[11],
-		color : "#f2f2f2",
-		highlight : "#ffffff",
+		color : "#1B1E17",
+		highlight : "#C8C7CF",
 		label : "Ground Snow"
 	}, {
 		value : data.array[12],
-		color : "#a6a6a6",
-		highlight : "#bfbfbf",
+		color : "#919AB4",
+		highlight : "#B4BDD3",
 		label : "Tornado"
 	}, {
 		value : data.array[13],
-		color : "#ff8533",
-		highlight : "#ffa366",
+		color : "#f2f2f2",
+		highlight : "#ffffff",
 		label : "Sweltering"
 	}, {
 		value : data.array[14],
-		color : "#94b8b8",
-		highlight : "#b3cccc",
+		color : "#a6a6a6",
+		highlight : "#bfbfbf",
 		label : "Humid"
 	}, {
 		value : data.array[15],
-		color : "#ccf5ff",
-		highlight : "#e6faff",
+		color : "#ff8533",
+		highlight : "#ffa366",
 		label : "Freezing"
 	}, {
 		value : data.array[16],
-		color : "#ff8c1a",
-		highlight : "#ffa64d",
+		color : "#94b8b8",
+		highlight : "#b3cccc",
 		label : "Hot"
 	}, {
 		value : data.array[17],
-		color : "#e6e6e6",
-		highlight : "#f2f2f2",
+		color : "#ccf5ff",
+		highlight : "#e6faff",
 		label : "Snow"
 	}
 
@@ -134,36 +170,46 @@
 	window.onload = function() {
 		var ctx = document.getElementById("chart-area").getContext("2d");
 		window.myPolarArea = new Chart(ctx).PolarArea(polarData, {
+			segmentStrokeWidth : 2,
 			responsive : true
 		});
+		var ctxa = document.getElementById("canvas").getContext("2d");
+		window.myBar = new Chart(ctxa).Bar(barChartData, {
+			responsive : true,
+			scaleBeginAtZero : true
+			
+		});
 	};
-/* 	var randomScalingFactor = function(){ return Math.round(Math.random()*100)};
+	var randomScalingFactor = function() {
+		return Math.round(Math.random() * 100)
+	};
 
 	var barChartData = {
-		labels : ["January","February","March","April","May","June","July"],
+		labels : [ "Temp High", "Temp Low", "Precipitation", "Dewpoint High","Dewpoint Low" ],
 		datasets : [
-			{
-				fillColor : "rgba(220,220,220,0.5)",
-				strokeColor : "rgba(220,220,220,0.8)",
-				highlightFill: "rgba(220,220,220,0.75)",
-				highlightStroke: "rgba(220,220,220,1)",
-				data : [randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor()]
-			},
-			{
-				fillColor : "rgba(151,187,205,0.5)",
-				strokeColor : "rgba(151,187,205,0.8)",
-				highlightFill : "rgba(151,187,205,0.75)",
-				highlightStroke : "rgba(151,187,205,1)",
-				data : [randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor()]
-			}
+				{
+					fillColor : "rgba(63, 191, 191, 0.5)", 			
+					strokeColor : "rgba(63, 191, 191,0.8)",
+					highlightFill : "rgba(63, 191, 191,0.75)",
+					highlightStroke : "rgba(63, 191, 191,1)",
+					data : [data.variation[0], data.variation[1],data.variation[2], data.variation[3],data.variation[4] ]
+				},
+				{
+					fillColor : "rgba(63, 127, 191, 0.5)",
+					strokeColor : "rgba(63, 127, 191,0.8)",
+					highlightFill : "rgba(63, 127, 191,0.75)",
+					highlightStroke : "rgba(63, 127, 191,1)",
+					data : [data.variation[5], data.variation[6],data.variation[7], data.variation[8],data.variation[9] ]
+				},
+				{
+					fillColor : "rgba(255, 119, 20, 0.5)",
+					strokeColor : "rgba(255, 119, 20,0.8)",
+					highlightFill : "rgba(255, 119, 20,0.75)",
+					highlightStroke : "rgba(255, 119, 20,1)",
+					data : [data.variation[10], data.variation[11],data.variation[12], data.variation[13],data.variation[14] ]
+				}
+
 		]
 
 	}
-	window.onload = function(){
-		var ctxa = document.getElementById("canvas").getContext("2d");
-		window.myBar = new Chart(ctxa).Bar(barChartData, {
-			responsive : true
-		});
-	} */
-
 </script>

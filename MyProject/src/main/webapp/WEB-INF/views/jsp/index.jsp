@@ -44,43 +44,49 @@
 <body>
 	<!-- heading start -->
 	<div class="row">
-		<div class="col-sm-12">
-			<nav class="navbar navbar-inverse ">
-			<div class="container-fluid main-nav">
-				<div class="col-sm-4" align="left">
-					<a class="navbar-brand" href="index"><img
-						src="https://cdn4.iconfinder.com/data/icons/iconsimple-freebies/512/umbrella.png"
-						alt="Mountain View" style="width: 50px; height: 50px;"></a>
-					<h4 style="color: white; padding-top: 10px">Weather</h4>
-				</div>
-
-				<div class="col-sm-6" align="right">
-					<form class="form-inline" role="form" action="search" method="post">
-						<input id="search-city" type="text" placeholder="search city"
-							class="form-control" id="email" name="city">
-<input name="country" type="hidden">
-						<button type="submit" class="btn btn-default">Search</button>
-					</form>
-					<div class="cities">
-						<ul class="search-result"></ul>
-					</div>
-				</div>
-				<div class="col-sm-2" align="right">
-					<form class="form-inline" role="form" action="ChangeLanguage"
-						method="POST">
-						<button type="submit" class="btn btn-default" align="right"" >change
-							language</button>
-					</form>
-					<form class="form-inline" role="form" action="ChangeUnits"
-						method="get">
-						<button type="submit" class="btn btn-default" align="right">F/C</button>
-					</form>
-				</div>
-
-			</div>
-			</nav>
+		<!-- 	<div class="col-sm-12"> -->
+		<nav class="navbar navbar-inverse "> <!-- <div class="container-fluid main-nav"> -->
+		<div class="col-sm-6" align="left">
+			<a class="navbar-brand" href="index" style="height: 76px;"><img
+				class="img-circle"
+				src="https://cdn4.iconfinder.com/data/icons/iconsimple-freebies/512/umbrella.png"
+				alt="Mountain View"
+				style="width: 50px; height: 50px; background: yellow;"></a>
+			<h4 style="color: white; padding-top: 10px">Weather</h4>
 		</div>
+
+		<div class="col-sm-4" align="right">
+			<form class="form-inline" role="form" action="search" method="post">
+				<input id="search-city" type="text" placeholder="search city"
+					class="form-control" id="email" name="city"> <input
+					name="country" type="hidden">
+				<button type="submit" class="btn btn-default">Search</button>
+			</form>
+			<div class="col-sm-8" align="right"></div>
+			<div class="col-sm-4" align="right">
+				<div class="cities">
+					<ul class="search-result"></ul>
+				</div>
+			</div>
+		</div>
+		<div class="col-sm-2" align="right">
+			<form class="form-inline" role="form" action="ChangeLanguage"
+				method="POST">
+				<button type="submit" class="btn btn-default" align="right"
+					style="background-image: url(${flag}); background-repeat: no-repeat; background-position: center center; size: 38px;background-color: black;
+    border-width: 0;">...
+				</button>
+			</form>
+			<form class="form-inline" role="form" action="ChangeUnits"
+				method="get">
+				<button type="submit" class="btn btn-default" align="right">F/C</button>
+			</form>
+		</div>
+
+		<!-- </div> --> </nav>
+		<!-- </div> -->
 	</div>
+	<div class="row"></div>
 	<!-- heading end -->
 	<!-- heading start -->
 	<div class="row">
@@ -109,7 +115,7 @@
 </body>
 <style>
 .row {
-	width: 75%;
+	width: 100%;
 	margin: 0 auto;
 }
 
@@ -126,8 +132,8 @@
 	height: 0px;
 	overflow: scroll;
 	position: absolute;
-	top: 55px;
-	left: 399px;
+	/* 	top: 55px; */
+	/* left: 352px; */
 	text-align: left;
 	z-index: 2;
 	background-color: white;

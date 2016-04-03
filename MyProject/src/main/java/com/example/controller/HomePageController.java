@@ -39,6 +39,7 @@ public class HomePageController {
 	String loadHomePage(Model model, HttpServletRequest request, HttpSession session) {
 		if (session.getAttribute("language") == null) {
 			session.setAttribute("language", "EN");
+			session.setAttribute("flag", "http://www.printableworldflags.com/icon-flags/32/Bulgaria.png");
 		}
 		session.setAttribute("page", "cityInfo.jsp");
 		if (session.getAttribute("units") == null) {
@@ -167,11 +168,16 @@ public class HomePageController {
 		System.out.println("ezikyt v momenta e " + session.getAttribute("language"));
 		if (session.getAttribute("language").equals("EN")) {
 			System.out.println("smenqm ot angliiski na bulgarski");
+			session.setAttribute("flag", "http://www.printableworldflags.com/icon-flags/32/United%20Kingdom.png");
+	
 			session.setAttribute("language", "BU");
+			
 			return "redirect:index?language=es";
 		} else {
 			System.out.println("smenqm ot bulgarski na angliiski");
 			session.setAttribute("language", "EN");
+			session.setAttribute("flag", "http://www.printableworldflags.com/icon-flags/32/Bulgaria.png");
+			
 			return "redirect:index?language=en";
 		}
 

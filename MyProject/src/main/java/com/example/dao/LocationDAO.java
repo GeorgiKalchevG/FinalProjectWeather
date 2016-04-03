@@ -44,7 +44,7 @@ public class LocationDAO implements ILocationDAO {
 		RestTemplate restTemplate = new RestTemplate();
 		ArrayList<HourForcast> DayForcast = new ArrayList<>();
 
-		String wundergroungUrl = "http://api.wunderground.com/api/ba6800955f5db321/hourly/lang:" + language + "/q/"
+		String wundergroungUrl = "http://api.wunderground.com/api/e772ec5732ccafa2/hourly/lang:" + language + "/q/"
 				+ country.replace(' ', '_') + "/" + city.replace(' ', '_') + ".json";
 		JsonObject weatherData = new JsonParser().parse(restTemplate.getForObject(wundergroungUrl, String.class))
 				.getAsJsonObject();
@@ -129,7 +129,7 @@ public class LocationDAO implements ILocationDAO {
 		ArrayList<DayForcast> threeDayForcast = new ArrayList<>();
 		ArrayList<DayForcast> fiveDayForcast = new ArrayList<>();
 		ArrayList<DayForcast> weekendDayForcast = new ArrayList<>();
-		String wundergroungUrl = "http://api.wunderground.com/api/ba6800955f5db321/forecast10day/lang:" + language
+		String wundergroungUrl = "http://api.wunderground.com/api/e772ec5732ccafa2/forecast10day/lang:" + language
 				+ "/q/" + country.replace(' ', '_') + "/" + city.replace(' ', '_') + ".json";
 		JsonObject weatherData = new JsonParser().parse(restTemplate.getForObject(wundergroungUrl, String.class))
 				.getAsJsonObject();
@@ -192,91 +192,96 @@ public class LocationDAO implements ILocationDAO {
 
 	@Override
 	public String plannerResponse(String from, String to, String city, String country) {
-		String url = "http://api.wunderground.com/api/ba6800955f5db321/planner_" + from.split("/")[0]
+		String url = "http://api.wunderground.com/api/e772ec5732ccafa2/planner_" + from.split("/")[0]
 				+ from.split("/")[1] + to.split("/")[0] + to.split("/")[1] + "/q/" + country + "/" + city + ".json";
 		System.out.println(url);
 		RestTemplate restTemplate = new RestTemplate();
 		JsonObject obj = new JsonParser().parse(restTemplate.getForObject(url, String.class)).getAsJsonObject();
 		System.out.println(obj.toString());
-		ArrayList<String> chanceOFTypeOfWeather = new ArrayList<>();
-		ArrayList<HashMap<String, String>> tempHigh = new ArrayList<>();
-		ArrayList<HashMap<String, String>> tempLow= new ArrayList<>();
-		ArrayList<HashMap<String, String>> precip= new ArrayList<>();
-		ArrayList<HashMap<String, String>> dewpointHigh= new ArrayList<>();
-		ArrayList<HashMap<String, String>> dewpointLow= new ArrayList<>();
+//		ArrayList<String> chanceOFTypeOfWeather = new ArrayList<>();
+//		ArrayList<HashMap<String, String>> tempHigh = new ArrayList<>();
+//		ArrayList<HashMap<String, String>> tempLow= new ArrayList<>();
+//		ArrayList<HashMap<String, String>> precip= new ArrayList<>();
+//		ArrayList<HashMap<String, String>> dewpointHigh= new ArrayList<>();
+//		ArrayList<HashMap<String, String>> dewpointLow= new ArrayList<>();
 		JsonObject chanceOf = obj.get("trip").getAsJsonObject().get("chance_of").getAsJsonObject();
 		JsonObject tempHiJson = obj.get("trip").getAsJsonObject().get("temp_high").getAsJsonObject();
 		JsonObject tempLoJson = obj.get("trip").getAsJsonObject().get("temp_low").getAsJsonObject();
 		JsonObject precipJson = obj.get("trip").getAsJsonObject().get("precip").getAsJsonObject();
 		JsonObject dewHiJson = obj.get("trip").getAsJsonObject().get("dewpoint_high").getAsJsonObject();
 		JsonObject dewLoJson = obj.get("trip").getAsJsonObject().get("dewpoint_low").getAsJsonObject();
-		chanceOFTypeOfWeather.add(chanceOf.get("tempoversixty").getAsJsonObject().get("percentage").getAsString());
-		chanceOFTypeOfWeather
-				.add(chanceOf.get("chanceofsunnycloudyday").getAsJsonObject().get("percentage").getAsString());
-		chanceOFTypeOfWeather.add(chanceOf.get("chanceofprecip").getAsJsonObject().get("percentage").getAsString());
-		chanceOFTypeOfWeather.add(chanceOf.get("chanceofrainday").getAsJsonObject().get("percentage").getAsString());
-		chanceOFTypeOfWeather
-				.add(chanceOf.get("chanceofpartlycloudyday").getAsJsonObject().get("percentage").getAsString());
-		chanceOFTypeOfWeather.add(chanceOf.get("chanceofwindyday").getAsJsonObject().get("percentage").getAsString());
-		chanceOFTypeOfWeather.add(chanceOf.get("tempoverfreezing").getAsJsonObject().get("percentage").getAsString());
-		chanceOFTypeOfWeather.add(chanceOf.get("chanceofhumidday").getAsJsonObject().get("percentage").getAsString());
-		chanceOFTypeOfWeather.add(chanceOf.get("chanceofthunderday").getAsJsonObject().get("percentage").getAsString());
-		chanceOFTypeOfWeather.add(chanceOf.get("chanceofcloudyday").getAsJsonObject().get("percentage").getAsString());
-		chanceOFTypeOfWeather.add(chanceOf.get("chanceofsultryday").getAsJsonObject().get("percentage").getAsString());
-		chanceOFTypeOfWeather.add(chanceOf.get("chanceoffogday").getAsJsonObject().get("percentage").getAsString());
-		chanceOFTypeOfWeather
-				.add(chanceOf.get("chanceofsnowonground").getAsJsonObject().get("percentage").getAsString());
-		chanceOFTypeOfWeather.add(chanceOf.get("chanceoftornadoday").getAsJsonObject().get("percentage").getAsString());
-		chanceOFTypeOfWeather.add(chanceOf.get("tempbelowfreezing").getAsJsonObject().get("percentage").getAsString());
-		chanceOFTypeOfWeather.add(chanceOf.get("tempoverninety").getAsJsonObject().get("percentage").getAsString());
-		chanceOFTypeOfWeather.add(chanceOf.get("chanceofhailday").getAsJsonObject().get("percentage").getAsString());
-		chanceOFTypeOfWeather.add(chanceOf.get("chanceofsnowday").getAsJsonObject().get("percentage").getAsString());
-		for(int i = 0;i<3;i++){
-			tempHigh.add(new HashMap<>() );
-			tempLow.add(new HashMap<>() );
-			precip.add(new HashMap<>() );
-			dewpointHigh.add(new HashMap<>() );
-			dewpointLow.add(new HashMap<>() );
-			
-		}
+//		chanceOFTypeOfWeather.add(chanceOf.get("tempoversixty").getAsJsonObject().get("percentage").getAsString());
+//		chanceOFTypeOfWeather
+//				.add(chanceOf.get("chanceofsunnycloudyday").getAsJsonObject().get("percentage").getAsString());
+//		chanceOFTypeOfWeather.add(chanceOf.get("chanceofprecip").getAsJsonObject().get("percentage").getAsString());
+//		chanceOFTypeOfWeather.add(chanceOf.get("chanceofrainday").getAsJsonObject().get("percentage").getAsString());
+//		chanceOFTypeOfWeather
+//				.add(chanceOf.get("chanceofpartlycloudyday").getAsJsonObject().get("percentage").getAsString());
+//		chanceOFTypeOfWeather.add(chanceOf.get("chanceofwindyday").getAsJsonObject().get("percentage").getAsString());
+//		chanceOFTypeOfWeather.add(chanceOf.get("tempoverfreezing").getAsJsonObject().get("percentage").getAsString());
+//		chanceOFTypeOfWeather.add(chanceOf.get("chanceofhumidday").getAsJsonObject().get("percentage").getAsString());
+//		chanceOFTypeOfWeather.add(chanceOf.get("chanceofthunderday").getAsJsonObject().get("percentage").getAsString());
+//		chanceOFTypeOfWeather.add(chanceOf.get("chanceofcloudyday").getAsJsonObject().get("percentage").getAsString());
+//		chanceOFTypeOfWeather.add(chanceOf.get("chanceofsultryday").getAsJsonObject().get("percentage").getAsString());
+//		chanceOFTypeOfWeather.add(chanceOf.get("chanceoffogday").getAsJsonObject().get("percentage").getAsString());
+//		chanceOFTypeOfWeather
+//				.add(chanceOf.get("chanceofsnowonground").getAsJsonObject().get("percentage").getAsString());
+//		chanceOFTypeOfWeather.add(chanceOf.get("chanceoftornadoday").getAsJsonObject().get("percentage").getAsString());
+//		chanceOFTypeOfWeather.add(chanceOf.get("tempbelowfreezing").getAsJsonObject().get("percentage").getAsString());
+//		chanceOFTypeOfWeather.add(chanceOf.get("tempoverninety").getAsJsonObject().get("percentage").getAsString());
+//		chanceOFTypeOfWeather.add(chanceOf.get("chanceofhailday").getAsJsonObject().get("percentage").getAsString());
+//		chanceOFTypeOfWeather.add(chanceOf.get("chanceofsnowday").getAsJsonObject().get("percentage").getAsString());
+//		for(int i = 0;i<3;i++){
+//			tempHigh.add(new HashMap<>() );
+//			tempLow.add(new HashMap<>() );
+//			precip.add(new HashMap<>() );
+//			dewpointHigh.add(new HashMap<>() );
+//			dewpointLow.add(new HashMap<>() );
+//			
+//		}
+		JsonArray variation = new JsonArray();
 		String[] value = {"min","avg","max"};
 		String unit = "C";
 		for(int i = 0;i<3;i++){	
-		tempHigh.get(i).put(value[i], tempHiJson.get(value[i]).getAsJsonObject().get(unit).getAsString());
-		tempLow.get(i).put(value[i], tempLoJson.get(value[i]).getAsJsonObject().get(unit).getAsString());
-		precip.get(i).put(value[i], precipJson.get(value[i]).getAsJsonObject().get("cm").getAsString());
-		dewpointHigh.get(i).put(value[i], dewHiJson.get(value[i]).getAsJsonObject().get(unit).getAsString());
-		dewpointLow.get(i).put(value[i], dewLoJson.get(value[i]).getAsJsonObject().get(unit).getAsString());
+//		tempHigh.get(i).put(value[i], tempHiJson.get(value[i]).getAsJsonObject().get(unit).getAsString());
+//		tempLow.get(i).put(value[i], tempLoJson.get(value[i]).getAsJsonObject().get(unit).getAsString());
+//		precip.get(i).put(value[i], precipJson.get(value[i]).getAsJsonObject().get("cm").getAsString());
+//		dewpointHigh.get(i).put(value[i], dewHiJson.get(value[i]).getAsJsonObject().get(unit).getAsString());
+//		dewpointLow.get(i).put(value[i], dewLoJson.get(value[i]).getAsJsonObject().get(unit).getAsString());
+			variation.add(Double.parseDouble(tempHiJson.get(value[i]).getAsJsonObject().get(unit).getAsString()));
+			variation.add(Double.parseDouble(tempLoJson.get(value[i]).getAsJsonObject().get(unit).getAsString()));
+			variation.add(Double.parseDouble(precipJson.get(value[i]).getAsJsonObject().get("cm").getAsString()));
+			variation.add(Double.parseDouble(dewHiJson.get(value[i]).getAsJsonObject().get(unit).getAsString()));
+			variation.add(Double.parseDouble(dewLoJson.get(value[i]).getAsJsonObject().get(unit).getAsString()));
+			System.out.println(variation.toString());
 		}
 		
 		JsonObject obj1 = new JsonObject();
 		JsonArray arr = new JsonArray();
-		arr.add(chanceOf.get("tempoversixty").getAsJsonObject().get("percentage").getAsString());
-		arr
-				.add(chanceOf.get("chanceofsunnycloudyday").getAsJsonObject().get("percentage").getAsString());
-		arr.add(chanceOf.get("chanceofprecip").getAsJsonObject().get("percentage").getAsString());
-		arr.add(chanceOf.get("chanceofrainday").getAsJsonObject().get("percentage").getAsString());
-		arr
-				.add(chanceOf.get("chanceofpartlycloudyday").getAsJsonObject().get("percentage").getAsString());
-		arr.add(chanceOf.get("chanceofwindyday").getAsJsonObject().get("percentage").getAsString());
-		arr.add(chanceOf.get("tempoverfreezing").getAsJsonObject().get("percentage").getAsString());
-		arr.add(chanceOf.get("chanceofhumidday").getAsJsonObject().get("percentage").getAsString());
-		arr.add(chanceOf.get("chanceofthunderday").getAsJsonObject().get("percentage").getAsString());
-		arr.add(chanceOf.get("chanceofcloudyday").getAsJsonObject().get("percentage").getAsString());
-		arr.add(chanceOf.get("chanceofsultryday").getAsJsonObject().get("percentage").getAsString());
-		arr.add(chanceOf.get("chanceoffogday").getAsJsonObject().get("percentage").getAsString());
-		arr
-				.add(chanceOf.get("chanceofsnowonground").getAsJsonObject().get("percentage").getAsString());
-		arr.add(chanceOf.get("chanceoftornadoday").getAsJsonObject().get("percentage").getAsString());
-		arr.add(chanceOf.get("tempbelowfreezing").getAsJsonObject().get("percentage").getAsString());
-		arr.add(chanceOf.get("tempoverninety").getAsJsonObject().get("percentage").getAsString());
-		arr.add(chanceOf.get("chanceofhailday").getAsJsonObject().get("percentage").getAsString());
-		arr.add(chanceOf.get("chanceofsnowday").getAsJsonObject().get("percentage").getAsString());
+		arr.add(Integer.parseInt(chanceOf.get("tempoversixty").getAsJsonObject().get("percentage").getAsString()));
+		arr.add(Integer.parseInt(chanceOf.get("chanceofpartlycloudyday").getAsJsonObject().get("percentage").getAsString()));
+		arr.add(Integer.parseInt(chanceOf.get("chanceofprecip").getAsJsonObject().get("percentage").getAsString()));
+		arr.add(Integer.parseInt(chanceOf.get("chanceofrainday").getAsJsonObject().get("percentage").getAsString()));
+		arr.add(Integer.parseInt(chanceOf.get("tempoverfreezing").getAsJsonObject().get("percentage").getAsString()));
+		arr.add(Integer.parseInt(chanceOf.get("chanceofsunnycloudyday").getAsJsonObject().get("percentage").getAsString()));
+		arr.add(Integer.parseInt(chanceOf.get("chanceofcloudyday").getAsJsonObject().get("percentage").getAsString()));
+		arr.add(Integer.parseInt(chanceOf.get("chanceoffogday").getAsJsonObject().get("percentage").getAsString()));
+		arr.add(Integer.parseInt(chanceOf.get("chanceofwindyday").getAsJsonObject().get("percentage").getAsString()));
+		arr.add(Integer.parseInt(chanceOf.get("chanceofthunderday").getAsJsonObject().get("percentage").getAsString()));
+		arr.add(Integer.parseInt(chanceOf.get("chanceofhailday").getAsJsonObject().get("percentage").getAsString()));
+		arr.add(Integer.parseInt(chanceOf.get("chanceofsnowonground").getAsJsonObject().get("percentage").getAsString()));
+		arr.add(Integer.parseInt(chanceOf.get("chanceoftornadoday").getAsJsonObject().get("percentage").getAsString()));
+		arr.add(Integer.parseInt(chanceOf.get("chanceofsultryday").getAsJsonObject().get("percentage").getAsString()));
+		arr.add(Integer.parseInt(chanceOf.get("chanceofhumidday").getAsJsonObject().get("percentage").getAsString()));
+		arr.add(Integer.parseInt(chanceOf.get("tempbelowfreezing").getAsJsonObject().get("percentage").getAsString()));
+		arr.add(Integer.parseInt(chanceOf.get("tempoverninety").getAsJsonObject().get("percentage").getAsString()));
+		arr.add(Integer.parseInt(chanceOf.get("chanceofsnowday").getAsJsonObject().get("percentage").getAsString()));
 		obj1.add("array", arr);
 		String title = obj.get("trip").getAsJsonObject().get("title").getAsString();
 		String cloudCover = obj.get("trip").getAsJsonObject().get("cloud_cover").getAsJsonObject().get("cond").getAsString();
 		obj1.addProperty("title", title);
 		obj1.addProperty("cloudCover", cloudCover);
+		obj1.add("variation", variation);
 		return obj1.toString();//new ChanceOfTypeOfWeather(chanceOFTypeOfWeather, cloudCover, title, tempHigh, tempLow, precip, dewpointHigh, dewpointLow);
 	}
 

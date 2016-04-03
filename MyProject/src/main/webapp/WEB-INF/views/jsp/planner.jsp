@@ -237,32 +237,7 @@
 				if (dateFrom.lenght <= 0 || dateTo.lenght <= 0
 						|| city.lenght <= 0 || country.lenght <= 0) {
 					console.log('molq popylnete vsicki poleta');
-				} else {
-					$.ajax({
-						url : "plan",
-						type : 'POST',
-						data : {
-							from : dateFrom,
-							to : dateTo,
-							city : city,
-							country : country
-
-						},
-						success : function() {
-							/* var od =JSON.parse(response);
-							sessionStorage.setItem("result", response);
-							console.log(sessionStorage.result);
-							
-							var path = "${pageContext.request.contextPath}/polarChart.jsp";
-							console.log(path);
-						
-							 */
-						},
-						fail : function() {
-
-						}
-					});
-				}
-
+				}	
+				
 			});
 </script>

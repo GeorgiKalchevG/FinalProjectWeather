@@ -10,7 +10,7 @@
 <div class="row">
 	<div class="main-container">
 		<div class="col-sm-8" style="background-color: lavender;">
-			<div class="container">
+			<div class="container-fluid">
 				<h2>${city}</h2>
 				<h5><spring:message code="menu.last_update" /></h5>
 				<ul class="nav nav-tabs">
@@ -23,12 +23,12 @@
 					<div id="home" class="tab-pane fade in active">
 						<div class="table-wrapper">
 							<div class="main-info">
-								<table class="table" style="width: 75%;">
+								<table class="table" style="width: 100%;">
 									<tr>
 										<!-- trqbwa da napravim kolekciq ot gif za razli4noto vreme -->
 										<th rowspan="4"
 											background="http://www.auplod.com/u/ulopad78451.gif"
-											width="240" height="160"><img alt="" src="" />
+											width="240" height="160" style="background-repeat: no-repeat; "><img alt="" src="" />
 											<h3 style="color: white;">
 												Max Temp:
 												<c:set var="ff" scope="session" value="${units}" />
@@ -167,12 +167,12 @@
 					</div>
 					<div id="menu2" class="tab-pane fade">
 						<table class="table"
-							style="width: 75%; display: block; overflow-x: auto;">
+							style="width: 100%; display: block; overflow-x: auto;">
 							<tr>
 								<!-- trqbwa da napravim kolekciq ot gif za razli4noto vreme -->
 								<th rowspan="4"
 									background="http://www.auplod.com/u/ulopad78451.gif"
-									width="240" height="160"><img alt="" src="" />
+									width="240" height="160" style="background-repeat: no-repeat; "><img alt="" src="" />
 									<h3 style="color: white;">
 										Max Temp:
 										<c:set var="ff" scope="session" value="${units}" />
@@ -231,12 +231,12 @@
 					</div>
 					<div id="menu3" class="tab-pane fade">
 						<table class="table"
-							style="width: 75%; display: block; overflow-x: auto;">
+							style="width: 100%; display: block; overflow-x: auto;">
 							<tr>
 								<!-- trqbwa da napravim kolekciq ot gif za razli4noto vreme -->
 								<th rowspan="4"
 									background="http://www.auplod.com/u/ulopad78451.gif"
-									width="240" height="160"><img alt="" src="" />
+									width="240" height="160" style="background-repeat: no-repeat; "><img alt="" src="" />
 									<h3 style="color: white;">
 										Max Temp:
 										<c:set var="ff" scope="session" value="${units}" />
