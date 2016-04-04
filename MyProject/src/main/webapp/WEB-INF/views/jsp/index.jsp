@@ -7,7 +7,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html lang="en">
 <head>
-
+<link rel="icon" type="image/png" href="https://cdn4.iconfinder.com/data/icons/iconsimple-freebies/512/umbrella.png">
 <title>Weather</title>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -47,7 +47,7 @@
 		<!-- 	<div class="col-sm-12"> -->
 		<nav class="navbar navbar-inverse "> <!-- <div class="container-fluid main-nav"> -->
 		<div class="row">
-			<div class="col-sm-8" >
+			<div class="col-sm-6" >
 				<a class="navbar-brand" href="index" style="height: 76px;"><img
 					class="img-circle"
 					src="https://cdn4.iconfinder.com/data/icons/iconsimple-freebies/512/umbrella.png"
@@ -55,22 +55,21 @@
 					style="width: 90px; height: 90px; background: yellow;"></a>
 				<h1 style="color: white; padding-top: 0px">Weather</h1>
 			</div>
-				<div class="col-sm-4" align="right" >
-					<form class="form-inline" role="form" action="ChangeLanguage"
-						method="POST">
-						<button type="submit" class="btn btn-default" 
-							style="background-image: url(${flag}); background-repeat: no-repeat; background-position: center center; size: 38px;background-color: black;
-		    border-width: 0;">...
-						</button>
-					</form>
-		
-			<form class="form-inline" role="form" action="ChangeUnits"
-				method="get">
-				<button type="submit" class="btn btn-default" >F/C</button>
-			</form>
+			<div class="col-sm-4" align="right" >
+				<button type="button" class="btn btn-info" id="login">Log In</button>
+				<button type="button" class="btn btn-info" id="register">Register</button>
+			</div>
+			<div class="col-sm-2" align="right" >
+				<form class="form-inline" role="form" action="ChangeLanguage" method="POST">
+						<button type="submit" class="btn btn-default" style="background-image: url(${flag}); background-repeat: no-repeat; background-position: center center; size: 38px;background-color: black;border-width: 0;">...</button>
+				</form>
 			
+				<form class="form-inline" role="form" action="ChangeUnits" method="get">
+					<button type="submit" class="btn btn-default" >F/C</button>
+				</form>
+			</div>
 		</div>
-		</div>
+
 	<div class="row">
 		<div class="col-sm-8" style="padding-right: 0px;padding-left: 0px;"></div>
 		<div class="col-sm-4"align="right" >

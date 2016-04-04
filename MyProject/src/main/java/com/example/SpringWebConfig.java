@@ -22,6 +22,9 @@ import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.web.servlet.view.JstlView;
 
+import com.example.dao.IUserDAO;
+import com.example.dao.UserDAO;
+
 
 
 @Configuration
@@ -80,6 +83,10 @@ public class SpringWebConfig extends WebMvcConfigurerAdapter {
 		
 		return dataSource;
 		
+	}
+	@Bean
+	public IUserDAO getIUserDAO(){
+		return new UserDAO(getDataSource());
 	}
 
 }
