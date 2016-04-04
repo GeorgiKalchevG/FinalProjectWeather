@@ -11,26 +11,22 @@
 <title>Weather</title>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet"
-	href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
 <script src="//code.jquery.com/jquery-1.10.2.js"></script>
 <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
-<script
-	src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+<script	src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 <!-- Latest compiled and minified CSS -->
 <link rel="stylesheet"
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"
 	integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7"
 	crossorigin="anonymous">
-
 <!-- Optional theme -->
 <link rel="stylesheet"
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css"
 	integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r"
 	crossorigin="anonymous">
-<link href="<c:url value="index.css" />" rel="stylesheet">
 <!-- Latest compiled and minified JavaScript -->
 <script
 	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"
@@ -39,8 +35,16 @@
 <link rel="stylesheet"
 	href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/themes/base/jquery-ui.css"
 	type="text/css" media="all">
+	<!-- css -->
+	<spring:url value="css/popup.css" var="popupCss" />
 
+	<%-- <spring:url value="/static/js/main.js" var="mainJs" /> --%>
+	
+	<link href="${popupCss}" rel="stylesheet" />
+  
+    <%-- <script src="${mainJs}"></script> --%>
 </head>
+
 <body>
 	<!-- heading start -->
 	<div class="row">
@@ -55,10 +59,23 @@
 					style="width: 90px; height: 90px; background: yellow;"></a>
 				<h1 style="color: white; padding-top: 0px">Weather</h1>
 			</div>
+			
+			<c:if test="${empty user}">
 			<div class="col-sm-4" align="right" >
-				<button type="button" class="btn btn-info" id="login">Log In</button>
-				<button type="button" class="btn btn-info" id="register">Register</button>
+				<a href="javascript:void(0)" onclick="toggle_visibility('logIn');"><button type="button" class="btn btn-info" id="login"><span class="glyphicons glyphicons-cogwheels"></span>Log In</button></a>
+				<a href="javascript:void(0)" onclick="toggle_visibility('register');"><button type="button" class="btn btn-info" id="reg">Register</button></a>
 			</div>
+			
+			</c:if>
+			<c:if test="${not empty user}">
+				<div class="col-sm-4" align="right" >
+					<form action="editUser">
+						<h3>Logged in as <input type="submit" value="${user.userName}"></h3>
+					</form>
+				</div>
+			</c:if>
+			
+			
 			<div class="col-sm-2" align="right" >
 				<form class="form-inline" role="form" action="ChangeLanguage" method="POST">
 						<button type="submit" class="btn btn-default" style="background-image: url(${flag}); background-repeat: no-repeat; background-position: center center; size: 38px;background-color: black;border-width: 0;">...</button>
@@ -77,7 +94,7 @@
 				<input id="search-city" type="text" placeholder="search city"
 					class="form-control" id="email" name="city"> <input
 					name="country" type="hidden">
-				<button type="submit" class="btn btn-default">Search</button>
+				<button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-search"></span> Search</button>
 			</form>
 			<div class="col-sm-8" align="right"></div>
 			<div class="col-sm-4" >
@@ -99,10 +116,10 @@
 			<nav class="navbar navbar-inverse second-nav">
 			<div class="container-fluid second-nav">
 				<ul class="nav navbar-nav">
-					<li class="active"><a href="index">Home</a></li>
-					<li><a href="planner">Plan your trip!</a></li>
-					<li><a href="#">World map?</a></li>
-					<li><a href="shukarii">Shukarii</a></li>
+					<li><span class="glyphicons glyphicons-home"></span><a href="index"><span class="glyphicons glyphicons-home"></span> Home</a></li>
+					<li><a href="planner"><span class="glyphicons glyphicons-plane"></span> Plan your trip!</a></li>
+					<li><a href="#"><span class="glyphicons glyphicons-globe-af"></span> World map?</a></li>
+					<li><a href="shukarii"><span class="glyphicons glyphicons-ice-cream"></span> Shukarii</a></li>
 				</ul>
 			</div>
 			</nav>
@@ -117,6 +134,7 @@
 			</div>
 		</div>
 	</div>
+	<c:import url="loginOrRegister.jsp"></c:import>
 </body>
 <style>
 .row {
