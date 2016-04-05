@@ -20,6 +20,7 @@ import com.example.dao.ILocationDAO;
 import com.example.dao.LocationDAO;
 import com.example.model.ChanceOfTypeOfWeather;
 import com.example.model.DayForcast;
+import com.example.model.Event;
 import com.example.model.HourForcast;
 import com.example.model.Loc;
 import com.example.model.Location;
@@ -54,12 +55,19 @@ public class SearchController {
 
 	@CrossOrigin(origins = "http://localhost:8080")
 	@RequestMapping(value="/facebook", method = RequestMethod.POST)
-	public @ResponseBody ArrayList<Loc> facebook( HttpSession session,@RequestParam("ivanshishman") String resp){
+	String facebook( HttpSession session,@RequestParam("ivanshishman") String resp){
 		System.out.println("kvo");
 		System.out.println("From planner "+resp);
+		if(session.getAttribute("facebookForecast")==null){
 		session.setAttribute("facebookForecast", dao.getEventsFromFacebookForcast(resp));
-		
-	    return new ArrayList<>();
+		}
+		try {
+			Thread.sleep(5000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return "index";
 	}
 	
 	

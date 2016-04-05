@@ -12,12 +12,17 @@
 		<div class="col-sm-8" style="background-color: lavender;">
 			<div class="container-fluid">
 				<h2>${city}</h2>
-				<h5><spring:message code="menu.last_update" /></h5>
+				<h5>
+					<spring:message code="menu.last_update" />
+				</h5>
 				<ul class="nav nav-tabs">
 					<li class="active"><a data-toggle="tab" href="#home">${city}</a></li>
-					<li><a data-toggle="tab" href="#menu1"><spring:message code="menu.24hours" /></a></li>
-					<li><a data-toggle="tab" href="#menu2"><spring:message code="menu.weekend" /></a></li>
-					<li><a data-toggle="tab" href="#menu3"><spring:message code="menu.5days" /></a></li>
+					<li><a data-toggle="tab" href="#menu1"><spring:message
+								code="menu.24hours" /></a></li>
+					<li><a data-toggle="tab" href="#menu2"><spring:message
+								code="menu.weekend" /></a></li>
+					<li><a data-toggle="tab" href="#menu3"><spring:message
+								code="menu.5days" /></a></li>
 				</ul>
 				<div class="tab-content">
 					<div id="home" class="tab-pane fade in active">
@@ -26,15 +31,16 @@
 								<table class="table" style="width: 100%;">
 									<tr>
 										<!-- trqbwa da napravim kolekciq ot gif za razli4noto vreme -->
-										<th rowspan="4"
-											background="${backGroundGIF }"
-											width="240" height="160" style="background-repeat: no-repeat; "><img alt="" src="" />
+										<th rowspan="4" background="${backGroundGIF }"
+											style="background-repeat: no-repeat;"><img alt="" src="" />
 											<h3 style="color: white;">
-											<c:set var="whatUnit" scope="session" value="${units}" />
-												<spring:message code="weather.temp" /> : ${ whatUnit =='true' ? list24hours[0].tempC : list24hours[0].tempFH}
-												<spring:message code="weather.feels_like" /> : ${ whatUnit =='true' ? list24hours[0].feelsLikeC : list24hours[0].feelsLikeFH}
+												<c:set var="whatUnit" scope="session" value="${units}" />
+												<spring:message code="weather.temp" />
+												: ${ whatUnit =='true' ? list24hours[0].tempC : list24hours[0].tempFH}
+												<spring:message code="weather.feels_like" />
+												: ${ whatUnit =='true' ? list24hours[0].feelsLikeC : list24hours[0].feelsLikeFH}
 												${list24hours[0].conditions}
-												
+
 											</h3></th>
 										<c:forEach items="${list3days}" var="entry">
 											<th><img src="${entry.icon_url}"> ${entry.weekday}</th>
@@ -56,8 +62,9 @@
 										<c:forEach items="${list3days}" var="entry">
 											<th>
 												<p>
-												Max: ${ whatUnit =='true' ? entry.tempHighCel  : entry.tempHighFahr} Min: ${ whatUnit =='true' ? entry.tempLowCel : entry.tempLowFahr}
-												<!-- &#8451 the special symbol -->
+													Max: ${ whatUnit =='true' ? entry.tempHighCel  : entry.tempHighFahr}
+													Min: ${ whatUnit =='true' ? entry.tempLowCel : entry.tempLowFahr}
+													<!-- &#8451 the special symbol -->
 											</th>
 										</c:forEach>
 									</tr>
@@ -70,8 +77,7 @@
 									<tr>
 										<th><spring:message code="weather.wind" />:</th>
 										<c:forEach items="${list3days}" var="entry">
-											<th>Wind Speed: ${entry.maxwind_kph} Wind Direction:
-												${entry.maxwind_dir}</th>
+											<th>${ whatUnit =='true' ? entry.maxwind_kph  : entry.maxwind_mph}</th>
 										</c:forEach>
 									</tr>
 									<tr>
@@ -103,8 +109,10 @@
 							<tr>
 								<!-- trqbwa da napravim kolekciq ot gif za razli4noto vreme -->
 								<th rowspan="1" width="240" height="160"><img alt="" src="" />
-									<h3 style="color: black;"><spring:message code="weather.forcast_for" /> 
-										${list24hours[0].day}.${list24hours[0].month}.${list24hours[0].year}</h3></th>
+									<h3 style="color: black;">
+										<spring:message code="weather.forcast_for" />
+										${list24hours[0].day}.${list24hours[0].month}.${list24hours[0].year}
+									</h3></th>
 								<c:forEach items="${list24hours}" var="entry">
 									<th>${entry.hour}:00<img src="${entry.icon_url}">
 									</th>
@@ -113,13 +121,13 @@
 							<tr>
 								<th><spring:message code="weather.temp" /> :</th>
 								<c:forEach items="${list24hours}" var="entry">
-									<th>${entry.tempC}</th>
+									<th>${ whatUnit =='true' ? entry.tempC  : entry.tempFH}</th>
 								</c:forEach>
 							</tr>
 							<tr>
 								<th><spring:message code="weather.feels_like" /> :</th>
 								<c:forEach items="${list24hours}" var="entry">
-									<th>${entry.feelsLikeC}</th>
+									<th>${ whatUnit =='true' ? entry.feelsLikeC  : entry.feelsLikeFH}</th>
 								</c:forEach>
 
 							</tr>
@@ -132,7 +140,7 @@
 							<tr>
 								<th><spring:message code="weather.wind" /> :</th>
 								<c:forEach items="${list24hours}" var="entry">
-									<th> ${entry.windKPH} KM/H</th>
+									<th>${entry.windKPH} KM/H</th>
 								</c:forEach>
 							</tr>
 							<tr>
@@ -172,15 +180,9 @@
 							style="width: 100%; display: block; overflow-x: auto;">
 							<tr>
 								<!-- trqbwa da napravim kolekciq ot gif za razli4noto vreme -->
-								<th rowspan="4"
-									background="http://www.auplod.com/u/ulopad78451.gif"
-									width="240" height="160" style="background-repeat: no-repeat; "><img alt="" src="" />
-									<h3 style="color: white;">
-										Max Temp:
-										<c:set var="ff" scope="session" value="${units}" />
-										${ ff =='true' ?  listweekenddays[0].tempHighCel : listweekenddays[0].tempHighFahr}
-										<!---	${list[0].tempHighCel} &#8451--->
-									</h3></th>
+								<th rowspan="4" width="240" height="160"
+									style="background-repeat: no-repeat;"><img alt="" src="" />
+									<h3 style="color: white;"></h3></th>
 								<c:forEach items="${listweekenddays}" var="entry">
 									<th><img src="${entry.icon_url}"> ${entry.weekday}</th>
 								</c:forEach>
@@ -207,8 +209,7 @@
 							<tr>
 								<th><spring:message code="weather.wind" /></th>
 								<c:forEach items="${listweekenddays}" var="entry">
-									<th>Wind Speed: ${entry.maxwind_kph} Wind Direction:
-										${entry.maxwind_dir}</th>
+									<th>${ whatUnit =='true' ? entry.maxwind_kph  : entry.maxwind_mph}</th>
 								</c:forEach>
 							</tr>
 							<tr>
@@ -236,15 +237,9 @@
 							style="width: 100%; display: block; overflow-x: auto;">
 							<tr>
 								<!-- trqbwa da napravim kolekciq ot gif za razli4noto vreme -->
-								<th rowspan="4"
-									background="http://www.auplod.com/u/ulopad78451.gif"
-									width="240" height="160" style="background-repeat: no-repeat; "><img alt="" src="" />
-									<h3 style="color: white;">
-										Max Temp:
-										<c:set var="ff" scope="session" value="${units}" />
-										${ ff =='true' ?  list5days[0].tempHighCel : list5days[0].tempHighFahr}
-										<!---	${list[0].tempHighCel} &#8451--->
-									</h3></th>
+								<th rowspan="4" width="240" height="160"
+									style="background-repeat: no-repeat;"><img alt="" src="" />
+									<h3 style="color: white;"></h3></th>
 								<c:forEach items="${list5days}" var="entry">
 									<th><img src="${entry.icon_url}"> ${entry.weekday}</th>
 								</c:forEach>
@@ -263,16 +258,14 @@
 							<tr>
 								<c:forEach items="${list5days}" var="entry">
 									<th>
-										<p>Max : ${entry.tempHighCel} &#8451 Min :
-											${entry.tempLowCel} &#8451
+										<p>${ whatUnit =='true' ? entry.tempHighCel  : entry.tempHighFahr}
 									</th>
 								</c:forEach>
 							</tr>
 							<tr>
 								<th><spring:message code="weather.wind" /></th>
 								<c:forEach items="${list5days}" var="entry">
-									<th>Wind Speed: ${entry.maxwind_kph} Wind Direction:
-										${entry.maxwind_dir}</th>
+									<th>${ whatUnit =='true' ? entry.maxwind_kph  : entry.maxwind_mph}</th>
 								</c:forEach>
 							</tr>
 							<tr>

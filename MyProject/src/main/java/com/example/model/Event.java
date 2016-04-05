@@ -5,7 +5,28 @@ public class Event {
 	private String name;
 	private String city;
 	private String country;
+	private String latitude;
+	private String longitude;
+	private String street;
 	private CurrentForcast weather;
+	public String getStreet() {
+		return street;
+	}
+	public void setStreet(String street) {
+		this.street = street;
+	}
+	public String getLatitude() {
+		return latitude;
+	}
+	public void setLatitude(String latitude) {
+		this.latitude = latitude;
+	}
+	public String getLongitude() {
+		return longitude;
+	}
+	public void setLongitude(String longitude) {
+		this.longitude = longitude;
+	}
 	public String getStart_time() {
 		return start_time;
 	}

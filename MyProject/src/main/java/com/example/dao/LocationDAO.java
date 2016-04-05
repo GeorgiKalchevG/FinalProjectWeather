@@ -8,12 +8,14 @@ import java.util.TreeMap;
 import org.apache.catalina.connector.Request;
 import org.springframework.web.client.RestTemplate;
 
+import com.example.model.CurrentForcast;
 //import com.example.model.ChanceOfTypeOfWeather;
 import com.example.model.DayForcast;
 import com.example.model.Event;
 import com.example.model.Forcast;
 import com.example.model.HourForcast;
 import com.example.model.Location;
+import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -287,25 +289,41 @@ public class LocationDAO implements ILocationDAO {
 
 	@Override
 	public ArrayList<Event> getEventsFromFacebookForcast(String responseFromFB) {
+		try{
 		JsonArray obj = new JsonParser().parse(responseFromFB).getAsJsonObject().get("events").getAsJsonObject().get("data").getAsJsonArray();
 		ArrayList<Event> facebookEventsForcast = new ArrayList<Event>();
 		for(int i=0;i<5;i++){
 			Event currEvent = new Event();
 			JsonObject data = obj.get(i).getAsJsonObject();
-			String start_time=data.get("start_time").getAsString();
-			currEvent.setStart_time(start_time);
-			String name=data.get("place").getAsJsonObject().get("name").getAsString();
-			currEvent.setName(name);
-			String city=data.get("place").getAsJsonObject().get("location").getAsJsonObject().get("city").getAsString();
-			currEvent.setName(city);	
-			String country=data.get("place").getAsJsonObject().get("location").getAsJsonObject().get("country").getAsString();
-			currEvent.setName(country);
-			
-			
+			currEvent.setStart_time(data.get("start_time").getAsString());
+			currEvent.setName(data.get("place").getAsJsonObject().get("name").getAsString());
+			currEvent.setCity(data.get("place").getAsJsonObject().get("location").getAsJsonObject().get("city").getAsString());	
+			currEvent.setCountry(data.get("place").getAsJsonObject().get("location").getAsJsonObject().get("country").getAsString());
+			currEvent.setLatitude(data.get("place").getAsJsonObject().get("location").getAsJsonObject().get("latitude").getAsString());
+			currEvent.setLongitude(data.get("place").getAsJsonObject().get("location").getAsJsonObject().get("longitude").getAsString());
+			try{
+			currEvent.setStreet(data.get("place").getAsJsonObject().get("location").getAsJsonObject().get("street").getAsString());
+			}catch(NullPointerException e){System.out.println("Nqma street v lokociqta na eventa");}
+			currEvent.setWeather(getWeather(currEvent.getLatitude(),currEvent.getLongitude(),currEvent.getStart_time()));
 			facebookEventsForcast.add(currEvent);
 		}
 		return facebookEventsForcast;
+		}catch(NullPointerException e){System.out.println("User is not logged in");}
+		return null;
 	}
 
+	private CurrentForcast getWeather(String latitude, String longitude,String startTime) {
+		CurrentForcast currForcast = new CurrentForcast();
+		Gson g = new Gson();
+		String url = "https://api.forecast.io/forecast/034143e2c674af082f9336e044c19312/"+latitude+","+longitude+","+startTime+""
+				+ "?exclude=hourly,daily,flags&units=ca";
+		System.out.println(url);
+		RestTemplate restTemplate = new RestTemplate();
+		JsonObject obj = new JsonParser().parse(restTemplate.getForObject(url, String.class)).getAsJsonObject().get("currently").getAsJsonObject();
+		currForcast = g.fromJson(obj, CurrentForcast.class);
+		
+		return currForcast;
+	}
+	
 }
 // http://api.wunderground.com/api/ba6800955f5db321/forecast10day/q/CA/San_Francisco.json

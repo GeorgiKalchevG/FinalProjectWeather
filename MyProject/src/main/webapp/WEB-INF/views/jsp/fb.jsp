@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -146,5 +147,70 @@ logout 1
 <div id="status">
 </div>
 <div id="resp"></div>
+<table class="table"
+							style="width: 75%; display: block; overflow-x: auto;">
+							<tr>
+								<th>Start time:</th>
+								<c:forEach items="${facebookForecast}" var="entry">
+									<th>${entry.start_time}
+									</th>
+								</c:forEach>
+							</tr>
+							<tr>
+								<th>Name:</th>
+								<c:forEach items="${facebookForecast}" var="entry">
+									<th> ${entry.name}</th>
+								</c:forEach>
+							</tr>
+							<tr>
+								<th>City:</th>
+								<c:forEach items="${facebookForecast}" var="entry">
+									<th> ${entry.city}</th>
+								</c:forEach>
+
+							</tr>
+							<tr>
+								<th>Country: </th>
+								<c:forEach items="${facebookForecast}" var="entry">
+									<th>${entry.country}</th>
+								</c:forEach>
+							</tr>
+							<tr>
+								<th>latitude: </th>
+								<c:forEach items="${facebookForecast}" var="entry">
+									<th>${entry.latitude} </th>
+								</c:forEach>
+							</tr>
+							<tr>
+								<th>longitude: </th>
+								<c:forEach items="${facebookForecast}" var="entry">
+									<th>${entry.longitude}</th>
+								</c:forEach>
+							</tr>
+							<tr>
+								<th>street : </th>
+								<c:forEach items="${facebookForecast}" var="entry">
+									<th>${entry.street}</th>
+								</c:forEach>
+							</tr>
+							<tr>
+								<th>weather.time :</th>
+								<c:forEach items="${facebookForecast}" var="entry">
+									<th>${entry.weather.time}</th>
+								</c:forEach>
+							</tr>
+							<tr>
+								<th>weather.summary :</th>
+								<c:forEach items="${facebookForecast}" var="entry">
+									<th>${entry.weather.summary}</th>
+								</c:forEach>
+							</tr>
+							<tr>
+								<th>weather.tempC :</th>
+								<c:forEach items="${facebookForecast}" var="entry">
+									<th>${entry.weather.temperature}</th>
+								</c:forEach>
+							</tr>
+						</table>
 </body>
 </html>

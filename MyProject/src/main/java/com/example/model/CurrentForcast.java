@@ -11,23 +11,24 @@ public class CurrentForcast {
 	private String latitude;
 	private String longitude;
 	private String icon;
-	private String tempC;
-	private String tempFH;
-	private String apparentTemperaturaC;
-	private String apparentTemperaturaFH;
+	private String temperature;
+	private String temperatureFH;
+	private String apparentTemperature;
+	private String apparentTemperatureFH;
 	private String dewPoint;
 	private String humidity;
-	private String windSpeedKMH;
+	private String windSpeed;
 	private String windSpeedMPH;
 	private String windBearing;
 	private String visibility;
 	private String cloudCover;
+	private String pressure;
+	private String ozone;
 	public String getTime() {
 		return time;
 	}
 	public void setTime(String time) {
 		this.time = time;
-		
 	}
 	public String getDay() {
 		return day;
@@ -83,29 +84,35 @@ public class CurrentForcast {
 	public void setIcon(String icon) {
 		this.icon = icon;
 	}
-	public String getTempC() {
-		return tempC;
+	public String getTemperature() {
+		return temperature;
 	}
-	public void setTempC(String tempC) {
-		this.tempC = tempC;
+	public void setTemperature(String temperature) {
+		this.temperature = temperature;
 	}
-	public String getTempFH() {
-		return tempFH;
+	public String getTemperatureFH() {
+		return temperatureFH;
 	}
-	public void setTempFH(String tempFH) {
-		this.tempFH = tempFH;
+	public void setTemperatureFH(String temperatureFH) {
+		this.temperatureFH = temperatureFH;
 	}
-	public String getApparentTemperaturaC() {
-		return apparentTemperaturaC;
+	public String getApparentTemperature() {
+		return apparentTemperature;
 	}
-	public void setApparentTemperaturaC(String apparentTemperaturaC) {
-		this.apparentTemperaturaC = apparentTemperaturaC;
+	public void setApparentTemperature(String apparentTemperature) {
+		this.apparentTemperature = apparentTemperature;
 	}
-	public String getApparentTemperaturaFH() {
-		return apparentTemperaturaFH;
+	public String getApparentTemperatureFH() {
+		return apparentTemperatureFH;
 	}
-	public void setApparentTemperaturaFH(String apparentTemperaturaFH) {
-		this.apparentTemperaturaFH = apparentTemperaturaFH;
+	public void setApparentTemperatureFH(String apparentTemperatureFH) {
+		this.apparentTemperatureFH = apparentTemperatureFH;
+	}
+	public String getWindSpeed() {
+		return windSpeed;
+	}
+	public void setWindSpeed(String windSpeed) {
+		this.windSpeed = windSpeed;
 	}
 	public String getDewPoint() {
 		return dewPoint;
@@ -118,12 +125,6 @@ public class CurrentForcast {
 	}
 	public void setHumidity(String humidity) {
 		this.humidity = humidity;
-	}
-	public String getWindSpeedKMH() {
-		return windSpeedKMH;
-	}
-	public void setWindSpeedKMH(String windSpeedKMH) {
-		this.windSpeedKMH = windSpeedKMH;
 	}
 	public String getWindSpeedMPH() {
 		return windSpeedMPH;
@@ -161,6 +162,5 @@ public class CurrentForcast {
 	public void setOzone(String ozone) {
 		this.ozone = ozone;
 	}
-	private String pressure;
-	private String ozone;
+	
 }

@@ -197,7 +197,7 @@ public class HomePageController {
 		session.setAttribute("page", "planner.jsp");
 		return "index";
 	}
-	@RequestMapping(value = "shukarii")
+	@RequestMapping(value = "facebookEvents")
 	public String loadShukarii(HttpSession session) {
 		session.setAttribute("page", "fb.jsp");
 		return "index";

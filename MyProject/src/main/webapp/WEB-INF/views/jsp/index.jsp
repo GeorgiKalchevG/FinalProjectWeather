@@ -126,7 +126,7 @@
 					<li><a href="index"><span class="glyphicon glyphicon-home" style="color: white;"></span> Home</a></li>
 					<li><a href="planner"><span class="glyphicon glyphicon-send"style="color: white;"></span> Plan your trip!</a></li>
 					<li><a href="#"><span class="glyphicon glyphicon-globe"style="color: white;"></span> World map?</a></li>
-					<li><a href="shukarii"><span class="glyphicon glyphicon-ice-cream"style="color: white;"></span> Shukarii</a></li>
+					<li><a href="facebookEvents"><span class="glyphicon glyphicon-ice-cream"style="color: white;"></span> Facebook Events</a></li>
 				</ul>
 			</div>
 			</nav>
