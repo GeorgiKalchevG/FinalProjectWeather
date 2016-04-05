@@ -140,7 +140,6 @@ public class HomePageController {
 		String data = restTemplate.getForObject(query, String.class);
 		System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!" + data);
 
-		JsonObject object = new JsonObject();
 
 		// System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~" +
 		// object.toString());

@@ -4,7 +4,7 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
-
+ <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
 
 <div id="logIn">
 	<div class="popupBoxWrapper">
@@ -44,7 +44,7 @@
 				<h3>Register</h3>
 				<form action="register" method="post" id="regform">
 				
-					<p><input type="text" autocomplete="off"	name="username" id="username" placeholder="username"/></p>
+					<p><input type="text" autocomplete="off"	name="username" id="regUsername" placeholder="username"/><span id="check" class="glyphicon glyphicon-question-sign"></span> </p>
 			
                	   	<p><input type="password" autocomplete="off" placeholder=" password" name="pass1" id="pass1" onkeyup="checkPass(); return false;"></p>
            
@@ -60,7 +60,7 @@
                 		<option value="F">&#8457;</option>
                		</select>
                	</p>
-				<p><img alt="sky" src="http://icons.wxug.com/i/c/a/partlycloudy.gif" ><input type="radio" name = "icon" value="a" form="regform">
+				<p><img alt="sky" src="http://icons.wxug.com/i/c/a/partlycloudy.gif" ><input type="radio" name = "icon" value="a" form="regform" checked="checked">
 				<img alt="sky" src="http://icons.wxug.com/i/c/b/partlycloudy.gif" ><input type="radio" name = "icon" value="b" form="regform"></p>
 				<p><img alt="sky" src="http://icons.wxug.com/i/c/c/partlycloudy.gif" ><input type="radio" name = "icon" value="c" form="regform">
 				<img alt="sky" src="http://icons.wxug.com/i/c/d/partlycloudy.gif" ><input type="radio" name = "icon" value="d" form="regform"></p>
@@ -71,7 +71,7 @@
 				<p><img alt="sky" src="http://icons.wxug.com/i/c/i/partlycloudy.gif" ><input type="radio" name = "icon" value="i" form="regform">
 				<img alt="sky" src="http://icons.wxug.com/i/c/k/partlycloudy.gif" ><input type="radio" name = "icon" value="k" form="regform"></p>
 				
-				<input form="regform"  type="submit" value="Register"  class="btn btn-primary"/>
+				<input form="regform"  type="submit" value="Register" id="regButton" class="btn btn-primary" disabled="disabled"/>
 		</div>
 	</div>
 </div>
@@ -115,7 +115,7 @@
 </div>
 	
 	
-<script type="text/javascript" >
+<script >
 
 	function toggle_visibility(id) {
     var e = document.getElementById(id);
@@ -124,5 +124,35 @@
     else
        e.style.display = 'block';
 }
+</script>	
+<script >
+$('#check').on('click',
+		function(){
+		
+		var username = $('#regUsername').val();
+		console.log(username);
+			$.ajax({
+				url : "checkUsername",
+				type : 'POST',
+				data : {
+					username : username
+					
+				},
+				success : function(response) {
+					console.log(response);
+					if(response){
+						 $( "#check" ).html( "<span class=\"glyphicon glyphicon-thumbs-up\"></span>");
+						 $('#regButton').removeAttr('disabled');
+					}else{
+						 $( "#check" ).html( "<span class=\"glyphicon glyphicon-thumbs-down\"></span>");
+						 $('#regButton').attr('disabled','disabled');
+					}
+				},
+				fail : function() {
+		
+				}
+			});
+
+		});
 </script>	
 	

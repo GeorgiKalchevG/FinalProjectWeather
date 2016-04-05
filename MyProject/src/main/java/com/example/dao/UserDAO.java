@@ -23,7 +23,7 @@ public class UserDAO implements IUserDAO {
 		jdbcTemplate = new JdbcTemplate(dataSource);
 		String createDB = "CREATE DATABASE IF NOT EXISTS "+DB_NAME;
 		
-		String createUserTable="CREATE TABLE IF NOT EXISTS "+DB_NAME+"."+USER_TABLE+" (U_ID INT PRIMARY KEY AUTO_INCREMENT, USERNAME VARCHAR(255) NOT NULL, PASSWORD VARCHAR(255) NOT NULL, LANGUAGE VARCHAR(25) NOT NULL, UNIT VARCHAR(25) NOT NULL, ICON VARCHAR(25) NOT NULL);";
+		String createUserTable="CREATE TABLE IF NOT EXISTS "+DB_NAME+"."+USER_TABLE+" (U_ID INT PRIMARY KEY AUTO_INCREMENT, USERNAME VARCHAR(255) UNIQUE NOT NULL, PASSWORD VARCHAR(255) NOT NULL, LANGUAGE VARCHAR(25) NOT NULL, UNIT VARCHAR(25) NOT NULL, ICON VARCHAR(25) NOT NULL);";
 		
 		String createFavouritesTable="CREATE TABLE IF NOT EXISTS "+DB_NAME+"."+FAVOURITES_TABLE+"(U_ID INT,LOCATION VARCHAR(255),CONSTRAINT pk_favs PRIMARY KEY (U_ID,LOCATION)); ";
 		
@@ -37,12 +37,12 @@ public class UserDAO implements IUserDAO {
 
 	@Override
 	public boolean isUsernameAvailable(String username) throws SQLException {
-		String sql = "SELECT "+username+" FROM "+DB_NAME+"."+USER_TABLE+";";
+		String sql = "SELECT username FROM "+DB_NAME+"."+USER_TABLE+";";
 		return (boolean) jdbcTemplate.query(sql, new ResultSetExtractor<Boolean>() {
 
 			@Override
 			public Boolean extractData(ResultSet rs) throws SQLException, DataAccessException {
-				if(rs.next()){
+				while(rs.next()){
 					if(rs.getString("USERNAME").equals(username)){
 						return false;
 					}
@@ -65,6 +65,8 @@ public class UserDAO implements IUserDAO {
 	@Override
 	public User logIn(String userName, String password) throws SQLException {
 		
+		if(extractUser(userName)!=null)
+		throw new SQLException();
 		return extractUser(userName);
 	}
 
@@ -108,7 +110,7 @@ public class UserDAO implements IUserDAO {
 			}
 		});
 		 if(user!=null){
-			String sqlFav ="SELECT LOCATION FROM  "+DB_NAME+"."+FAVOURITES_TABLE+" WHERE U_ID="+user.getUserId();
+			String sqlFav ="SELECT LOCATION FROM  "+DB_NAME+"."+FAVOURITES_TABLE+" WHERE U_D="+user.getUserId();
 			List<String> favourites = jdbcTemplate.query(sqlFav, new RowMapper<String>() {
 
 				@Override

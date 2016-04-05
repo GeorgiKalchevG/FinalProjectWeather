@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.example.dao.IUserDAO;
 import com.example.model.User;
@@ -18,7 +19,18 @@ public class UserController {
 	 @Autowired
 	    private IUserDAO dao;
 	//checkIfUsernameAvailable -> returns true if available to jquery function {GET}
-	
+	 @RequestMapping(value="checkUsername")
+	 @ResponseBody boolean isAvailable(@RequestParam("username") String username){
+		 System.out.println("checking username is free");
+		 if(!username.isEmpty())
+		 try {
+			return dao.isUsernameAvailable(username);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return false;
+	 }
 	//logIn -> returns user object and saves it in the session {POST}
 	@RequestMapping(value="logIn")
 	String login(@RequestParam("username") String username, @RequestParam("pass") String password, HttpSession session ){
@@ -26,10 +38,9 @@ public class UserController {
 		try {
 			user = dao.logIn(username, password);
 			session.setAttribute("user", user);
-			System.out.println(user.toString());
+			//System.out.println(user.toString());
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			session.setAttribute("page", "error.jsp");
 		}
 		return "forward:/index";
 	}
@@ -69,9 +80,11 @@ public class UserController {
 		
 			if(password!="")
 				user.setPassword(password);
-			
-			user.setIcon(icon);
+			if(icon!="")
+				user.setIcon(icon);
+	
 			user.setLanguage(language);
+	
 			user.setUnit(unit);
 			try {
 				System.out.println(user.toString());

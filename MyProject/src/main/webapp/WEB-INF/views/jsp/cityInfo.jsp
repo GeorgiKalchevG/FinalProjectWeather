@@ -64,13 +64,13 @@
 								</table>
 							</div>
 							<div id="open-additional-info" class="open-additional-info">
-								Open info</div>
+								<spring:message code="table.moreInfo" /></div>
 							<div class="additional-info">
 								<table class="table" style="width: 100%;">
 									<tr>
 										<th><spring:message code="weather.wind" />:</th>
 										<c:forEach items="${list3days}" var="entry">
-											<th>Wind Speed: ${entry.maxwind_kph} Wind Direction:
+											<th><spring:message code="weather.windspeed" />: ${entry.maxwind_kph} <spring:message code="weather.windspeedUnit" /> <spring:message code="weather.winddirection" />:
 												${entry.maxwind_dir}</th>
 										</c:forEach>
 									</tr>
@@ -299,7 +299,7 @@
 			</div>
 		</div>
 		<div class="col-sm-4" style="background-color: lavenderblush;">
-			<h2>Last 3 cities visited</h2>
+			<h2><spring:message code="sidemenu.lastvisited" /></h2>
 			<div class="panel-group" id="accordion">
 				<div class="panel panel-default">
 					<div class="panel-heading">
