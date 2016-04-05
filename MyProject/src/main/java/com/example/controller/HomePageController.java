@@ -66,27 +66,16 @@ public class HomePageController {
 		ArrayList<ArrayList<DayForcast>> forTheThreeTablesAtOnce = null;
 		if(session.getAttribute(cityName+session.getAttribute("language"))!=null){
 			forTheThreeTablesAtOnce = (ArrayList<ArrayList<DayForcast>>) session.getAttribute(cityName+session.getAttribute("language"));
-			session.setAttribute("city", WordUtils.capitalize(cityName));
-			session.setAttribute(cityName+session.getAttribute("language"), forTheThreeTablesAtOnce);
-			session.setAttribute("list3days", forTheThreeTablesAtOnce.get(0));
-			session.setAttribute("listweekenddays", forTheThreeTablesAtOnce.get(1));
-			session.setAttribute("list5days", forTheThreeTablesAtOnce.get(2));
 			ArrayList<HourForcast> list24hours = (ArrayList<HourForcast>) session.getAttribute(cityName+session.getAttribute("language")+"24");
-			session.setAttribute("list24hours", list24hours);
-			session.setAttribute("backGroundGIF", SearchController.chooseBackGroundGIF(list24hours));
+			saveOrNullItemsInSession(session,cityName,forTheThreeTablesAtOnce,forTheThreeTablesAtOnce.get(0),forTheThreeTablesAtOnce.get(1),forTheThreeTablesAtOnce.get(2),list24hours);
 		}else{
 		forTheThreeTablesAtOnce = dao.getFiveDaysFromWUnderground(
 				cityName.split("/")[0], cityName.split("/")[1], session.getAttribute("language").toString());
-		session.setAttribute(cityName+session.getAttribute("language"), forTheThreeTablesAtOnce);
-		session.setAttribute("city", WordUtils.capitalize(cityName));
-		session.setAttribute("list3days", forTheThreeTablesAtOnce.get(0));
-		session.setAttribute("listweekenddays", forTheThreeTablesAtOnce.get(1));
-		session.setAttribute("list5days", forTheThreeTablesAtOnce.get(2));
+		
 		ArrayList<HourForcast> list24hours = dao.getDayFromWUnderground(cityName.split("/")[0], cityName.split("/")[1],
 				session.getAttribute("language").toString());
-		session.setAttribute("list24hours", list24hours);
-		session.setAttribute("backGroundGIF", SearchController.chooseBackGroundGIF(list24hours));
-		session.setAttribute(cityName+session.getAttribute("language")+"24", list24hours);
+		saveOrNullItemsInSession(session,cityName,forTheThreeTablesAtOnce,forTheThreeTablesAtOnce.get(0),forTheThreeTablesAtOnce.get(1),forTheThreeTablesAtOnce.get(2),list24hours);
+
 		}
 		if (session.getAttribute("queueforCities") == null) {
 			LinkedList<DayForcast> queueCities = new LinkedList<>();
@@ -107,22 +96,13 @@ public class HomePageController {
 			ArrayList<ArrayList<DayForcast>> forTheThreeTablesAtOnce = dao.getFiveDaysFromWUnderground(country, city,
 					session.getAttribute("language").toString());
 			if (forTheThreeTablesAtOnce == null) {
-				session.setAttribute("city", "Couldnt find this city");
-				session.setAttribute("list24hours", null);
-				session.setAttribute("backGroundGIF", null);
-				session.setAttribute("list3days", null);
-				session.setAttribute("listweekenddays", null);
-				session.setAttribute("list5days", null);
+				saveOrNullItemsInSession(session,"Couldnt find this city",forTheThreeTablesAtOnce,null,null,null,null);
 				System.out.println("vrushta ako e null pri city info");
 				return "index";
 			}
 			else if(forTheThreeTablesAtOnce.get(0).get(0).getIcon_url()==null){
 				session.setAttribute("cityForCurrentSearch", WordUtils.capitalize(city));
-				session.setAttribute("list24hours", null);
-				session.setAttribute("backGroundGIF", null);
-				session.setAttribute("list3days", null);
-				session.setAttribute("listweekenddays", null);
-				session.setAttribute("list5days", null);
+				saveOrNullItemsInSession(session,null,forTheThreeTablesAtOnce,null,null,null,null);
 				session.setAttribute("availableCities", forTheThreeTablesAtOnce.get(0));
 				System.out.println("vrushta ako e nqma url snimka  pri chooseCityPage");
 				session.setAttribute("page", "chooseCityPage.jsp");
@@ -130,12 +110,8 @@ public class HomePageController {
 			}else {
 				ArrayList<HourForcast> list24hours = dao.getDayFromWUnderground(country, city,
 						session.getAttribute("language").toString());
-				session.setAttribute("list24hours", list24hours);
-				session.setAttribute("backGroundGIF", SearchController.chooseBackGroundGIF(list24hours));
-				session.setAttribute("list3days", forTheThreeTablesAtOnce.get(0));
-				session.setAttribute("listweekenddays", forTheThreeTablesAtOnce.get(1));
-				session.setAttribute("list5days", forTheThreeTablesAtOnce.get(2));
-				session.setAttribute("city", WordUtils.capitalize(city));
+				saveOrNullItemsInSession(session,WordUtils.capitalize(city),forTheThreeTablesAtOnce,forTheThreeTablesAtOnce.get(0),forTheThreeTablesAtOnce.get(1),forTheThreeTablesAtOnce.get(2),list24hours);
+
 				LinkedList<DayForcast> queueCities = (LinkedList<DayForcast>) session.getAttribute("queueforCities");
 				if (queueCities.size() > 2) {
 					queueCities.removeLast();
@@ -206,7 +182,16 @@ public class HomePageController {
 		}
 		return "index";
 	}
-
+	void saveOrNullItemsInSession(HttpSession session,String cityName,ArrayList<ArrayList<DayForcast>> forTheThreeTablesAtOnce,ArrayList<DayForcast> list3days,ArrayList<DayForcast> listweekenddays,ArrayList<DayForcast> list5days,ArrayList<HourForcast> list24hours){
+		session.setAttribute(cityName+session.getAttribute("language"), forTheThreeTablesAtOnce);
+		session.setAttribute("city", WordUtils.capitalize(cityName));
+		session.setAttribute("list3days", list3days);
+		session.setAttribute("listweekenddays", listweekenddays);
+		session.setAttribute("list5days", list5days);
+		session.setAttribute("list24hours", list24hours);
+		session.setAttribute("backGroundGIF", SearchController.chooseBackGroundGIF(list24hours));
+		session.setAttribute(cityName+session.getAttribute("language")+"24", list24hours);
+	}
 	@RequestMapping(value = "planner")
 	public String loadPlanner(HttpSession session) {
 		session.setAttribute("page", "planner.jsp");

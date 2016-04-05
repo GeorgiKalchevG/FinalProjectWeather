@@ -90,7 +90,13 @@ public class SearchController {
 		return "index";
 	}
 	public static String chooseBackGroundGIF(ArrayList<HourForcast> list24hours){
-		String currGIF = list24hours.get(0).getIcon_url();
+		String currGIF=null;
+		if(list24hours!=null){
+		currGIF = list24hours.get(0).getIcon_url();
+		}
+		else{
+			return null;
+		}
 		int k=currGIF.length();
 		for(int i=currGIF.length()-1;i>0;i--){
 			if(currGIF.charAt(i)=='/'){
