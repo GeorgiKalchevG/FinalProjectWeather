@@ -42,34 +42,77 @@
 		<a href="javascript:void(0)" onclick="toggle_visibility('register');"class="close" ><img  alt="Close" src="http://vignette4.wikia.nocookie.net/dynastywarriors/images/a/a5/X.png/revision/latest?cb=20131129190405" height="20px" width="20px"></a>
 			<div class="popupBoxContent">
 				<h3>Register</h3>
-				<form action="register" method="post" id="userform">
+				<form action="register" method="post" id="regform">
 				
-					<p><input type="text"	name="username" id="username" placeholder="username"/></p>
+					<p><input type="text" autocomplete="off"	name="username" id="username" placeholder="username"/></p>
 			
-               	   	<p><input type="password" placeholder=" password" name="pass1" id="pass1" onkeyup="checkPass(); return false;"></p>
+               	   	<p><input type="password" autocomplete="off" placeholder=" password" name="pass1" id="pass1" onkeyup="checkPass(); return false;"></p>
            
-                	<p><input type="password" placeholder="confirm password" name="pass2" id="pass2" onkeyup="checkPass(); return false;"></p>
-                	
-                	<p><select name = "language" form="userform">
+                	<p><input type="password"  autocomplete="off" placeholder="confirm password" name="pass2" id="pass2" onkeyup="checkPass(); return false;"></p>
+                </form>
+               	<p>
+               		<select name = "language" form="regform">
                 		<option value="EN">English</option>
                 		<option value="BU">Български</option>
-                	</select></p>
-					<p><img alt="sky" src="http://icons.wxug.com/i/c/a/partlycloudy.gif" ><input type="radio" name = "icon" value="a">
-					<img alt="sky" src="http://icons.wxug.com/i/c/b/partlycloudy.gif" ><input type="radio" name = "icon" value="b"></p>
-					<p><img alt="sky" src="http://icons.wxug.com/i/c/c/partlycloudy.gif" ><input type="radio" name = "icon" value="c">
-					<img alt="sky" src="http://icons.wxug.com/i/c/d/partlycloudy.gif" ><input type="radio" name = "icon" value="d"></p>
-					<p><img alt="sky" src="http://icons.wxug.com/i/c/e/partlycloudy.gif" ><input type="radio" name = "icon" value="e">
-					<img alt="sky" src="http://icons.wxug.com/i/c/f/partlycloudy.gif" ><input type="radio" name = "icon" value="f"></p>
-					<p><img alt="sky" src="http://icons.wxug.com/i/c/g/partlycloudy.gif" ><input type="radio" name = "icon" value="g">
-					<img alt="sky" src="http://icons.wxug.com/i/c/h/partlycloudy.gif" ><input type="radio" name = "icon" value="h"></p>
-					<p><img alt="sky" src="http://icons.wxug.com/i/c/i/partlycloudy.gif" ><input type="radio" name = "icon" value="i">
-					<img alt="sky" src="http://icons.wxug.com/i/c/k/partlycloudy.gif" ><input type="radio" name = "icon" value="k"></p>
-					
-					<input  type="submit" value="Register"  class="btn btn-primary"/>
-				</form>
-			</div>
+                	</select>
+               		<select name = "unit" form="regform">
+                		<option value="C">&#8451;</option>
+                		<option value="F">&#8457;</option>
+               		</select>
+               	</p>
+				<p><img alt="sky" src="http://icons.wxug.com/i/c/a/partlycloudy.gif" ><input type="radio" name = "icon" value="a" form="regform">
+				<img alt="sky" src="http://icons.wxug.com/i/c/b/partlycloudy.gif" ><input type="radio" name = "icon" value="b" form="regform"></p>
+				<p><img alt="sky" src="http://icons.wxug.com/i/c/c/partlycloudy.gif" ><input type="radio" name = "icon" value="c" form="regform">
+				<img alt="sky" src="http://icons.wxug.com/i/c/d/partlycloudy.gif" ><input type="radio" name = "icon" value="d" form="regform"></p>
+				<p><img alt="sky" src="http://icons.wxug.com/i/c/e/partlycloudy.gif" ><input type="radio" name = "icon" value="e" form="regform">
+				<img alt="sky" src="http://icons.wxug.com/i/c/f/partlycloudy.gif" ><input type="radio" name = "icon" value="f" form="regform"></p>
+				<p><img alt="sky" src="http://icons.wxug.com/i/c/g/partlycloudy.gif" ><input type="radio" name = "icon" value="g" form="regform">
+				<img alt="sky" src="http://icons.wxug.com/i/c/h/partlycloudy.gif" ><input type="radio" name = "icon" value="h" form="regform"></p>
+				<p><img alt="sky" src="http://icons.wxug.com/i/c/i/partlycloudy.gif" ><input type="radio" name = "icon" value="i" form="regform">
+				<img alt="sky" src="http://icons.wxug.com/i/c/k/partlycloudy.gif" ><input type="radio" name = "icon" value="k" form="regform"></p>
+				
+				<input form="regform"  type="submit" value="Register"  class="btn btn-primary"/>
 		</div>
 	</div>
+</div>
+<div id="edit">
+	<div class="popupBoxWrapper">
+		<a href="javascript:void(0)" onclick="toggle_visibility('edit');"class="close" ><img  alt="Close" src="http://vignette4.wikia.nocookie.net/dynastywarriors/images/a/a5/X.png/revision/latest?cb=20131129190405" height="20px" width="20px"></a>
+			<div class="popupBoxContent">
+				<h3>Edit</h3>
+				<form action="edit" method="post" id="editform">
+				
+					<p><input type="text" autocomplete="off"	name="oldPass" id="username" placeholder="Old password"/></p>
+			
+               	   	<p><input type="password" autocomplete="off" placeholder="New password" name="pass1" id="pass1" onkeyup="checkPass(); return false;"></p>
+           
+                	<p><input type="password"  autocomplete="off" placeholder="Confirm new password" name="pass2" id="pass2" onkeyup="checkPass(); return false;"></p>
+                </form>
+               	<p>
+               		<select name = "language" form="editform">
+                		<option value="EN">English</option>
+                		<option value="BU">Български</option>
+                	</select>
+               		<select name = "unit" form="editform">
+                		<option value="C">&#8451;</option>
+                		<option value="F">&#8457;</option>
+               		</select>
+               	</p>
+				<p><img alt="sky" src="http://icons.wxug.com/i/c/a/partlycloudy.gif" ><input type="radio" name = "icon" value="a" form="editform">
+				<img alt="sky" src="http://icons.wxug.com/i/c/b/partlycloudy.gif" ><input type="radio" name = "icon" value="b" form="editform"></p>
+				<p><img alt="sky" src="http://icons.wxug.com/i/c/c/partlycloudy.gif" ><input type="radio" name = "icon" value="c" form="editform">
+				<img alt="sky" src="http://icons.wxug.com/i/c/d/partlycloudy.gif" ><input type="radio" name = "icon" value="d" form="editform"></p>
+				<p><img alt="sky" src="http://icons.wxug.com/i/c/e/partlycloudy.gif" ><input type="radio" name = "icon" value="e" form="editform">
+				<img alt="sky" src="http://icons.wxug.com/i/c/f/partlycloudy.gif" ><input type="radio" name = "icon" value="f" form="editform"></p>
+				<p><img alt="sky" src="http://icons.wxug.com/i/c/g/partlycloudy.gif" ><input type="radio" name = "icon" value="g" form="editform">
+				<img alt="sky" src="http://icons.wxug.com/i/c/h/partlycloudy.gif" ><input type="radio" name = "icon" value="h" form="editform"></p>
+				<p><img alt="sky" src="http://icons.wxug.com/i/c/i/partlycloudy.gif" ><input type="radio" name = "icon" value="i" form="editform">
+				<img alt="sky" src="http://icons.wxug.com/i/c/k/partlycloudy.gif" ><input type="radio" name = "icon" value="k" form="editform"></p>
+				
+				<input form="editform"  type="submit" value="Save"  class="btn btn-primary"/>
+		</div>
+	</div>
+</div>
 	
 	
 <script type="text/javascript" >

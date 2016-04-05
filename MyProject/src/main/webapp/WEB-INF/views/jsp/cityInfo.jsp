@@ -66,7 +66,7 @@
 							<div id="open-additional-info" class="open-additional-info">
 								Open info</div>
 							<div class="additional-info">
-								<table class="table" style="width: 75%;">
+								<table class="table" style="width: 100%;">
 									<tr>
 										<th><spring:message code="weather.wind" />:</th>
 										<c:forEach items="${list3days}" var="entry">

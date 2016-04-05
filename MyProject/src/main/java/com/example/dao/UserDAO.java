@@ -23,7 +23,7 @@ public class UserDAO implements IUserDAO {
 		jdbcTemplate = new JdbcTemplate(dataSource);
 		String createDB = "CREATE DATABASE IF NOT EXISTS "+DB_NAME;
 		
-		String createUserTable="CREATE TABLE IF NOT EXISTS "+DB_NAME+"."+USER_TABLE+" (U_ID INT PRIMARY KEY, USERNAME VARCHAR(255) NOT NULL, PASSWORD VARCHAR(255) NOT NULL, LANGUAGE VARCHAR(25) NOT NULL, UNIT VARCHAR(25) NOT NULL, ICON VARCHAR(25) NOT NULL);";
+		String createUserTable="CREATE TABLE IF NOT EXISTS "+DB_NAME+"."+USER_TABLE+" (U_ID INT PRIMARY KEY AUTO_INCREMENT, USERNAME VARCHAR(255) NOT NULL, PASSWORD VARCHAR(255) NOT NULL, LANGUAGE VARCHAR(25) NOT NULL, UNIT VARCHAR(25) NOT NULL, ICON VARCHAR(25) NOT NULL);";
 		
 		String createFavouritesTable="CREATE TABLE IF NOT EXISTS "+DB_NAME+"."+FAVOURITES_TABLE+"(U_ID INT,LOCATION VARCHAR(255),CONSTRAINT pk_favs PRIMARY KEY (U_ID,LOCATION)); ";
 		
@@ -70,9 +70,9 @@ public class UserDAO implements IUserDAO {
 
 	@Override
 	public void updateSettings(User user) throws SQLException {
-		 String sql = "UPDATE contact SET  password=?, language=?,unit=?,icon=? "
-                 + "WHERE contact_id=?";
-     jdbcTemplate.update(sql, user.getPassword(),user.getLanguage(),user.getUnit(),user.getIcon());
+		 String sql = "UPDATE "+DB_NAME+"."+USER_TABLE+" SET  password=?, language=?,unit=?,icon=? "
+                 + "WHERE U_ID=?";
+     jdbcTemplate.update(sql, user.getPassword(),user.getLanguage(),user.getUnit(),user.getIcon(),user.getUserId());
 		
 	}
 
@@ -90,7 +90,7 @@ public class UserDAO implements IUserDAO {
 		return false;
 	}
 	private User extractUser(String userName){
-		 String sql = "SELECT  U_ID, username, password, language, unit,icon FROM "+DB_NAME+"."+USER_TABLE+" WHERE username="+userName;
+		 String sql = "SELECT  U_ID, username, password, language, unit,icon FROM "+DB_NAME+"."+USER_TABLE+" WHERE username='"+userName+"';";
 		 User user = jdbcTemplate.query(sql, new ResultSetExtractor<User>() {
 			 @Override
 			public User extractData(ResultSet rs) throws SQLException, DataAccessException {

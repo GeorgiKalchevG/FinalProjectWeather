@@ -20,7 +20,7 @@
 	<div class="col-sm-6">
 		
 		<div id="canvas-holder"
-			style="width: 100%; background-color: #FFEF8D; ">
+			style="width: 100%; background-color: #CDF972; ">
 			<div id="period"></div>
 			<canvas id="chart-area" width="210px" height="120px"></canvas>
 		</div>

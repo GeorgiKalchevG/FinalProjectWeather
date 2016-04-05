@@ -62,16 +62,23 @@
 			
 			<c:if test="${empty user}">
 			<div class="col-sm-4" align="right" >
-				<a href="javascript:void(0)" onclick="toggle_visibility('logIn');"><button type="button" class="btn btn-info" id="login"><span class="glyphicons glyphicons-cogwheels"></span>Log In</button></a>
+				<a href="javascript:void(0)" onclick="toggle_visibility('logIn');"><button type="button" class="btn btn-info" id="login">Log In</button></a>
 				<a href="javascript:void(0)" onclick="toggle_visibility('register');"><button type="button" class="btn btn-info" id="reg">Register</button></a>
 			</div>
 			
 			</c:if>
 			<c:if test="${not empty user}">
 				<div class="col-sm-4" align="right" >
-					<form action="editUser">
-						<h3>Logged in as <input type="submit" value="${user.userName}"></h3>
-					</form>
+				<form action="logout" id="exit"></form>
+				<a href="javascript:void(0)" onclick="toggle_visibility('edit');">
+					<button type="button" class="btn btn-default btn-sm" form="edit">
+			         	<span class="glyphicon glyphicon-cog"></span> ${user.userName}
+			        </button>
+			     </a>
+			        
+				 	<button type="submit" class="btn btn-default btn-sm" form="exit">
+			         	<span class="glyphicon glyphicon-log-out"></span> Log out
+			        </button>
 				</div>
 			</c:if>
 			
@@ -116,10 +123,10 @@
 			<nav class="navbar navbar-inverse second-nav">
 			<div class="container-fluid second-nav">
 				<ul class="nav navbar-nav">
-					<li><span class="glyphicons glyphicons-home"></span><a href="index"><span class="glyphicons glyphicons-home"></span> Home</a></li>
-					<li><a href="planner"><span class="glyphicons glyphicons-plane"></span> Plan your trip!</a></li>
-					<li><a href="#"><span class="glyphicons glyphicons-globe-af"></span> World map?</a></li>
-					<li><a href="shukarii"><span class="glyphicons glyphicons-ice-cream"></span> Shukarii</a></li>
+					<li><a href="index"><span class="glyphicon glyphicon-home" style="color: white;"></span> Home</a></li>
+					<li><a href="planner"><span class="glyphicon glyphicon-send"style="color: white;"></span> Plan your trip!</a></li>
+					<li><a href="#"><span class="glyphicon glyphicon-globe"style="color: white;"></span> World map?</a></li>
+					<li><a href="shukarii"><span class="glyphicon glyphicon-ice-cream"style="color: white;"></span> Shukarii</a></li>
 				</ul>
 			</div>
 			</nav>
@@ -137,6 +144,13 @@
 	<c:import url="loginOrRegister.jsp"></c:import>
 </body>
 <style>
+body {
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-size: 14px;
+    line-height: 1.42857143;
+    color: #000;
+    background-color: #FEA;
+}
 .row {
 	width: 100%;
 	margin: 0 auto;
