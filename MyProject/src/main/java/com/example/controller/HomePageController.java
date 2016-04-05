@@ -46,6 +46,10 @@ public class HomePageController {
 			System.out.println("setvam units na true");
 			session.setAttribute("units", "true");
 		}
+		if (session.getAttribute("icons") == null) {
+			System.out.println("setvam icons na i");
+			session.setAttribute("icons", "i");
+		}
 		System.out.println("zarejdam vednuj indexa");
 		String ipAddress=(String) session.getAttribute("ipAddress");
 		if (ipAddress==null) {
@@ -69,6 +73,7 @@ public class HomePageController {
 			session.setAttribute("list5days", forTheThreeTablesAtOnce.get(2));
 			ArrayList<HourForcast> list24hours = (ArrayList<HourForcast>) session.getAttribute(cityName+session.getAttribute("language")+"24");
 			session.setAttribute("list24hours", list24hours);
+			session.setAttribute("backGroundGIF", SearchController.chooseBackGroundGIF(list24hours));
 		}else{
 		forTheThreeTablesAtOnce = dao.getFiveDaysFromWUnderground(
 				cityName.split("/")[0], cityName.split("/")[1], session.getAttribute("language").toString());
@@ -80,6 +85,7 @@ public class HomePageController {
 		ArrayList<HourForcast> list24hours = dao.getDayFromWUnderground(cityName.split("/")[0], cityName.split("/")[1],
 				session.getAttribute("language").toString());
 		session.setAttribute("list24hours", list24hours);
+		session.setAttribute("backGroundGIF", SearchController.chooseBackGroundGIF(list24hours));
 		session.setAttribute(cityName+session.getAttribute("language")+"24", list24hours);
 		}
 		if (session.getAttribute("queueforCities") == null) {
@@ -103,6 +109,7 @@ public class HomePageController {
 			if (forTheThreeTablesAtOnce == null) {
 				session.setAttribute("city", "Couldnt find this city");
 				session.setAttribute("list24hours", null);
+				session.setAttribute("backGroundGIF", null);
 				session.setAttribute("list3days", null);
 				session.setAttribute("listweekenddays", null);
 				session.setAttribute("list5days", null);
@@ -112,6 +119,7 @@ public class HomePageController {
 			else if(forTheThreeTablesAtOnce.get(0).get(0).getIcon_url()==null){
 				session.setAttribute("cityForCurrentSearch", WordUtils.capitalize(city));
 				session.setAttribute("list24hours", null);
+				session.setAttribute("backGroundGIF", null);
 				session.setAttribute("list3days", null);
 				session.setAttribute("listweekenddays", null);
 				session.setAttribute("list5days", null);
@@ -123,6 +131,7 @@ public class HomePageController {
 				ArrayList<HourForcast> list24hours = dao.getDayFromWUnderground(country, city,
 						session.getAttribute("language").toString());
 				session.setAttribute("list24hours", list24hours);
+				session.setAttribute("backGroundGIF", SearchController.chooseBackGroundGIF(list24hours));
 				session.setAttribute("list3days", forTheThreeTablesAtOnce.get(0));
 				session.setAttribute("listweekenddays", forTheThreeTablesAtOnce.get(1));
 				session.setAttribute("list5days", forTheThreeTablesAtOnce.get(2));
@@ -190,6 +199,7 @@ public class HomePageController {
 		if (session.getAttribute("units").equals("true")) {
 			System.out.println("ot true na false");
 			session.setAttribute("units", "false");
+			
 		} else {
 			System.out.println("smenqm ot false na true");
 			session.setAttribute("units", "true");
@@ -200,7 +210,6 @@ public class HomePageController {
 	@RequestMapping(value = "planner")
 	public String loadPlanner(HttpSession session) {
 		session.setAttribute("page", "planner.jsp");
-
 		return "index";
 	}
 	@RequestMapping(value = "shukarii")

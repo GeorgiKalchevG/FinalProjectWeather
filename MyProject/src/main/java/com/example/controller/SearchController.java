@@ -76,6 +76,7 @@ public class SearchController {
 				session.getAttribute("language").toString());
 		session.setAttribute("city", country+"/"+city);
 		session.setAttribute("list24hours", list24hours);
+		session.setAttribute("backGroundGIF", chooseBackGroundGIF(list24hours));
 		session.setAttribute("list3days", forTheThreeTablesAtOnce.get(0));
 		session.setAttribute("listweekenddays", forTheThreeTablesAtOnce.get(1));
 		session.setAttribute("list5days", forTheThreeTablesAtOnce.get(2));
@@ -85,11 +86,37 @@ public class SearchController {
 		}
 		queueCities.addFirst(forTheThreeTablesAtOnce.get(0).get(0));
 		session.setAttribute("queueforCities", queueCities);
-		session.removeAttribute("availableCities");
-		session.removeAttribute("cityForCurrentSearch");
 		session.setAttribute("page", "cityInfo.jsp");
 		return "index";
 	}
-
+	public static String chooseBackGroundGIF(ArrayList<HourForcast> list24hours){
+		String currGIF = list24hours.get(0).getIcon_url();
+		int k=currGIF.length();
+		for(int i=currGIF.length()-1;i>0;i--){
+			if(currGIF.charAt(i)=='/'){
+				break;
+			}
+			k--;
+		}
+		currGIF=currGIF.substring(k);
+		switch(currGIF){
+		case "chancesnow.gif":	return "https://media.giphy.com/media/xTcnThWTvBZGrgx2dW/giphy.gif"; 
+		case "chanceflurries.gif": return "https://media.giphy.com/media/xTcnThWTvBZGrgx2dW/giphy.gif"; 
+		case "flurries.gif": return "https://media.giphy.com/media/xTcnThWTvBZGrgx2dW/giphy.gif"; 
+		case "snow.gif": return "https://media.giphy.com/media/xTcnThWTvBZGrgx2dW/giphy.gif"; 
+		case "chancerain.gif": return "https://45.media.tumblr.com/940f60067b1b80c3ce21d25bff25c51d/tumblr_mngb2jFLB11riolmio1_500.gif";
+		case "rain.gif": return "https://45.media.tumblr.com/940f60067b1b80c3ce21d25bff25c51d/tumblr_mngb2jFLB11riolmio1_500.gif"; 
+		case "chancesleet.gif": return "https://media.giphy.com/media/xTcnThWTvBZGrgx2dW/giphy.gif"; 
+		case "sleet.gif": return "https://media.giphy.com/media/xTcnThWTvBZGrgx2dW/giphy.gif"; 
+		case "chancetstorms.gif": return "https://45.media.tumblr.com/baeb3be0fb41e15620d9ddfc355c9746/tumblr_mmc56s67LI1rf5vsao1_500.gif";
+		case "tstorms.gif": return "https://45.media.tumblr.com/baeb3be0fb41e15620d9ddfc355c9746/tumblr_mmc56s67LI1rf5vsao1_500.gif";
+		case "clear.gif": return "http://www.auplod.com/u/ulopad78451.gif"; 
+		case "sunny.gif": return "http://www.auplod.com/u/ulopad78451.gif"; 
+		case "cloudy.gif": return "https://media.giphy.com/media/RO5XhlFWOPs6k/giphy.gif";
+		case "fog.gif": return "https://media.giphy.com/media/xTcnThWTvBZGrgx2dW/giphy.gif"; 
+		case "hazy.gif": return "https://media.giphy.com/media/ZWRCWdUymIGNW/giphy.gif"; 
+		default: return "https://d13yacurqjgara.cloudfront.net/users/345826/screenshots/1163640/weather-partly-cloudy.gif"; 
+		}
+	}
 
 }

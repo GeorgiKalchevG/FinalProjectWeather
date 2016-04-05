@@ -6,7 +6,7 @@
 
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 
-
+<c:set var="whatUnit" scope="session" value="${units}" />
 <div class="row">
 	<div class="main-container">
 		<div class="col-sm-8" style="background-color: lavender;">
@@ -27,12 +27,14 @@
 									<tr>
 										<!-- trqbwa da napravim kolekciq ot gif za razli4noto vreme -->
 										<th rowspan="4"
-											background="http://www.auplod.com/u/ulopad78451.gif"
+											background="${backGroundGIF }"
 											width="240" height="160" style="background-repeat: no-repeat; "><img alt="" src="" />
 											<h3 style="color: white;">
-												Max Temp:
-												<c:set var="ff" scope="session" value="${units}" />
-												${ ff =='true' ?  list3days[0].tempHighCel : list3days[0].tempHighFahr}
+											<c:set var="whatUnit" scope="session" value="${units}" />
+												<spring:message code="weather.temp" /> : ${ whatUnit =='true' ? list24hours[0].tempC : list24hours[0].tempFH}
+												<spring:message code="weather.feels_like" /> : ${ whatUnit =='true' ? list24hours[0].feelsLikeC : list24hours[0].feelsLikeFH}
+												${list24hours[0].conditions}
+												
 											</h3></th>
 										<c:forEach items="${list3days}" var="entry">
 											<th><img src="${entry.icon_url}"> ${entry.weekday}</th>
@@ -53,8 +55,9 @@
 									<tr>
 										<c:forEach items="${list3days}" var="entry">
 											<th>
-												<p>Max : ${entry.tempHighCel} &#8451 Min :
-													${entry.tempLowCel} &#8451
+												<p>
+												Max: ${ whatUnit =='true' ? entry.tempHighCel  : entry.tempHighFahr} Min: ${ whatUnit =='true' ? entry.tempLowCel : entry.tempLowFahr}
+												<!-- &#8451 the special symbol -->
 											</th>
 										</c:forEach>
 									</tr>
@@ -129,8 +132,7 @@
 							<tr>
 								<th><spring:message code="weather.wind" /> :</th>
 								<c:forEach items="${list24hours}" var="entry">
-									<th>Wind Speed: ${entry.windKPH} Wind Direction:
-										${entry.dir}</th>
+									<th> ${entry.windKPH} KM/H</th>
 								</c:forEach>
 							</tr>
 							<tr>
