@@ -81,7 +81,25 @@
       console.log('Successful login for: ' + response.name);
       document.getElementById('status').innerHTML =
         'Thanks for logging in, ' + response.name + '!';
-      
+      FB.api(
+			  '/me',
+			  'GET',
+			  {"fields":"name,email,events.limit(10){place,start_time}"},
+			  function(response) {
+				  var rezz = JSON.stringify(response);
+				  console.log('Response: ' + resp);
+				        $.ajax({
+							url : "facebook",
+							type : 'POST',
+							data : {
+								ivanshishman : rezz,
+								kakvo: "ds"
+							},
+							success : function(){},
+							fail:function(){}
+							});
+			  }
+			);
     });
   }
 function logoutFromFB(){

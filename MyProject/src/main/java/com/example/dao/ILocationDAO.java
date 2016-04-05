@@ -5,6 +5,7 @@ import java.util.TreeMap;
 
 import com.example.model.ChanceOfTypeOfWeather;
 import com.example.model.DayForcast;
+import com.example.model.Event;
 import com.example.model.Forcast;
 import com.example.model.HourForcast;
 import com.example.model.Location;
@@ -17,4 +18,5 @@ public interface ILocationDAO {
 	ArrayList<HourForcast> getDayFromWUnderground(String country, String city,String language);
 	String getCityNameByIp(String ip);
 	String plannerResponse(String from, String to, String city, String country);
+	ArrayList<Event> getEventsFromFacebookForcast(String responseFromFB);
 }

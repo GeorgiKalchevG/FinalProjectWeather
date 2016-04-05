@@ -54,17 +54,23 @@ public class SearchController {
 
 	@CrossOrigin(origins = "http://localhost:8080")
 	@RequestMapping(value="/facebook", method = RequestMethod.POST)
-	public @ResponseBody ArrayList<Loc> facebook( @RequestParam("ivanshishman") String resp){
+	public @ResponseBody ArrayList<Loc> facebook( HttpSession session,@RequestParam("ivanshishman") String resp){
 		System.out.println("kvo");
 		System.out.println("From planner "+resp);
+		session.setAttribute("facebookForecast", dao.getEventsFromFacebookForcast(resp));
 		
-	    return new ArrayList<>(); ///return actual list
+	    return new ArrayList<>();
 	}
+	
+	
+	
 	@CrossOrigin(origins = "http://localhost:8080")
 	@RequestMapping(value = "/charts", method=RequestMethod.POST)
 	String loadChart(){
 		return "polarChart";
 	}
+	
+	
 	@CrossOrigin(origins = "http://localhost:8080")
 	@RequestMapping(value = "searchInSpecificCountry", method = RequestMethod.POST)
 	String searchInSpecificCountry(HttpServletRequest request,HttpSession session,@RequestParam("country") String country) {

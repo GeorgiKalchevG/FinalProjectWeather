@@ -8,8 +8,9 @@ import java.util.TreeMap;
 import org.apache.catalina.connector.Request;
 import org.springframework.web.client.RestTemplate;
 
-import com.example.model.ChanceOfTypeOfWeather;
+//import com.example.model.ChanceOfTypeOfWeather;
 import com.example.model.DayForcast;
+import com.example.model.Event;
 import com.example.model.Forcast;
 import com.example.model.HourForcast;
 import com.example.model.Location;
@@ -31,7 +32,7 @@ public class LocationDAO implements ILocationDAO {
 		String countryName = new JsonParser().parse(data).getAsJsonObject().get("country").getAsString();
 		return countryName + "/" + cityName;
 	}
-
+	
 	@Override
 	public ArrayList<Location> collectMajorCitys(String ip) {
 		// TODO Auto-generated method stub
@@ -189,7 +190,6 @@ public class LocationDAO implements ILocationDAO {
 										// index 1 e za weekenda index 2 e
 										// 5dnevnna
 	}
-
 	@Override
 	public String plannerResponse(String from, String to, String city, String country) {
 		String url = "http://api.wunderground.com/api/e772ec5732ccafa2/planner_" + from.split("/")[0]
@@ -283,6 +283,28 @@ public class LocationDAO implements ILocationDAO {
 		obj1.addProperty("cloudCover", cloudCover);
 		obj1.add("variation", variation);
 		return obj1.toString();//new ChanceOfTypeOfWeather(chanceOFTypeOfWeather, cloudCover, title, tempHigh, tempLow, precip, dewpointHigh, dewpointLow);
+	}
+
+	@Override
+	public ArrayList<Event> getEventsFromFacebookForcast(String responseFromFB) {
+		JsonArray obj = new JsonParser().parse(responseFromFB).getAsJsonObject().get("events").getAsJsonObject().get("data").getAsJsonArray();
+		ArrayList<Event> facebookEventsForcast = new ArrayList<Event>();
+		for(int i=0;i<5;i++){
+			Event currEvent = new Event();
+			JsonObject data = obj.get(i).getAsJsonObject();
+			String start_time=data.get("start_time").getAsString();
+			currEvent.setStart_time(start_time);
+			String name=data.get("place").getAsJsonObject().get("name").getAsString();
+			currEvent.setName(name);
+			String city=data.get("place").getAsJsonObject().get("location").getAsJsonObject().get("city").getAsString();
+			currEvent.setName(city);	
+			String country=data.get("place").getAsJsonObject().get("location").getAsJsonObject().get("country").getAsString();
+			currEvent.setName(country);
+			
+			
+			facebookEventsForcast.add(currEvent);
+		}
+		return facebookEventsForcast;
 	}
 
 }
