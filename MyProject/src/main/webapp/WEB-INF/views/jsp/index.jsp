@@ -5,7 +5,7 @@
 
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html lang="en">
+<html>
 <head>
 <link rel="icon" type="image/png" href="https://cdn4.iconfinder.com/data/icons/iconsimple-freebies/512/umbrella.png">
 <title>Weather</title>
@@ -62,8 +62,10 @@
 			
 			<c:if test="${empty user}">
 			<div class="col-sm-4" align="right" >
-				<a href="javascript:void(0)" onclick="toggle_visibility('logIn');"><button type="button" class="btn btn-info" id="login">Log In</button></a>
-				<a href="javascript:void(0)" onclick="toggle_visibility('register');"><button type="button" class="btn btn-info" id="reg">Register</button></a>
+				<a href="javascript:void(0)" onclick="toggle_visibility('logIn');">
+					<button type="button" class="btn btn-info" id="login"><spring:message code="menu.login"/></button></a>
+				<a href="javascript:void(0)" onclick="toggle_visibility('register');">
+					<button type="button" class="btn btn-info" id="reg"><spring:message code="menu.register"/></button></a>
 			</div>
 			
 			</c:if>
@@ -101,7 +103,7 @@
 				<input id="search-city" type="text" placeholder="search city"
 					class="form-control" id="email" name="city"> <input
 					name="country" type="hidden">
-				<button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-search"></span> Search</button>
+				<button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-search"></span> <spring:message code="menu.search"/></button>
 			</form>
 			<div class="col-sm-8" align="right"></div>
 			<div class="col-sm-4" >
@@ -123,10 +125,10 @@
 			<nav class="navbar navbar-inverse second-nav">
 			<div class="container-fluid second-nav">
 				<ul class="nav navbar-nav">
-					<li><a href="index"><span class="glyphicon glyphicon-home" style="color: white;"></span> Home</a></li>
-					<li><a href="planner"><span class="glyphicon glyphicon-send"style="color: white;"></span> Plan your trip!</a></li>
-					<li><a href="#"><span class="glyphicon glyphicon-globe"style="color: white;"></span> World map?</a></li>
-					<li><a href="facebookEvents"><span class="glyphicon glyphicon-ice-cream"style="color: white;"></span> Facebook Events</a></li>
+					<li><a href="index"><span class="glyphicon glyphicon-home" style="color: white;"></span> <spring:message code="menu.home"/></a></li>
+					<li><a href="planner"><span class="glyphicon glyphicon-send"style="color: white;"></span> <spring:message code="menu.plan"/></a></li>
+					<li><a href="#"><span class="glyphicon glyphicon-globe"style="color: white;"></span> <spring:message code="menu.map"/></a></li>
+					<li><a href="facebookEvents"><span class="glyphicon glyphicon-ice-cream"style="color: white;"></span> <spring:message code="menu.shukar"/></a></li>
 				</ul>
 			</div>
 			</nav>
