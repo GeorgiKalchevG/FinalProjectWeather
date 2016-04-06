@@ -1,10 +1,12 @@
 package com.example.controller;
 
+import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
 
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -37,7 +39,12 @@ public class UserController {
 		User user = null;
 		try {
 			user = dao.logIn(username, password);
-			session.setAttribute("user", user);
+			if(user==null)
+				session.setAttribute("userFail", 1);
+			else{
+				session.setAttribute("user", user);
+				session.setAttribute("userFail", 0);
+			}
 			//System.out.println(user.toString());
 		} catch (SQLException e) {
 			session.setAttribute("page", "error.jsp");
@@ -60,7 +67,7 @@ public class UserController {
 		try {
 			user = dao.registerUser(userName, password, language, unit, icon);
 			session.setAttribute("user", user);
-		} catch (SQLException e) {
+		} catch (SQLException | NoSuchAlgorithmException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
@@ -72,25 +79,25 @@ public class UserController {
 			
 			System.out.println("```````````````````````From edit``````````````````````````");
 
-			System.out.println(password);
+			/*System.out.println(password);
 			System.out.println(icon);
 			System.out.println(unit);
-			
+			*/
 			User user = (User) session.getAttribute("user");
 		
 			if(password!="")
 				user.setPassword(password);
-			if(icon!="")
+			if(icon!=null)
 				user.setIcon(icon);
 	
 			user.setLanguage(language);
 	
 			user.setUnit(unit);
 			try {
-				System.out.println(user.toString());
+				System.out.println("from update"+user.toString());
 				dao.updateSettings(user);
 				session.setAttribute("user", user);
-			} catch (SQLException e) {
+			} catch (SQLException | DataAccessException | NoSuchAlgorithmException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}

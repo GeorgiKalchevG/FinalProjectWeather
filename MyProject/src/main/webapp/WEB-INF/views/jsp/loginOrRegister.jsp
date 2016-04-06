@@ -100,7 +100,7 @@
                 		<option value="F">&#8457;</option>
                		</select>
                	</p>
-				<p><img alt="sky" src="http://icons.wxug.com/i/c/a/partlycloudy.gif" ><input type="radio" name = "icon" value="a" form="editform">
+				<p><img alt="sky" src="http://icons.wxug.com/i/c/a/partlycloudy.gif" ><input type="radio" name = "icon" value="a" form="editform" checked="checked">
 				<img alt="sky" src="http://icons.wxug.com/i/c/b/partlycloudy.gif" ><input type="radio" name = "icon" value="b" form="editform"></p>
 				<p><img alt="sky" src="http://icons.wxug.com/i/c/c/partlycloudy.gif" ><input type="radio" name = "icon" value="c" form="editform">
 				<img alt="sky" src="http://icons.wxug.com/i/c/d/partlycloudy.gif" ><input type="radio" name = "icon" value="d" form="editform"></p>

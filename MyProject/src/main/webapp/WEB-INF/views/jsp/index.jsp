@@ -59,7 +59,8 @@
 					style="width: 90px; height: 90px; background: yellow;"></a>
 				<h1 style="color: white; padding-top: 0px">Weather</h1>
 			</div>
-			
+			<c:if test="${userFail==1}"><div style="color: red;"><spring:message code="loginFail"></spring:message></div>
+			</c:if>
 			<c:if test="${empty user}">
 			<div class="col-sm-4" align="right" >
 				<a href="javascript:void(0)" onclick="toggle_visibility('logIn');">
