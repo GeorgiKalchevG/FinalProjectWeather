@@ -9,26 +9,74 @@
 <script type="text/javascript" src="${chart}"></script>
 <c:import url="planner.jsp"></c:import>
 <div class="row">
-	<div class="col-sm-6">
+	<div class="col-sm-3">
 		<div id="text-descr" ></div>
 	</div>
-	<div class="col-sm-6">
-		<div id="info"></div>
+	<div class="col-sm-5">
+			  <div id="myCarousel" class="carousel slide" data-ride="carousel">
+					  <!-- Indicators -->
+					  <ol class="carousel-indicators">
+					    <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+					    <li data-target="#myCarousel" data-slide-to="1"></li>
+					    <li data-target="#myCarousel" data-slide-to="2"></li>
+					    <li data-target="#myCarousel" data-slide-to="3"></li>
+					    <li data-target="#myCarousel" data-slide-to="4"></li>
+					  </ol>
+					
+					  <!-- Wrapper for slides -->
+					  <div class="carousel-inner" role="listbox">
+					    <div class="item active">
+					     <div id="output1"></div>
+					    </div>
+					
+					    <div class="item">
+					      <div id="output2"></div>
+					    </div>
+					
+					    <div class="item">
+					      <div id="output3"></div>
+					    </div>
+					
+					    <div class="item">
+					      <div id="output4"></div>
+					    </div>
+					    <div class="item">
+					      <div id="output5"></div>
+					    </div>
+					  </div>
+					
+					  <!-- Left and right controls -->
+					  <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
+					    <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+					    <span class="sr-only">Previous</span>
+					  </a>
+					  <a class="right carousel-control" href="#myCarousel" role="button" data-slide="next">
+					    <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+					    <span class="sr-only">Next</span>
+					  </a>
+					</div>
+			</div>
+	<div class="col-sm-3">
+		<div id="info" ></div>
 	</div>
-</div>
-<div class="row">
+
+
+	</div>
+<div class="row" ">
+	
 	<div class="col-sm-6">
 		
 		<div id="canvas-holder"
-			style="width: 100%; background-color: #CDF972; ">
+			style="width: 100%; ">
 			<div id="period"></div>
 			<canvas id="chart-area" width="210px" height="120px"></canvas>
 		</div>
 	</div>
 	<div class="col-sm-6">
 	<h1>Variation in temperature in &deg;C and precipitation in cm</h1>
+	
 	<div class="row">	
-<div class="col-sm-6">	
+<div class="col-sm-6" >	
 		<ul class="legend">
 		    <li><span class="lowest"></span> Lowest Measured</li>
 		    <li><span class="average"></span> Average</li>
@@ -56,12 +104,12 @@
 	var data = ${plan};
 	var forecast = ["Warm","Partly Cloudy","Precipitation", "Rain", "Cool","Sunny","Cloudy","Fog","Windy","Thunderstorms","Hail","Ground Snow","Tornado","Sweltering","Humid","Freezing", "Hot","Snow"];
 	var title = '<h1>'+data.title+'</h1>';
-	var clouds = '<h1>For the selected period <br/>the weather in '.concat("${location}").concat(' will be ') + data.cloudCover + '</h1>';
-	$('#text-descr').append("<h3>There is a ");
+	var clouds = '<h3>For the selected period <br/>the weather in '.concat("${location}").concat(' will be ') + data.cloudCover + '</h4>';
+	$('#text-descr').append("<h4>There is a ");
 	for (i = 0; i < forecast.length; i++) {
 		console.log(data.array[i]);
 		if (data.array[i] > 33) {
-			$('#text-descr').append('<h3>'+data.array[i] + '% chance the forecast be ' + forecast[i] + '</h3>');
+			$('#text-descr').append('<h4>'+data.array[i] + '% chance the forecast be ' + forecast[i] + '</h4>');
 			console.log(data.array[i] + '% chance the forecast be' + forecast[i] + '<br/>');
 		}
 
@@ -212,4 +260,56 @@
 		]
 
 	}
+	$(document).ready(function() {
+		  //Declare variables
+		  var $searchButton = $('#searchButton');
+		  //add a colon to the beginning of your AppId string
+		  var appId = ':eDV3WWvSbtWEm5AI9qhWiXiNg17HgTe+bqs5jQSVTus';
+
+		  //Function to get images
+		  function getImage() {
+		    //base64 encode the AppId
+		    var azureKey = btoa(appId);
+		    //get the value from the search box
+		    var str = "${location}";
+			var res = str.split(", ");
+		    var $searchQuery = res[0];
+		   
+		    //Create the search string
+		    var myUrl = 'https://api.datamarket.azure.com/Bing/Search/v1/Composite?Sources=%27image%27&$top=5&$format=json&Query=%27' + $searchQuery + '%27&Query=%27vacation%27&ImageFilters=%27Aspect:Wide%27';
+		    //Make post request to bing
+		    console.log(myUrl);
+		    $.ajax({
+		      method: 'post',
+		      url: myUrl,
+		      //Set headers to authorize search with Bing
+		      headers: {
+		        'Authorization': 'Basic ' + azureKey
+		      },
+		      success: function(data) {
+		        //Insert random image in dom
+		       
+		        
+		        var imgLink1 = '<img width="780" height="460" src="' + data.d.results[0].Image[0].MediaUrl + '" />';
+		        var imgLink2 = '<img width="780" height="460" src="' + data.d.results[0].Image[1].MediaUrl + '" />';
+		        var imgLink3 = '<img width="780" height="460" src="' + data.d.results[0].Image[2].MediaUrl + '" />';
+		        var imgLink4 = '<img width="780" height="460" src="' + data.d.results[0].Image[3].MediaUrl + '" />';
+		        var imgLink5 = '<img width="780" height="460" src="' + data.d.results[0].Image[4].MediaUrl + '" />';
+		        $('#output1').html(imgLink1);
+		        $('#output2').html(imgLink2);
+		        $('#output3').html(imgLink3);
+		        $('#output4').html(imgLink4);
+		        $('#output5').html(imgLink5);
+		      },
+		      failure: function(err) {
+		        console.error(err);
+		      }
+		    });
+		  };
+		  //Trigger function when button is clicked
+		 $(window).load(function(e) {
+		   /*  e.preventDefault(); */
+		    getImage();
+		  });
+		});
 </script>

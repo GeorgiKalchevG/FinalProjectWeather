@@ -9,7 +9,7 @@
 <c:set var="whatUnit" scope="session" value="${units}" />
 <div class="row">
 	<div class="main-container">
-		<div class="col-sm-8" style="background-color: lavender;">
+		<div class="col-sm-8" style="background-color: lightyellow;border: solid;border-width: 5px;">
 			<div class="container-fluid">
 				<h2>${city}</h2>
 				<h5>
@@ -106,7 +106,7 @@
 					</div>
 					<div id="menu1" class="tab-pane fade" style="overflow: auto;">
 						<table class="table"
-							style="width: 75%; display: block; overflow-x: auto;">
+							style="width: 100%; display: block; overflow-x: auto;">
 							<tr>
 								<!-- trqbwa da napravim kolekciq ot gif za razli4noto vreme -->
 								<th rowspan="1" width="240" height="160"><img alt="" src="" />
@@ -292,7 +292,7 @@
 				</div>
 			</div>
 		</div>
-		<div class="col-sm-4" style="background-color: lavenderblush;">
+		<div class="col-sm-4" style="background-color: lightyellow;border: solid;border-width: 5px;">
 			<h2><spring:message code="sidemenu.lastvisited" /></h2>
 			<div class="panel-group" id="accordion">
 				<div class="panel panel-default">

@@ -44,7 +44,7 @@
 			</div>
 			<div class="col-xs-3">
 			<label for="select">Submit your query </label>
-				<input class="search-for-city" type="submit" value="		GO!			">
+				<input class="search-for-city" type="submit" id="searchButton" value="		GO!			">
 			</div>
 		</form>
 		<div class="cities1">
@@ -54,19 +54,7 @@
 	</div>
 </div>
 
-<div class="row">
-	<div class="col-sm-8">
-	<label for="PieChart"> Chance of type of weather in percent</label>
-		<%--  <div id="loadHere">
-		 
-		 <c:import url="polarChart.jsp"></c:import>
-		 </div> --%>
-		<%-- <c:import url="polarChart.jsp"></c:import>	 --%>
-			
-			
-		
-	</div>
-</div>
+
 <style>
 .row {
 	width: 75%;
@@ -150,94 +138,89 @@
 
 
 <script>
+var dateToday = new Date();
+var dates = $("#from, #to").datepicker(
+				{
 
+					changeMonth : true,
+					numberOfMonths : 1,
+					minDate : dateToday,
+					onSelect : function(selectedDate) {
+						var option = this.id == "from" ? "minDate"
+								: "maxDate", instance = $(this).data(
+								"datepicker"), date = $.datepicker
+								.parseDate(
+										instance.settings.dateFormat
+												|| $.datepicker._defaults.dateFormat,
+										selectedDate, instance.settings);
+						dates.not(this).datepicker("option", option, date);
+					}
+				});
 
-	var dateToday = new Date();
-	var dates = $("#from, #to")
-			.datepicker(
-					{
+/* $('.open-additional-info').on('click', function() {
+	$('.additional-info').toggleClass('opened');
+	console.log('ds');
+}); */
 
-						changeMonth : true,
-						numberOfMonths : 1,
-						minDate : dateToday,
-						onSelect : function(selectedDate) {
-							var option = this.id == "from" ? "minDate"
-									: "maxDate", instance = $(this).data(
-									"datepicker"), date = $.datepicker
-									.parseDate(
-											instance.settings.dateFormat
-													|| $.datepicker._defaults.dateFormat,
-											selectedDate, instance.settings);
-							dates.not(this).datepicker("option", option, date);
-						}
-					});
+$('#search-city1')
+		.on(
+				'keyup',
+				function() {
+					var city = $(this).val();
+					if (city.length >= 3) {
+						console.log(city);
+						$
+								.ajax({
+									url : "add",
+									type : 'POST',
+									data : {
+										city : city,
+									},
+									success : function(response) {
+										var response = JSON.parse(response);
+										var cities = response.RESULTS;
+										$('.search-result1').text('');
+										for ( var city in cities) {
+											var name = cities[city].name;
+											// Create a variable to contain the array
+											var names = name.split(", ");
 
-	/* $('.open-additional-info').on('click', function() {
-		$('.additional-info').toggleClass('opened');
-		console.log('ds');
-	}); */
-
-	$('#search-city1')
-			.on(
-					'keyup',
-					function() {
-						var city = $(this).val();
-						if (city.length >= 3) {
-							console.log(city);
-							$
-									.ajax({
-										url : "add",
-										type : 'POST',
-										data : {
-											city : city,
-										},
-										success : function(response) {
-											var response = JSON.parse(response);
-											var cities = response.RESULTS;
-											$('.search-result1').text('');
-											for ( var city in cities) {
-												var name = cities[city].name;
-												// Create a variable to contain the array
-												var names = name.split(", ");
-
-												var list = '<li class="searched-city1" city="' + names[0] + '" country="'+ names[1] +'">'
-														+ cities[city].name
-														+ '</li>';
-												$('.search-result1').append(
-														list);
-											}
-											$('.cities1').addClass('opened1');
-
-										},
-										fail : function() {
-
+											var list = '<li class="searched-city1" city="' + names[0] + '" country="'+ names[1] +'">'
+													+ cities[city].name
+													+ '</li>';
+											$('.search-result1').append(
+													list);
 										}
-									});
-						}
-					});
-	$('.search-result1').on('click', '.searched-city1', function() {
-		$('#search-city1').val($(this).text());
-		$('.cities1').removeClass('opened1');
-	});
-	$(".search-for-city").on(
-			'click',
-			function() {
-				var names = $('#search-city1').val().split(", ");
+										$('.cities1').addClass('opened1');
 
-				var dateFrom = $(".from").val();
-				var dateTo = $(".to").val();
-				if (names.length <= 0) {
-					var city = '';
-					var country = '';
-				} else {
-					var city = names[0];
-					var country = names[1];
-				}
+									},
+									fail : function() {
 
-				if (dateFrom.lenght <= 0 || dateTo.lenght <= 0
-						|| city.lenght <= 0 || country.lenght <= 0) {
-					console.log('molq popylnete vsicki poleta');
-				}	
-				
-			});
+									}
+								});
+					}
+				});
+$('.search-result1').on('click', '.searched-city1', function() {
+	$('#search-city1').val($(this).text());
+	$('.cities1').removeClass('opened1');
+});
+$(".search-for-city").on('click',function() {
+			var names = $('#search-city1').val().split(", ");
+
+			var dateFrom = $(".from").val();
+			var dateTo = $(".to").val();
+			if (names.length <= 0) {
+				var city = '';
+				var country = '';
+			} else {
+				var city = names[0];
+				var country = names[1];
+			}
+
+			if (dateFrom.lenght <= 0 || dateTo.lenght <= 0
+					|| city.lenght <= 0 || country.lenght <= 0) {
+				console.log('molq popylnete vsicki poleta');
+			}	
+			
+		});
 </script>
