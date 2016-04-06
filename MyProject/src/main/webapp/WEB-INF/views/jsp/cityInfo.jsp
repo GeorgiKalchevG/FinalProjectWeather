@@ -301,11 +301,12 @@
 					<div class="panel-heading">
 						<h4 class="panel-title">
 							<a data-toggle="collapse" data-parent="#accordion"
-								href="#collapse1">${queueforCities[0].cityName}</a>
+								href="#collapse1">${queueforCities[0].countryName} / ${queueforCities[0].cityName}</a>
 						</h4>
 					</div>
 					<div id="collapse1" class="panel-collapse collapse in">
-						<div class="panel-body">${queueforCities[0].tempHighCel}</div>
+						<div class="panel-body"><spring:message code="weather.max_temp2" />: ${ whatUnit =='true' ? queueforCities[0].tempHighCel  : queueforCities[0].tempHighFahr} ${unitTemp}
+													<spring:message code="weather.min_temp2" />: ${ whatUnit =='true' ? queueforCities[0].tempLowCel : queueforCities[0].tempLowFahr} ${unitTemp}. ${queueforCities[0].conditions}</div>
 					</div>
 				</div>
 				<div class="panel panel-default">
@@ -316,7 +317,8 @@
 						</h4>
 					</div>
 					<div id="collapse2" class="panel-collapse collapse">
-						<div class="panel-body">${queueforCities[1].tempHighCel}</div>
+						<div class="panel-body"><spring:message code="weather.max_temp2" />: ${ whatUnit =='true' ? queueforCities[1].tempHighCel  : queueforCities[1].tempHighFahr} ${unitTemp}
+													<spring:message code="weather.min_temp2" />: ${ whatUnit =='true' ? queueforCities[1].tempLowCel : queueforCities[1].tempLowFahr} ${unitTemp}. ${queueforCities[1].conditions}</div>
 					</div>
 				</div>
 				<div class="panel panel-default">
@@ -327,7 +329,8 @@
 						</h4>
 					</div>
 					<div id="collapse3" class="panel-collapse collapse">
-						<div class="panel-body">${queueforCities[2].tempHighCel}</div>
+						<div class="panel-body"><spring:message code="weather.max_temp2" />: ${ whatUnit =='true' ? queueforCities[2].tempHighCel  : queueforCities[2].tempHighFahr} ${unitTemp}
+													<spring:message code="weather.min_temp2" />: ${ whatUnit =='true' ? queueforCities[2].tempLowCel : queueforCities[2].tempLowFahr} ${unitTemp}. ${queueforCities[2].conditions}</div>
 					</div>
 				</div>
 			</div>

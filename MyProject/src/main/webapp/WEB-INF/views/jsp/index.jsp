@@ -129,7 +129,7 @@
 					<li><a href="index"><span class="glyphicon glyphicon-home" style="color: white;"></span> <spring:message code="menu.home"/></a></li>
 					<li><a href="planner"><span class="glyphicon glyphicon-send"style="color: white;"></span> <spring:message code="menu.plan"/></a></li>
 					<li><a href="#"><span class="glyphicon glyphicon-globe"style="color: white;"></span> <spring:message code="menu.map"/></a></li>
-					<li><a href="facebookEvents"><span class="glyphicon glyphicon-ice-cream"style="color: white;"></span> <spring:message code="menu.shukar"/></a></li>
+					<li><a href="facebookEvents"><span class="glyphicon glyphicon-map-marker"style="color: white;"></span> <spring:message code="menu.shukar"/></a></li>
 				</ul>
 			</div>
 			</nav>

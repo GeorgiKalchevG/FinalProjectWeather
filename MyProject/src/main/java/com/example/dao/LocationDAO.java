@@ -54,12 +54,12 @@ public class LocationDAO implements ILocationDAO {
 		System.out.println(weatherData.toString());
 		JsonArray array = weatherData.get("hourly_forecast").getAsJsonArray();
 		for (int i = 0; i < 24; i++) {
-			DayForcast.add(createHour(array.get(i).getAsJsonObject()));
+			DayForcast.add(createHour(array.get(i).getAsJsonObject(),language));
 		}
 		return DayForcast;
 	}
 
-	private HourForcast createHour(JsonObject jsonElement) {
+	private HourForcast createHour(JsonObject jsonElement,String language) {
 		HourForcast forcast = new HourForcast();
 		forcast.setHour(Integer.parseInt(jsonElement.get("FCTTIME").getAsJsonObject().get("hour").getAsString()));
 		forcast.setYear(Integer.parseInt(jsonElement.get("FCTTIME").getAsJsonObject().get("year").getAsString()));
@@ -68,7 +68,7 @@ public class LocationDAO implements ILocationDAO {
 		forcast.setWeekday(jsonElement.get("FCTTIME").getAsJsonObject().get("weekday_name").getAsString());
 		forcast.setTempC(Integer.parseInt(jsonElement.get("temp").getAsJsonObject().get("metric").getAsString()));
 		forcast.setTempFH(Integer.parseInt(jsonElement.get("temp").getAsJsonObject().get("english").getAsString()));
-		forcast.setConditions(jsonElement.get("condition").getAsString());
+		forcast.setConditions(language.equals("BU")?changeFromEnglishToBularian(jsonElement.get("condition").getAsString()):jsonElement.get("condition").getAsString());
 		forcast.setIcon_url(jsonElement.get("icon_url").getAsString());
 		forcast.setSky(Integer.parseInt(jsonElement.get("sky").getAsString()));
 		forcast.setWindKPH(Integer.parseInt(jsonElement.get("wspd").getAsJsonObject().get("metric").getAsString()));
@@ -92,11 +92,12 @@ public class LocationDAO implements ILocationDAO {
 		return forcast;
 	}
 
-	private DayForcast createDay(JsonObject jsonElement, String cityName) {
+	private DayForcast createDay(JsonObject jsonElement, String cityName,String countryName,String language) {
 		DayForcast forcast = new DayForcast();
 		System.out.println(jsonElement.toString());
 		forcast.setCityName(cityName);
-		forcast.setConditions(jsonElement.get("conditions").getAsString());
+		forcast.setCountryName(countryName);
+		forcast.setConditions(language.equals("BU")?changeFromEnglishToBularian(jsonElement.get("conditions").getAsString()):jsonElement.get("conditions").getAsString());
 		forcast.setWeekday(jsonElement.get("date").getAsJsonObject().get("weekday").getAsString());
 		forcast.setDay(jsonElement.get("date").getAsJsonObject().get("day").getAsInt());
 		forcast.setMonth(jsonElement.get("date").getAsJsonObject().get("month").getAsInt());
@@ -133,8 +134,7 @@ public class LocationDAO implements ILocationDAO {
 		ArrayList<DayForcast> fiveDayForcast = new ArrayList<>();
 		ArrayList<DayForcast> weekendDayForcast = new ArrayList<>();
 		String wundergroungUrl = "http://api.wunderground.com/api/e772ec5732ccafa2/forecast10day/lang:" + language
-				+ "/q/" + country.replace(' ', '_') + "/" + city.replace(' ', '_') + ".json";
-		JsonObject weatherData = new JsonParser().parse(restTemplate.getForObject(wundergroungUrl, String.class))
+				+ "/q/" + country.replace(' ', '_') + "/" + city.replace(' ', '_') + ".json";		JsonObject weatherData = new JsonParser().parse(restTemplate.getForObject(wundergroungUrl, String.class))
 				.getAsJsonObject();
 		System.out.println(weatherData.toString());
 		JsonArray array;
@@ -173,18 +173,18 @@ public class LocationDAO implements ILocationDAO {
 		// weekenda v tozi for
 		dayOfWeek = dayOfWeek < 5 ? (5 - dayOfWeek) : (12 - dayOfWeek);
 		for (int i = dayOfWeek; i < dayOfWeek + 3; i++) {
-			weekendDayForcast.add(createDay(array.get(i).getAsJsonObject(), city));
+			weekendDayForcast.add(createDay(array.get(i).getAsJsonObject(), city,country,language));
 		}
 		for (int i = 0; i < 3; i++) { // vrushta prognoza za 5 dena i go puham v
 										// purvoto pole na arraylista
-			threeDayForcast.add(createDay(array.get(i).getAsJsonObject(), city));
+			threeDayForcast.add(createDay(array.get(i).getAsJsonObject(), city,country,language));
 		}
 		forTheThreeTablesAtOnce.add(threeDayForcast);
 		// addvam trite dni v 5-cata da ne pravq crateday otnovo i advam trite
 		// dni v arraylista s progonozatakato
 		fiveDayForcast.addAll(threeDayForcast);
 		for (int i = 3; i < 5; i++) {
-			fiveDayForcast.add(createDay(array.get(i).getAsJsonObject(), city));
+			fiveDayForcast.add(createDay(array.get(i).getAsJsonObject(), city,country,language));
 		}
 		forTheThreeTablesAtOnce.add(weekendDayForcast);
 		forTheThreeTablesAtOnce.add(fiveDayForcast);
@@ -321,9 +321,39 @@ public class LocationDAO implements ILocationDAO {
 		RestTemplate restTemplate = new RestTemplate();
 		JsonObject obj = new JsonParser().parse(restTemplate.getForObject(url, String.class)).getAsJsonObject().get("currently").getAsJsonObject();
 		currForcast = g.fromJson(obj, CurrentForcast.class);
-		
 		return currForcast;
 	}
-	
-}
+	public static String changeFromEnglishToBularian(String fromEnglish){
+		switch(fromEnglish){
+		case "Chance of Flurries": return "Очакват се превалявания";
+		case "Chance of Rain": return "Вероятност за дъжд";
+		case "Chance Rain":	return "Вероятност за дъжд"; 
+		case "Chance of Freezing Rain":	return "Шанс на замразяване дъжд"; 
+		case "Chance of Sleet":	return "Шанс на суграшица"; 
+		case "Chance of Snow":	return "Шанс на сняг"; 
+		case "Chance of Thunderstorms":	return "Шанс за гръмотевични бури"; 
+		case "Chance of a Thunderstorm": return "Шанс за гръмотевични буря"; 
+		case "Clear":	return "Ясно"; 
+		case "Cloudy":	return "Облачно"; 
+		case "Flurries":	return "Вихрушки"; 
+		case "Fog":	return "Мъгла"; 
+		case "Haze":	return "Мътно"; 
+		case "Mostly Cloudy":	return "Предимно облачно"; 
+		case "Mostly Sunny":	return "Предимно слънчево"; 
+		case "Partly Cloudy":	return "Частично облачно"; 
+		case "Partly Sunny":	return "Частично слънчево"; 
+		case "Freezing Rain":	return "Смразяващ дъжд"; 
+		case "Rain":	return "Дъжд"; 
+		case "Sleet":	return "Суграшица"; 
+		case "Snow":	return "Сняг"; 
+		case "Sunny":	return "Слънчево"; 
+		case "Thunderstorms":	return "Гръмотевични бури"; 
+		case "Thunderstorm":	return "Гръмотевични буря"; 
+		case "Overcast":	return "Облачно"; 
+		case "Scattered Clouds":	return "Разпръснати облаци";  
+		default: return fromEnglish;
+		}
+	}
+	}
+
 // http://api.wunderground.com/api/ba6800955f5db321/forecast10day/q/CA/San_Francisco.json

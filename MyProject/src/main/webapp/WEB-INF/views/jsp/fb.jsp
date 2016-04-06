@@ -81,14 +81,13 @@
     FB.api('/me', function(response) {
       console.log('Successful login for: ' + response.name);
       document.getElementById('status').innerHTML =
-        'Thanks for logging in, ' + response.name + '!';
+        'Thanks for logging in, ' + response.name + '! Please wait to fetch your events and show you the future! ';
       FB.api(
 			  '/me',
 			  'GET',
 			  {"fields":"name,email,events.limit(10){place,start_time}"},
 			  function(response) {
 				  var rezz = JSON.stringify(response);
-				  console.log('Response: ' + resp);
 				        $.ajax({
 							url : "facebook",
 							type : 'POST',
@@ -96,7 +95,12 @@
 								ivanshishman : rezz,
 								kakvo: "ds"
 							},
-							success : function(){},
+							success : function(data){
+								if(data=="true"){
+								location.reload();
+									}
+								document.getElementById('status').innerHTML =
+							        'Thank you for wait ' + response.name + '. Here is your weather for incoming events you will be attending. ';},
 							fail:function(){}
 							});
 			  }

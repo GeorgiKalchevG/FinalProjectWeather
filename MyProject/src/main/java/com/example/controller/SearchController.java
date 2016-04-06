@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
@@ -55,19 +56,16 @@ public class SearchController {
 
 	@CrossOrigin(origins = "http://localhost:8080")
 	@RequestMapping(value="/facebook", method = RequestMethod.POST)
-	String facebook( HttpSession session,@RequestParam("ivanshishman") String resp){
+	@ResponseBody
+	String facebook( HttpSession session,@RequestParam("ivanshishman") String resp,HttpServletResponse response){
 		System.out.println("kvo");
 		System.out.println("From planner "+resp);
 		if(session.getAttribute("facebookForecast")==null){
 		session.setAttribute("facebookForecast", dao.getEventsFromFacebookForcast(resp));
+		return "true";
+		}else{
+			return "false";
 		}
-		try {
-			Thread.sleep(5000);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return "index";
 	}
 	
 	
