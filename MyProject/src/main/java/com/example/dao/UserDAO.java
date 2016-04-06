@@ -110,7 +110,7 @@ public class UserDAO implements IUserDAO {
 			}
 		});
 		 if(user!=null){
-			String sqlFav ="SELECT LOCATION FROM  "+DB_NAME+"."+FAVOURITES_TABLE+" WHERE U_D="+user.getUserId();
+			String sqlFav ="SELECT LOCATION FROM  "+DB_NAME+"."+FAVOURITES_TABLE+" WHERE U_ID="+user.getUserId();
 			List<String> favourites = jdbcTemplate.query(sqlFav, new RowMapper<String>() {
 
 				@Override

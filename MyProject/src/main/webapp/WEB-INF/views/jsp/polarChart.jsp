@@ -272,8 +272,8 @@
 		    var azureKey = btoa(appId);
 		    //get the value from the search box
 		    var str = "${location}";
-			var res = str.split(", ");
-		    var $searchQuery = res[0];
+			var res = str.replace(", ","-");
+		    var $searchQuery = res;
 		   
 		    //Create the search string
 		    var myUrl = 'https://api.datamarket.azure.com/Bing/Search/v1/Composite?Sources=%27image%27&$top=5&$format=json&Query=%27' + $searchQuery + '%27&Query=%27vacation%27&ImageFilters=%27Aspect:Wide%27';

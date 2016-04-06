@@ -16,20 +16,21 @@
 				</div>
 				
 				<div class="col-sm-4" >
-					<h3>Log In</h3>
+					<h3><spring:message code="menu.login"></spring:message></h3>
 					<form action="logIn" method="post" id="userform">
 						<p >
-							<input type="text" name="username" id="username" placeholder="User Name" />
+							<input type="text" name="username" id="username" placeholder="Username" />
 						</p>
 						<p>
-							<input type="password" name="pass" id="pass" placeholder="Password"  />
+							<input type="password" name="pass" id="pass" placeholder="******"  />
 						</p>
 						
 						
 						<p>
-						<a href="javascript:void(0)" onclick="toggle_visibility('logIn');"><input type="submit" value="Log In" class="btn btn-primary"/></a>
+						<!-- <a href="javascript:void(0)" onclick="toggle_visibility('logIn');"> --><input type="submit" value="<spring:message code="menu.login"/>" class="btn btn-primary"/><!-- </a> -->
 						</p>
 					</form>
+					<spring:message code="menu.regOffer"></spring:message><a href="javascript:void(0)" onclick="toggle_visibility('register'); toggle_visibility('logIn');" ><spring:message code="menu.register"></spring:message></a>
 				</div>
 			</div>
 			
@@ -41,14 +42,14 @@
 	<div class="popupBoxWrapper">
 		<a href="javascript:void(0)" onclick="toggle_visibility('register');"class="close" ><img  alt="Close" src="http://vignette4.wikia.nocookie.net/dynastywarriors/images/a/a5/X.png/revision/latest?cb=20131129190405" height="20px" width="20px"></a>
 			<div class="popupBoxContent">
-				<h3>Register</h3>
+				<h3><spring:message code="menu.register"/></h3>
 				<form action="register" method="post" id="regform">
 				
-					<p><input type="text" autocomplete="off"	name="username" id="regUsername" placeholder="username"/><span id="check" class="glyphicon glyphicon-question-sign"></span> </p>
+					<p><input type="text" autocomplete="off"	name="username" id="regUsername" placeholder="username"/><span id="check" class="glyphicon glyphicon-question-sign"></span> <spring:message code="register.username"></spring:message> </p>
 			
-               	   	<p><input type="password" autocomplete="off" placeholder=" password" name="pass1" id="pass1" onkeyup="checkPass(); return false;"></p>
+               	   	<p><input type="password" disabled="disabled" autocomplete="off" placeholder="******" name="pass1" id="pass1" >	<spring:message code="register.pass"></spring:message></p>
            
-                	<p><input type="password"  autocomplete="off" placeholder="confirm password" name="pass2" id="pass2" onkeyup="checkPass(); return false;"></p>
+                	<p><input type="password" disabled="disabled"  autocomplete="off" placeholder="******" name="pass2" id="pass2" > <spring:message code="register.passrep"></spring:message></p>
                 </form>
                	<p>
                		<select name = "language" form="regform">
@@ -59,6 +60,7 @@
                 		<option value="C">&#8451;</option>
                 		<option value="F">&#8457;</option>
                		</select>
+               		<spring:message code="register.langAndUnit"></spring:message>
                	</p>
 				<p><img alt="sky" src="http://icons.wxug.com/i/c/a/partlycloudy.gif" ><input type="radio" name = "icon" value="a" form="regform" checked="checked">
 				<img alt="sky" src="http://icons.wxug.com/i/c/b/partlycloudy.gif" ><input type="radio" name = "icon" value="b" form="regform"></p>
@@ -69,9 +71,9 @@
 				<p><img alt="sky" src="http://icons.wxug.com/i/c/g/partlycloudy.gif" ><input type="radio" name = "icon" value="g" form="regform">
 				<img alt="sky" src="http://icons.wxug.com/i/c/h/partlycloudy.gif" ><input type="radio" name = "icon" value="h" form="regform"></p>
 				<p><img alt="sky" src="http://icons.wxug.com/i/c/i/partlycloudy.gif" ><input type="radio" name = "icon" value="i" form="regform">
-				<img alt="sky" src="http://icons.wxug.com/i/c/k/partlycloudy.gif" ><input type="radio" name = "icon" value="k" form="regform"></p>
+				<img alt="sky" src="http://icons.wxug.com/i/c/k/partlycloudy.gif" ><input type="radio" name = "icon" value="k" form="regform"><spring:message code="register.icon"></spring:message></p>
 				
-				<input form="regform"  type="submit" value="Register" id="regButton" class="btn btn-primary" disabled="disabled"/>
+				<input form="regform"  type="submit" value="<spring:message code="menu.save"/>" id="regButton" class="btn btn-primary" disabled="disabled"/>
 		</div>
 	</div>
 </div>
@@ -79,7 +81,7 @@
 	<div class="popupBoxWrapper">
 		<a href="javascript:void(0)" onclick="toggle_visibility('edit');"class="close" ><img  alt="Close" src="http://vignette4.wikia.nocookie.net/dynastywarriors/images/a/a5/X.png/revision/latest?cb=20131129190405" height="20px" width="20px"></a>
 			<div class="popupBoxContent">
-				<h3>Edit</h3>
+				<h3><spring:message code="menu.edit"/></h3>
 				<form action="edit" method="post" id="editform">
 				
 					<p><input type="text" autocomplete="off"	name="oldPass" id="username" placeholder="Old password"/></p>
@@ -109,7 +111,7 @@
 				<p><img alt="sky" src="http://icons.wxug.com/i/c/i/partlycloudy.gif" ><input type="radio" name = "icon" value="i" form="editform">
 				<img alt="sky" src="http://icons.wxug.com/i/c/k/partlycloudy.gif" ><input type="radio" name = "icon" value="k" form="editform"></p>
 				
-				<input form="editform"  type="submit" value="Save"  class="btn btn-primary"/>
+				<input form="editform"  type="submit" value="<spring:message code="menu.save"/>"  class="btn btn-primary"/>
 		</div>
 	</div>
 </div>
@@ -142,10 +144,15 @@ $('#check').on('click',
 					console.log(response);
 					if(response){
 						 $( "#check" ).html( "<span class=\"glyphicon glyphicon-thumbs-up\"></span>");
-						 $('#regButton').removeAttr('disabled');
+						
+						 $('#pass1').removeAttr('disabled');
+						 $('#pass2').removeAttr('disabled');
+						
 					}else{
 						 $( "#check" ).html( "<span class=\"glyphicon glyphicon-thumbs-down\"></span>");
 						 $('#regButton').attr('disabled','disabled');
+						 $('#pass1').attr('disabled','disabled');
+						 $('#pass2').attr('disabled','disabled');
 					}
 				},
 				fail : function() {
@@ -154,5 +161,21 @@ $('#check').on('click',
 			});
 
 		});
+
+$('#pass1,#pass2').on('keyup', function(){
+	var pass1 = $('#pass1').val();
+	var pass2 = $('#pass2').val();
+	var regex = /^(?![0-9]{6})[0-9a-zA-Z]{6,}$/;
+	console.log(pass1);
+	console.log(pass2);
+	console.log(regex.test(pass1));
+	if(pass1===pass2&&regex.test(pass1)){
+		 $('#regButton').removeAttr('disabled');
+	}
+	else{
+		$('#regButton').attr('disabled','disabled');
+	}
+});
+	
 </script>	
 	
