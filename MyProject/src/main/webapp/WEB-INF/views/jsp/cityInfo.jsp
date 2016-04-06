@@ -36,9 +36,9 @@
 											<h3 style="color: white;">
 												<c:set var="whatUnit" scope="session" value="${units}" />
 												<spring:message code="weather.temp" />
-												: ${ whatUnit =='true' ? list24hours[0].tempC : list24hours[0].tempFH}
+												: ${ whatUnit =='true' ? list24hours[0].tempC : list24hours[0].tempFH} ${unitTemp}
 												<spring:message code="weather.feels_like" />
-												: ${ whatUnit =='true' ? list24hours[0].feelsLikeC : list24hours[0].feelsLikeFH}
+												: ${ whatUnit =='true' ? list24hours[0].feelsLikeC  : list24hours[0].feelsLikeFH} ${unitTemp}
 												${list24hours[0].conditions}
 
 											</h3></th>
@@ -62,8 +62,8 @@
 										<c:forEach items="${list3days}" var="entry">
 											<th>
 												<p>
-													Max: ${ whatUnit =='true' ? entry.tempHighCel  : entry.tempHighFahr}
-													Min: ${ whatUnit =='true' ? entry.tempLowCel : entry.tempLowFahr}
+													<spring:message code="weather.max_temp2" />: ${ whatUnit =='true' ? entry.tempHighCel  : entry.tempHighFahr} ${unitTemp}
+													<spring:message code="weather.min_temp2" />: ${ whatUnit =='true' ? entry.tempLowCel : entry.tempLowFahr} ${unitTemp}
 													<!-- &#8451 the special symbol -->
 											</th>
 										</c:forEach>
@@ -77,7 +77,7 @@
 									<tr>
 										<th><spring:message code="weather.wind" />:</th>
 										<c:forEach items="${list3days}" var="entry">
-											<th><spring:message code="weather.windspeed" />: ${ whatUnit =='true' ? entry.maxwind_kph  : entry.maxwind_mph} <spring:message code="weather.windspeedUnit" /> <spring:message code="weather.winddirection" />:
+											<th><spring:message code="weather.windspeed" />: ${ whatUnit =='true' ? entry.maxwind_kph  : entry.maxwind_mph} ${unitSpeed}  <spring:message code="weather.winddirection" />:
 												${entry.maxwind_dir}</th>
 										</c:forEach>
 									</tr>
@@ -90,7 +90,7 @@
 									<tr>
 										<th><spring:message code="weather.quantity_of_rain" />:</th>
 										<c:forEach items="${list3days}" var="entry">
-											<th>${entry.qpf_alldayMM}mm</th>
+											<th>${ whatUnit =='true' ? entry.qpf_alldayMM  : entry.qpf_alldayIn} ${unitMM} </th>
 										</c:forEach>
 									</tr>
 									<tr>
@@ -122,13 +122,13 @@
 							<tr>
 								<th><spring:message code="weather.temp" /> :</th>
 								<c:forEach items="${list24hours}" var="entry">
-									<th>${ whatUnit =='true' ? entry.tempC  : entry.tempFH}</th>
+									<th>${ whatUnit =='true' ? entry.tempC  : entry.tempFH} ${unitTemp}</th>
 								</c:forEach>
 							</tr>
 							<tr>
 								<th><spring:message code="weather.feels_like" /> :</th>
 								<c:forEach items="${list24hours}" var="entry">
-									<th>${ whatUnit =='true' ? entry.feelsLikeC  : entry.feelsLikeFH}</th>
+									<th>${ whatUnit =='true' ? entry.feelsLikeC  : entry.feelsLikeFH} ${unitTemp}</th>
 								</c:forEach>
 
 							</tr>
@@ -141,7 +141,7 @@
 							<tr>
 								<th><spring:message code="weather.wind" /> :</th>
 								<c:forEach items="${list24hours}" var="entry">
-									<th>${entry.windKPH} KM/H</th>
+									<th>${entry.windKPH} ${unitSpeed}</th>
 								</c:forEach>
 							</tr>
 							<tr>
@@ -153,7 +153,9 @@
 							<tr>
 								<th><spring:message code="weather.quantity_of_rain" /> :</th>
 								<c:forEach items="${list24hours}" var="entry">
-									<th>${entry.qpfMM}mm</th>
+									<th>
+										${ whatUnit =='true' ? entry.qpfMM  : entry.qpfIN} ${unitMM}
+									</th>
 								</c:forEach>
 							</tr>
 							<tr>
@@ -202,8 +204,8 @@
 							<tr>
 								<c:forEach items="${listweekenddays}" var="entry">
 									<th>
-										<p>Max : ${entry.tempHighCel} &#8451 Min :
-											${entry.tempLowCel} &#8451
+										<p><spring:message code="weather.max_temp2" />: ${ whatUnit =='true' ? entry.tempHighCel  : entry.tempHighFahr} ${unitTemp}
+													<spring:message code="weather.min_temp2" />: ${ whatUnit =='true' ? entry.tempLowCel : entry.tempLowFahr} ${unitTemp}
 									</th>
 								</c:forEach>
 							</tr>
@@ -222,7 +224,7 @@
 							<tr>
 								<th><spring:message code="weather.quantity_of_rain" /> :</th>
 								<c:forEach items="${listweekenddays}" var="entry">
-									<th>${entry.qpf_alldayMM}mm</th>
+									<th>${ whatUnit =='true' ? entry.qpf_alldayMM  : entry.qpf_alldayIn} ${unitMM}</th>
 								</c:forEach>
 							</tr>
 							<tr>
@@ -259,14 +261,14 @@
 							<tr>
 								<c:forEach items="${list5days}" var="entry">
 									<th>
-										<p>${ whatUnit =='true' ? entry.tempHighCel  : entry.tempHighFahr}
+										<p>${ whatUnit =='true' ? entry.tempHighCel  : entry.tempHighFahr} ${unitTemp}
 									</th>
 								</c:forEach>
 							</tr>
 							<tr>
 								<th><spring:message code="weather.wind" /></th>
 								<c:forEach items="${list5days}" var="entry">
-									<th>${ whatUnit =='true' ? entry.maxwind_kph  : entry.maxwind_mph}</th>
+									<th>${ whatUnit =='true' ? entry.maxwind_kph  : entry.maxwind_mph} ${unitSpeed}</th>
 								</c:forEach>
 							</tr>
 							<tr>
@@ -278,7 +280,7 @@
 							<tr>
 								<th><spring:message code="weather.quantity_of_rain" /> :</th>
 								<c:forEach items="${list5days}" var="entry">
-									<th>${entry.qpf_alldayMM}mm</th>
+									<th>${ whatUnit =='true' ? entry.qpf_alldayMM  : entry.qpf_alldayIn} ${unitMM}</th>
 								</c:forEach>
 							</tr>
 							<tr>

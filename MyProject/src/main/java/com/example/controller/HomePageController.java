@@ -45,6 +45,9 @@ public class HomePageController {
 		if (session.getAttribute("units") == null) {
 			System.out.println("setvam units na true");
 			session.setAttribute("units", "true");
+			session.setAttribute("unitTemp", "&#8451");
+			session.setAttribute("unitSpeed", "Km/h");
+			session.setAttribute("unitMM", "mm");
 		}
 		if (session.getAttribute("icons") == null) {
 			System.out.println("setvam icons na i");
@@ -171,13 +174,18 @@ public class HomePageController {
 	@RequestMapping(value = "ChangeUnits", method = RequestMethod.GET)
 	public String ChangeUnits(HttpSession session) {
 		System.out.println("Sega e " + session.getAttribute("units"));
-		if (session.getAttribute("units").equals("true")) {
+		if (session.getAttribute("units").equals("false")) {
 			System.out.println("ot true na false");
-			session.setAttribute("units", "false");
-			
+			session.setAttribute("units", "true");
+			session.setAttribute("unitTemp", "&#8451");
+			session.setAttribute("unitSpeed", "Km/h");
+			session.setAttribute("unitMM", "mm");
 		} else {
 			System.out.println("smenqm ot false na true");
-			session.setAttribute("units", "true");
+			session.setAttribute("units", "false");
+			session.setAttribute("unitTemp", "F");
+			session.setAttribute("unitSpeed", "Mph");
+			session.setAttribute("unitMM", "In");
 		}
 		return "index";
 	}
