@@ -257,14 +257,19 @@ public class LocationDAO implements ILocationDAO {
 			Event currEvent = new Event();
 			JsonObject data = obj.get(i).getAsJsonObject();
 			currEvent.setStart_time(data.get("start_time").getAsString());
-			currEvent.setName(data.get("place").getAsJsonObject().get("name").getAsString());
+			currEvent.setCover_url(data.get("cover").getAsJsonObject().get("source").getAsString());
+			currEvent.setDescription(data.get("description").getAsString());
+			currEvent.setNameOfEvent(data.get("name").getAsString());
+			currEvent.setNameOfEvent(data.get("name").getAsString());
+			currEvent.setNameOfPlace(data.get("place").getAsJsonObject().get("name").getAsString());
 			currEvent.setCity(data.get("place").getAsJsonObject().get("location").getAsJsonObject().get("city").getAsString());	
 			currEvent.setCountry(data.get("place").getAsJsonObject().get("location").getAsJsonObject().get("country").getAsString());
 			currEvent.setLatitude(data.get("place").getAsJsonObject().get("location").getAsJsonObject().get("latitude").getAsString());
 			currEvent.setLongitude(data.get("place").getAsJsonObject().get("location").getAsJsonObject().get("longitude").getAsString());
 			try{
+			currEvent.setTicket_uri(data.get("ticket_uri").getAsString());
 			currEvent.setStreet(data.get("place").getAsJsonObject().get("location").getAsJsonObject().get("street").getAsString());
-			}catch(NullPointerException e){System.out.println("Nqma street v lokociqta na eventa");}
+			}catch(NullPointerException e){System.out.println("Nqma street v lokociqta na eventa ili ticket");}
 			currEvent.setWeather(getWeather(currEvent.getLatitude(),currEvent.getLongitude(),currEvent.getStart_time()));
 			facebookEventsForcast.add(currEvent);
 		}
