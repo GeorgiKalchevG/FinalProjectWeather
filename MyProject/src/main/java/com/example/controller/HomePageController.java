@@ -113,7 +113,7 @@ public class HomePageController {
 			}else {
 				ArrayList<HourForcast> list24hours = dao.getDayFromWUnderground(country, city,
 						session.getAttribute("language").toString());
-				saveOrNullItemsInSession(session,WordUtils.capitalize(city),forTheThreeTablesAtOnce,forTheThreeTablesAtOnce.get(0),forTheThreeTablesAtOnce.get(1),forTheThreeTablesAtOnce.get(2),list24hours);
+				saveOrNullItemsInSession(session,WordUtils.capitalize(country+"/"+city),forTheThreeTablesAtOnce,forTheThreeTablesAtOnce.get(0),forTheThreeTablesAtOnce.get(1),forTheThreeTablesAtOnce.get(2),list24hours);
 
 				LinkedList<DayForcast> queueCities = (LinkedList<DayForcast>) session.getAttribute("queueforCities");
 				if (queueCities.size() > 2) {

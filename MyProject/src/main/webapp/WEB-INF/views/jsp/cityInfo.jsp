@@ -11,7 +11,11 @@
 	<div class="main-container">
 		<div class="col-sm-8" style="background-color: lightyellow;border: solid;border-width: 5px;">
 			<div class="container-fluid">
-				<h2>${city}</h2>
+				<h2> <span id="location-holder">${city}</span>
+				<c:if test="${not empty user}">
+				
+				<c:if test="${not user.locations.contains(city)}">
+				<span id="favIt" class="glyphicon glyphicon-heart"></span></c:if></c:if></h2>
 				<h5>
 					<spring:message code="menu.last_update" />
 				</h5>
@@ -345,5 +349,22 @@
 <script>
 	$('.open-additional-info').on('click', function() {
 		$('.additional-info').toggleClass('opened');
+	});
+	
+	$('#favIt').on('click', function(){
+		var loc = $('#location-holder').text();
+		console.log(loc);
+		$.ajax({
+			url : "addFavourite",
+			type : 'POST',
+			data : {
+				location : loc,
+				
+			},
+			success : function(){
+				$('span#favIt').hide();
+			}
+		});
+		
 	});
 </script>

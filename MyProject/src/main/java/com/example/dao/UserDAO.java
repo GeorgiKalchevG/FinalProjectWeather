@@ -101,6 +101,10 @@ public class UserDAO implements IUserDAO {
 	@Override
 	public boolean addToFavourites(int userID, String location) {
 		String sql = "INSERT INTO "+DB_NAME+"."+FAVOURITES_TABLE+" (U_ID, LOCATION)VALUES (?, ?);";
+		
+		System.out.println("from add to favourites");
+		System.out.println(userID);
+		System.out.println(location);
 		jdbcTemplate.update(sql, userID,location);
 		return false;
 	}
@@ -135,7 +139,7 @@ public class UserDAO implements IUserDAO {
 
 				@Override
 				public String mapRow(ResultSet rs, int rowNum) throws SQLException {
-					String location = rs.getString(DB_NAME+".LOCATION");
+					String location = rs.getString("LOCATION");
 					return location;
 				}
 			});

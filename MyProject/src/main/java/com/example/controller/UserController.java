@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -105,6 +106,13 @@ public class UserController {
 		}
 	
 	//addFavourite -> adds favourite location {PUT}
+	@RequestMapping(value="addFavourite",method = RequestMethod.POST)
+	@ResponseBody boolean addFavourite(@RequestParam("location") String location, HttpSession session){
+		User user = (User) session.getAttribute("user");
+		user.getLocations().add(location);
+		dao.addToFavourites(user.getUserId(), location);
+		return true;
+	}
 	//removeFavourite -> removes favourite location {DELETE}
 	//logOut
 	@RequestMapping(value="logout")

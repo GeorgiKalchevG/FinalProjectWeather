@@ -47,7 +47,7 @@ public class LocationDAO implements ILocationDAO {
 		RestTemplate restTemplate = new RestTemplate();
 		ArrayList<HourForcast> DayForcast = new ArrayList<>();
 
-		String wundergroungUrl = "http://api.wunderground.com/api/e772ec5732ccafa2/hourly/lang:" + language + "/q/"
+		String wundergroungUrl = "http://api.wunderground.com/api/e772ec5732ccafa2/hourly/q/"
 				+ country.replace(' ', '_') + "/" + city.replace(' ', '_') + ".json";
 		JsonObject weatherData = new JsonParser().parse(restTemplate.getForObject(wundergroungUrl, String.class))
 				.getAsJsonObject();
@@ -133,8 +133,7 @@ public class LocationDAO implements ILocationDAO {
 		ArrayList<DayForcast> threeDayForcast = new ArrayList<>();
 		ArrayList<DayForcast> fiveDayForcast = new ArrayList<>();
 		ArrayList<DayForcast> weekendDayForcast = new ArrayList<>();
-		String wundergroungUrl = "http://api.wunderground.com/api/e772ec5732ccafa2/forecast10day/lang:" + language
-				+ "/q/" + country.replace(' ', '_') + "/" + city.replace(' ', '_') + ".json";		JsonObject weatherData = new JsonParser().parse(restTemplate.getForObject(wundergroungUrl, String.class))
+		String wundergroungUrl = "http://api.wunderground.com/api/e772ec5732ccafa2/forecast10day/q/" + country.replace(' ', '_') + "/" + city.replace(' ', '_') + ".json";		JsonObject weatherData = new JsonParser().parse(restTemplate.getForObject(wundergroungUrl, String.class))
 				.getAsJsonObject();
 		System.out.println(weatherData.toString());
 		JsonArray array;
