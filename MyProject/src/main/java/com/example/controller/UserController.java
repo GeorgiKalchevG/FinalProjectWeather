@@ -139,9 +139,23 @@ public class UserController {
 		User user = (User) session.getAttribute("user");
 		user.getLocations().add(location);
 		dao.addToFavourites(user.getUserId(), location);
+		session.setAttribute("user", user);
 		return true;
 	}
-	//removeFavourite -> removes favourite location {DELETE}
+	//removeFavourite -> removes favourite location {DELETE}  removeFavorite
+	@RequestMapping(value="removeFavorite",method = RequestMethod.POST)
+	@ResponseBody boolean removeFavourite(@RequestParam("location") String location, HttpSession session){
+		System.out.println("From remove1: "+location);
+		String locationArr[]=location.split(", ");
+		location=locationArr[1]+"/"+locationArr[0];
+		System.out.println("From remove2: "+location);
+		User user = (User) session.getAttribute("user");
+		user.getLocations().remove(location);
+		
+		dao.removeFromFavourites(user.getUserId(), location);
+		session.setAttribute("user", user);
+		return true;
+	}
 	//logOut
 	@RequestMapping(value="logout")
 	String logOut(HttpSession session){

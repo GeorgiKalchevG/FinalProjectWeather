@@ -11,6 +11,7 @@
 	<div class="main-container">
 		<div class="col-sm-8" style="background-color: lightyellow;border: solid;border-width: 5px;">
 			<div class="container-fluid">
+				
 				<h2> <span id="location-holder">${city}</span>
 				<c:if test="${not empty user}">
 				
@@ -345,6 +346,18 @@
 
 
 </div>
+<c:if test="${not empty user}">
+					<c:if test="${not empty user.locations}">
+					<div class="roll">
+						
+						<ul class="list-group" id="favLocations" onload="loadFavs();">
+							<%-- <c:forEach items="${user.locations}" var = "userFav">
+								<li id="myLocation" class="list-group-item" > <c:import url="http://api.openweathermap.org/data/2.5/weather?q=${userFav}&mode=html&appid=9885a830e31d144089368b0a44b2f9f7"></c:import> <span id="remove" class="glyphicon glyphicon-remove"></span> </li>
+							</c:forEach> --%>
+						</ul>		
+					</div>
+					</c:if>
+				</c:if>
 
 <script>
 	$('.open-additional-info').on('click', function() {
@@ -353,7 +366,7 @@
 	
 	$('#favIt').on('click', function(){
 		var loc = $('#location-holder').text();
-		console.log(loc);
+		console.log("from remove js"+loc);
 		$.ajax({
 			url : "addFavourite",
 			type : 'POST',
@@ -363,8 +376,82 @@
 			},
 			success : function(){
 				$('span#favIt').hide();
+				
 			}
 		});
-		
+		 location.reload(true);
 	});
+
+	var favorites = '${user.locations}'.replace("[","").replace("]","");
+	var favsArray = favorites.split(", ");
+function loadFavs(favs) {
+	this.favorites = favs;
+	console.log(favorites);
+	$('#favLocations').text('');
+	var countryAndCity ="";
+
+	for(i=0;i<favorites.length;i++){
+		(function (i) {
+		   
+		    	
+		console.log(favorites[i]);
+		
+	
+		countryAndCity = favorites[i];
+		var kelvin = 272.15;
+		var countryAndCitySpit = countryAndCity.split("/");
+		console.log(countryAndCitySpit);
+		var country = countryAndCitySpit[0];
+		var city = countryAndCitySpit[1];
+		country = country.replace(" ","+");
+		city = city.replace(" ","+");
+		console.log(city);
+		var url = "http://api.worldweatheronline.com/premium/v1/weather.ashx?key=9c4edfe458aa40db973185430160704&q="+city+","+country+"&num_of_days=1&fx=no&format=json";
+		console.log(url);
+		$.ajax({
+			url : url,
+			type : 'POST',
+			data : {},
+			success : function(response) {
+				
+				var units = ${units};
+				countryAndCity = response.data.request[0].query;
+				list = '<li id="myLocation" class="list-group-item" data-city="'+i+'" ><span id="remove" data-city="'+i+'" class="glyphicon glyphicon-remove"></span>'+countryAndCity+', '+(units===true?response.data.current_condition[0].temp_C+'&#8451;':response.data.current_condition[0].temp_F+'&#8457;'+'</li>')
+				$('#favLocations').append(list);
+				console.log(countryAndCity);
+				i++;
+				console.log(i);
+			},
+			fail : function() {
+			}
+		});
+	    }(i));
+	
+	} 
+}
+loadFavs(favsArray);
+
+$('.list-group').on('click','.glyphicon', function(){
+	
+	
+	var cityData=$(this).data("city");
+	var loc = $('.list-group-item[data-city="'+cityData+'"]').text();
+	console.log(cityData);
+	console.log('removing');
+	console.log(loc);
+	$.ajax({
+		url : "removeFavorite",
+		type : 'POST',
+		data : {
+			location : loc,
+			
+		},
+		success : function(){
+			$('span#myLocation ').hide();
+			location.reload(true);
+		}
+	});
+	
+});
+
 </script>

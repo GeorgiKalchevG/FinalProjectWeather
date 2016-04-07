@@ -1,10 +1,12 @@
 package com.example.dao;
 
+import java.io.UnsupportedEncodingException;
+import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-
+import java.util.Formatter;
 import java.util.List;
 
 import javax.sql.DataSource;
@@ -65,24 +67,46 @@ public class UserDAO implements IUserDAO {
 	}
 
 	private String encript(String password) throws NoSuchAlgorithmException {
-		 MessageDigest md = MessageDigest.getInstance("MD5");
-		  byte byteData[] = md.digest();
-		  
-	        //convert the byte to hex format method 1
-	        StringBuffer sb = new StringBuffer();
-	        for (int i = 0; i < byteData.length; i++) {
-	         sb.append(Integer.toString((byteData[i] & 0xff) + 0x100, 16).substring(1));
-	        }
-		return sb.toString();
-	}
+		 String sha1 = "";
+		    try
+		    {
+		        MessageDigest crypt = MessageDigest.getInstance("SHA-1");
+		        crypt.reset();
+		        crypt.update(password.getBytes("UTF-8"));
+		        sha1 = byteToHex(crypt.digest());
+		    }
+		    catch(NoSuchAlgorithmException e)
+		    {
+		        e.printStackTrace();
+		    }
+		    catch(UnsupportedEncodingException e)
+		    {
+		        e.printStackTrace();
+		    }
+		    return sha1;
+		}
+
+		private String byteToHex(final byte[] hash)
+		{
+		    Formatter formatter = new Formatter();
+		    for (byte b : hash)
+		    {
+		        formatter.format("%02x", b);
+		    }
+		    String result = formatter.toString();
+		    formatter.close();
+		    return result;
+		}
 
 	@Override
 	public User logIn(String userName, String password) throws SQLException {
 		User user = extractUser(userName);
 		if(user!=null)
 			try {
-				if(user.getPassword().equals(encript(password)))
+				if(user.getPassword().equals(encript(password))){
+					System.out.println(user.getPassword()+"            "+encript(password));
 					return extractUser(userName);
+				}
 			} catch (NoSuchAlgorithmException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
