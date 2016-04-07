@@ -3,6 +3,7 @@ package com.example.controller;
 import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,7 +37,7 @@ public class UserController {
 	 }
 	//logIn -> returns user object and saves it in the session {POST}
 	@RequestMapping(value="logIn")
-	String login(@RequestParam("username") String username, @RequestParam("pass") String password, HttpSession session ){
+	String login(@RequestParam("username") String username, @RequestParam("pass") String password, HttpSession session,HttpServletResponse response ){
 		User user = null;
 		try {
 			user = dao.logIn(username, password);
@@ -44,13 +45,22 @@ public class UserController {
 				session.setAttribute("userFail", 1);
 			else{
 				session.setAttribute("user", user);
+				session.setAttribute((String)session.getAttribute("city")+session.getAttribute("language"), null);
+				session.setAttribute("language", user.getLanguage());
+				if(user.getUnit().equals("F")){
+					session.setAttribute("units", "true");
+				}
+				else{
+					session.setAttribute("units", "false");
+				}
+				HomePageController.ChangeUnits(session);
 				session.setAttribute("userFail", 0);
 			}
 			//System.out.println(user.toString());
 		} catch (SQLException e) {
 			session.setAttribute("page", "error.jsp");
 		}
-		return "forward:/index";
+		return "redirect:index";
 	}
 	//register -> 	if user is successfully created returns user and saves it in the session else 						{POST}
 					//throws exception and sends to error page this would happen if there is a problem with db
@@ -68,11 +78,20 @@ public class UserController {
 		try {
 			user = dao.registerUser(userName, password, language, unit, icon);
 			session.setAttribute("user", user);
+			session.setAttribute((String)session.getAttribute("city")+session.getAttribute("language"), null);
+			session.setAttribute("language", user.getLanguage());
+			if(user.getUnit().equals("F")){
+				session.setAttribute("units", "true");
+			}
+			else{
+				session.setAttribute("units", "false");
+			}
+			HomePageController.ChangeUnits(session);
 		} catch (SQLException | NoSuchAlgorithmException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return "forward:/index";
+		return "redirect:index";
 	}
 	//update ->  uptates user pass and settings {POST}
 	@RequestMapping(value="edit")
@@ -98,11 +117,20 @@ public class UserController {
 				System.out.println("from update"+user.toString());
 				dao.updateSettings(user);
 				session.setAttribute("user", user);
+				session.setAttribute((String)session.getAttribute("city")+session.getAttribute("language"), null);
+				session.setAttribute("language", user.getLanguage());
+				if(user.getUnit().equals("F")){
+					session.setAttribute("units", "true");
+				}
+				else{
+					session.setAttribute("units", "false");
+				}
+				HomePageController.ChangeUnits(session);
 			} catch (SQLException | DataAccessException | NoSuchAlgorithmException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			return "forward:/index";
+			return "redirect:index";
 		}
 	
 	//addFavourite -> adds favourite location {PUT}
@@ -119,7 +147,8 @@ public class UserController {
 	String logOut(HttpSession session){
 		System.out.println("logging out");
 		session.setAttribute("user", null);
-		return "forward:/index";
+		session.setAttribute((String)session.getAttribute("city")+session.getAttribute("language"), null);
+		return "redirect:index";
 	}
 	
 }

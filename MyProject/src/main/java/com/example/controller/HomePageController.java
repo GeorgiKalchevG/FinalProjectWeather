@@ -28,6 +28,7 @@ import com.example.model.DayForcast;
 import com.example.model.Forcast;
 import com.example.model.HourForcast;
 import com.example.model.Loc;
+import com.example.model.User;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
@@ -73,10 +74,10 @@ public class HomePageController {
 			saveOrNullItemsInSession(session,cityName,forTheThreeTablesAtOnce,forTheThreeTablesAtOnce.get(0),forTheThreeTablesAtOnce.get(1),forTheThreeTablesAtOnce.get(2),list24hours);
 		}else{
 		forTheThreeTablesAtOnce = dao.getFiveDaysFromWUnderground(
-				cityName.split("/")[0], cityName.split("/")[1], session.getAttribute("language").toString());
+				cityName.split("/")[0], cityName.split("/")[1], session.getAttribute("language").toString(),(User)session.getAttribute("user"));
 		
 		ArrayList<HourForcast> list24hours = dao.getDayFromWUnderground(cityName.split("/")[0], cityName.split("/")[1],
-				session.getAttribute("language").toString());
+				session.getAttribute("language").toString(),(User)session.getAttribute("user"));
 		saveOrNullItemsInSession(session,cityName,forTheThreeTablesAtOnce,forTheThreeTablesAtOnce.get(0),forTheThreeTablesAtOnce.get(1),forTheThreeTablesAtOnce.get(2),list24hours);
 
 		}
@@ -97,11 +98,12 @@ public class HomePageController {
 			System.out.println("city name: "+city);
 			System.out.println("country name: "+country);
 			ArrayList<ArrayList<DayForcast>> forTheThreeTablesAtOnce = dao.getFiveDaysFromWUnderground(country, city,
-					session.getAttribute("language").toString());
+					session.getAttribute("language").toString(),(User)session.getAttribute("user"));
 			if (forTheThreeTablesAtOnce == null) {
 				saveOrNullItemsInSession(session,"Couldnt find this city",forTheThreeTablesAtOnce,null,null,null,null);
 				System.out.println("vrushta ako e null pri city info");
-				return "index";
+				session.setAttribute("page", "cityInfo.jsp");
+				return "cityInfo";
 			}
 			else if(forTheThreeTablesAtOnce.get(0).get(0).getIcon_url()==null){
 				session.setAttribute("cityForCurrentSearch", WordUtils.capitalize(city));
@@ -112,7 +114,7 @@ public class HomePageController {
 				return "index"; 
 			}else {
 				ArrayList<HourForcast> list24hours = dao.getDayFromWUnderground(country, city,
-						session.getAttribute("language").toString());
+						session.getAttribute("language").toString(),(User)session.getAttribute("user"));
 				saveOrNullItemsInSession(session,WordUtils.capitalize(country+"/"+city),forTheThreeTablesAtOnce,forTheThreeTablesAtOnce.get(0),forTheThreeTablesAtOnce.get(1),forTheThreeTablesAtOnce.get(2),list24hours);
 
 				LinkedList<DayForcast> queueCities = (LinkedList<DayForcast>) session.getAttribute("queueforCities");
@@ -172,7 +174,7 @@ public class HomePageController {
 
 	@CrossOrigin(origins = "http://localhost:8080")
 	@RequestMapping(value = "ChangeUnits", method = RequestMethod.GET)
-	public String ChangeUnits(HttpSession session) {
+	public static String ChangeUnits(HttpSession session) {
 		System.out.println("Sega e " + session.getAttribute("units"));
 		if (session.getAttribute("units").equals("false")) {
 			System.out.println("ot true na false");
@@ -207,6 +209,11 @@ public class HomePageController {
 	@RequestMapping(value = "facebookEvents")
 	public String loadShukarii(HttpSession session) {
 		session.setAttribute("page", "fb.jsp");
+		return "index";
+	}
+	@RequestMapping(value = "worldMap")
+	public String loadWorldMap(HttpSession session) {
+		session.setAttribute("page", "worldMap.jsp");
 		return "index";
 	}
 }

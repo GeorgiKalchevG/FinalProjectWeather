@@ -9,13 +9,14 @@ import com.example.model.Event;
 import com.example.model.Forcast;
 import com.example.model.HourForcast;
 import com.example.model.Location;
+import com.example.model.User;
 import com.google.gson.JsonObject;
 
 public interface ILocationDAO {
 	
 	ArrayList<Location> collectMajorCitys(String ip);
-	ArrayList<ArrayList<DayForcast>> getFiveDaysFromWUnderground(String country,String city,String language);
-	ArrayList<HourForcast> getDayFromWUnderground(String country, String city,String language);
+	ArrayList<ArrayList<DayForcast>> getFiveDaysFromWUnderground(String country,String city,String language,User user);
+	ArrayList<HourForcast> getDayFromWUnderground(String country, String city,String language,User user);
 	String getCityNameByIp(String ip);
 	String plannerResponse(String from, String to, String city, String country);
 	ArrayList<Event> getEventsFromFacebookForcast(String responseFromFB);

@@ -25,6 +25,7 @@ import com.example.model.Event;
 import com.example.model.HourForcast;
 import com.example.model.Loc;
 import com.example.model.Location;
+import com.example.model.User;
 import com.google.gson.JsonObject;
 
 
@@ -83,9 +84,9 @@ public class SearchController {
 		String city= session.getAttribute("cityForCurrentSearch").toString();
 		System.out.println("vuv searchInSpecifiCountry city "+city+"   country   "+country);
 		ArrayList<ArrayList<DayForcast>> forTheThreeTablesAtOnce = dao.getFiveDaysFromWUnderground(country, city,
-				session.getAttribute("language").toString());
+				session.getAttribute("language").toString(),(User)session.getAttribute("user"));
 		ArrayList<HourForcast> list24hours = dao.getDayFromWUnderground(country, city,
-				session.getAttribute("language").toString());
+				session.getAttribute("language").toString(),(User)session.getAttribute("user"));
 		session.setAttribute("city", country+"/"+city);
 		session.setAttribute("list24hours", list24hours);
 		session.setAttribute("backGroundGIF", chooseBackGroundGIF(list24hours));

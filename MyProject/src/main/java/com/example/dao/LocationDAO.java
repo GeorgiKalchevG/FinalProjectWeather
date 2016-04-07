@@ -15,6 +15,7 @@ import com.example.model.Event;
 import com.example.model.Forcast;
 import com.example.model.HourForcast;
 import com.example.model.Location;
+import com.example.model.User;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
@@ -42,11 +43,11 @@ public class LocationDAO implements ILocationDAO {
 	}
 
 	@Override
-	public ArrayList<HourForcast> getDayFromWUnderground(String country, String city, String language) {
+	public ArrayList<HourForcast> getDayFromWUnderground(String country, String city, String language,User user) {
 		System.out.println("2          " + city.replace(' ', '_') + "/" + country.replace(' ', '_') + ".json");
 		RestTemplate restTemplate = new RestTemplate();
 		ArrayList<HourForcast> DayForcast = new ArrayList<>();
-
+		
 		String wundergroungUrl = "http://api.wunderground.com/api/e772ec5732ccafa2/hourly/q/"
 				+ country.replace(' ', '_') + "/" + city.replace(' ', '_') + ".json";
 		JsonObject weatherData = new JsonParser().parse(restTemplate.getForObject(wundergroungUrl, String.class))
@@ -54,12 +55,12 @@ public class LocationDAO implements ILocationDAO {
 		System.out.println(weatherData.toString());
 		JsonArray array = weatherData.get("hourly_forecast").getAsJsonArray();
 		for (int i = 0; i < 24; i++) {
-			DayForcast.add(createHour(array.get(i).getAsJsonObject(),language));
+			DayForcast.add(createHour(array.get(i).getAsJsonObject(),language,user));
 		}
 		return DayForcast;
 	}
 
-	private HourForcast createHour(JsonObject jsonElement,String language) {
+	private HourForcast createHour(JsonObject jsonElement,String language,User user) {
 		HourForcast forcast = new HourForcast();
 		forcast.setHour(Integer.parseInt(jsonElement.get("FCTTIME").getAsJsonObject().get("hour").getAsString()));
 		forcast.setYear(Integer.parseInt(jsonElement.get("FCTTIME").getAsJsonObject().get("year").getAsString()));
@@ -69,7 +70,7 @@ public class LocationDAO implements ILocationDAO {
 		forcast.setTempC(Integer.parseInt(jsonElement.get("temp").getAsJsonObject().get("metric").getAsString()));
 		forcast.setTempFH(Integer.parseInt(jsonElement.get("temp").getAsJsonObject().get("english").getAsString()));
 		forcast.setConditions(language.equals("BU")?changeFromEnglishToBularian(jsonElement.get("condition").getAsString()):jsonElement.get("condition").getAsString());
-		forcast.setIcon_url(jsonElement.get("icon_url").getAsString());
+		forcast.setIcon_url(user==null?jsonElement.get("icon_url").getAsString():switchUserIcons(jsonElement.get("icon_url").getAsString(),user.getIcon().charAt(0)));
 		forcast.setSky(Integer.parseInt(jsonElement.get("sky").getAsString()));
 		forcast.setWindKPH(Integer.parseInt(jsonElement.get("wspd").getAsJsonObject().get("metric").getAsString()));
 		forcast.setWindMPH(Integer.parseInt(jsonElement.get("wspd").getAsJsonObject().get("english").getAsString()));
@@ -92,7 +93,7 @@ public class LocationDAO implements ILocationDAO {
 		return forcast;
 	}
 
-	private DayForcast createDay(JsonObject jsonElement, String cityName,String countryName,String language) {
+	private DayForcast createDay(JsonObject jsonElement, String cityName,String countryName,String language,User user) {
 		DayForcast forcast = new DayForcast();
 		System.out.println(jsonElement.toString());
 		forcast.setCityName(cityName);
@@ -103,7 +104,8 @@ public class LocationDAO implements ILocationDAO {
 		forcast.setMonth(jsonElement.get("date").getAsJsonObject().get("month").getAsInt());
 		forcast.setYear(jsonElement.get("date").getAsJsonObject().get("year").getAsInt());
 		forcast.setEpoch(jsonElement.get("date").getAsJsonObject().get("epoch").getAsLong());
-		forcast.setIcon_url(jsonElement.get("icon_url").getAsString());
+		System.out.println(user==null?"null e manqk":"ne e null");
+		forcast.setIcon_url(user==null?(jsonElement.get("icon_url").getAsString()):switchUserIcons(jsonElement.get("icon_url").getAsString(),user.getIcon().charAt(0)));
 		forcast.setPop(jsonElement.get("pop").getAsInt());
 		forcast.setMaxwind_degrees(jsonElement.get("maxwind").getAsJsonObject().get("degrees").getAsDouble());
 		forcast.setMaxwind_dir(jsonElement.get("maxwind").getAsJsonObject().get("dir").getAsString());
@@ -126,7 +128,7 @@ public class LocationDAO implements ILocationDAO {
 	}
 
 	@Override
-	public ArrayList<ArrayList<DayForcast>> getFiveDaysFromWUnderground(String country, String city, String language) {
+	public ArrayList<ArrayList<DayForcast>> getFiveDaysFromWUnderground(String country, String city, String language,User user) {
 		System.out.println("city " + city + "country " + country);
 		ArrayList<ArrayList<DayForcast>> forTheThreeTablesAtOnce = new ArrayList<ArrayList<DayForcast>>();
 		RestTemplate restTemplate = new RestTemplate();
@@ -172,18 +174,18 @@ public class LocationDAO implements ILocationDAO {
 		// weekenda v tozi for
 		dayOfWeek = dayOfWeek < 5 ? (5 - dayOfWeek) : (12 - dayOfWeek);
 		for (int i = dayOfWeek; i < dayOfWeek + 3; i++) {
-			weekendDayForcast.add(createDay(array.get(i).getAsJsonObject(), city,country,language));
+			weekendDayForcast.add(createDay(array.get(i).getAsJsonObject(), city,country,language,user));
 		}
 		for (int i = 0; i < 3; i++) { // vrushta prognoza za 5 dena i go puham v
 										// purvoto pole na arraylista
-			threeDayForcast.add(createDay(array.get(i).getAsJsonObject(), city,country,language));
+			threeDayForcast.add(createDay(array.get(i).getAsJsonObject(), city,country,language,user));
 		}
 		forTheThreeTablesAtOnce.add(threeDayForcast);
 		// addvam trite dni v 5-cata da ne pravq crateday otnovo i advam trite
 		// dni v arraylista s progonozatakato
 		fiveDayForcast.addAll(threeDayForcast);
 		for (int i = 3; i < 5; i++) {
-			fiveDayForcast.add(createDay(array.get(i).getAsJsonObject(), city,country,language));
+			fiveDayForcast.add(createDay(array.get(i).getAsJsonObject(), city,country,language,user));
 		}
 		forTheThreeTablesAtOnce.add(weekendDayForcast);
 		forTheThreeTablesAtOnce.add(fiveDayForcast);
@@ -199,56 +201,16 @@ public class LocationDAO implements ILocationDAO {
 		RestTemplate restTemplate = new RestTemplate();
 		JsonObject obj = new JsonParser().parse(restTemplate.getForObject(url, String.class)).getAsJsonObject();
 		System.out.println(obj.toString());
-//		ArrayList<String> chanceOFTypeOfWeather = new ArrayList<>();
-//		ArrayList<HashMap<String, String>> tempHigh = new ArrayList<>();
-//		ArrayList<HashMap<String, String>> tempLow= new ArrayList<>();
-//		ArrayList<HashMap<String, String>> precip= new ArrayList<>();
-//		ArrayList<HashMap<String, String>> dewpointHigh= new ArrayList<>();
-//		ArrayList<HashMap<String, String>> dewpointLow= new ArrayList<>();
 		JsonObject chanceOf = obj.get("trip").getAsJsonObject().get("chance_of").getAsJsonObject();
 		JsonObject tempHiJson = obj.get("trip").getAsJsonObject().get("temp_high").getAsJsonObject();
 		JsonObject tempLoJson = obj.get("trip").getAsJsonObject().get("temp_low").getAsJsonObject();
 		JsonObject precipJson = obj.get("trip").getAsJsonObject().get("precip").getAsJsonObject();
 		JsonObject dewHiJson = obj.get("trip").getAsJsonObject().get("dewpoint_high").getAsJsonObject();
 		JsonObject dewLoJson = obj.get("trip").getAsJsonObject().get("dewpoint_low").getAsJsonObject();
-//		chanceOFTypeOfWeather.add(chanceOf.get("tempoversixty").getAsJsonObject().get("percentage").getAsString());
-//		chanceOFTypeOfWeather
-//				.add(chanceOf.get("chanceofsunnycloudyday").getAsJsonObject().get("percentage").getAsString());
-//		chanceOFTypeOfWeather.add(chanceOf.get("chanceofprecip").getAsJsonObject().get("percentage").getAsString());
-//		chanceOFTypeOfWeather.add(chanceOf.get("chanceofrainday").getAsJsonObject().get("percentage").getAsString());
-//		chanceOFTypeOfWeather
-//				.add(chanceOf.get("chanceofpartlycloudyday").getAsJsonObject().get("percentage").getAsString());
-//		chanceOFTypeOfWeather.add(chanceOf.get("chanceofwindyday").getAsJsonObject().get("percentage").getAsString());
-//		chanceOFTypeOfWeather.add(chanceOf.get("tempoverfreezing").getAsJsonObject().get("percentage").getAsString());
-//		chanceOFTypeOfWeather.add(chanceOf.get("chanceofhumidday").getAsJsonObject().get("percentage").getAsString());
-//		chanceOFTypeOfWeather.add(chanceOf.get("chanceofthunderday").getAsJsonObject().get("percentage").getAsString());
-//		chanceOFTypeOfWeather.add(chanceOf.get("chanceofcloudyday").getAsJsonObject().get("percentage").getAsString());
-//		chanceOFTypeOfWeather.add(chanceOf.get("chanceofsultryday").getAsJsonObject().get("percentage").getAsString());
-//		chanceOFTypeOfWeather.add(chanceOf.get("chanceoffogday").getAsJsonObject().get("percentage").getAsString());
-//		chanceOFTypeOfWeather
-//				.add(chanceOf.get("chanceofsnowonground").getAsJsonObject().get("percentage").getAsString());
-//		chanceOFTypeOfWeather.add(chanceOf.get("chanceoftornadoday").getAsJsonObject().get("percentage").getAsString());
-//		chanceOFTypeOfWeather.add(chanceOf.get("tempbelowfreezing").getAsJsonObject().get("percentage").getAsString());
-//		chanceOFTypeOfWeather.add(chanceOf.get("tempoverninety").getAsJsonObject().get("percentage").getAsString());
-//		chanceOFTypeOfWeather.add(chanceOf.get("chanceofhailday").getAsJsonObject().get("percentage").getAsString());
-//		chanceOFTypeOfWeather.add(chanceOf.get("chanceofsnowday").getAsJsonObject().get("percentage").getAsString());
-//		for(int i = 0;i<3;i++){
-//			tempHigh.add(new HashMap<>() );
-//			tempLow.add(new HashMap<>() );
-//			precip.add(new HashMap<>() );
-//			dewpointHigh.add(new HashMap<>() );
-//			dewpointLow.add(new HashMap<>() );
-//			
-//		}
 		JsonArray variation = new JsonArray();
 		String[] value = {"min","avg","max"};
 		String unit = "C";
 		for(int i = 0;i<3;i++){	
-//		tempHigh.get(i).put(value[i], tempHiJson.get(value[i]).getAsJsonObject().get(unit).getAsString());
-//		tempLow.get(i).put(value[i], tempLoJson.get(value[i]).getAsJsonObject().get(unit).getAsString());
-//		precip.get(i).put(value[i], precipJson.get(value[i]).getAsJsonObject().get("cm").getAsString());
-//		dewpointHigh.get(i).put(value[i], dewHiJson.get(value[i]).getAsJsonObject().get(unit).getAsString());
-//		dewpointLow.get(i).put(value[i], dewLoJson.get(value[i]).getAsJsonObject().get(unit).getAsString());
 			variation.add(Double.parseDouble(tempHiJson.get(value[i]).getAsJsonObject().get(unit).getAsString()));
 			variation.add(Double.parseDouble(tempLoJson.get(value[i]).getAsJsonObject().get(unit).getAsString()));
 			variation.add(Double.parseDouble(precipJson.get(value[i]).getAsJsonObject().get("cm").getAsString()));
@@ -353,6 +315,12 @@ public class LocationDAO implements ILocationDAO {
 		default: return fromEnglish;
 		}
 	}
+	public static String switchUserIcons(String fromIcon,char toIcon){
+		char[] fromIconChar = fromIcon.toCharArray();
+		fromIconChar[26]=toIcon;
+		return new String(fromIconChar);
+	}
+	
 	}
 
 // http://api.wunderground.com/api/ba6800955f5db321/forecast10day/q/CA/San_Francisco.json
