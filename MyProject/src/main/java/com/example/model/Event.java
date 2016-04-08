@@ -2,18 +2,28 @@ package com.example.model;
 
 public class Event {
 	private String start_time;
-	private String name;
+	private String cover_url;
+	private String description;
+	private String nameOfPlace;
+	private String nameOfEvent;
 	private String city;
 	private String country;
 	private String latitude;
 	private String longitude;
 	private String street;
+	private String ticket_uri;
 	private CurrentForcast weather;
 	public String getStreet() {
 		return street;
 	}
 	public void setStreet(String street) {
 		this.street = street;
+	}
+	public String getTicket_uri() {
+		return ticket_uri;
+	}
+	public void setTicket_uri(String ticket_uri) {
+		this.ticket_uri = ticket_uri;
 	}
 	public String getLatitude() {
 		return latitude;
@@ -40,11 +50,18 @@ public class Event {
 	public void setWeather(CurrentForcast weather) {
 		this.weather = weather;
 	}
-	public String getName() {
-		return name;
+	
+	public String getNameOfPlace() {
+		return nameOfPlace;
 	}
-	public void setName(String name) {
-		this.name = name;
+	public void setNameOfPlace(String nameOfPlace) {
+		this.nameOfPlace = nameOfPlace;
+	}
+	public String getNameOfEvent() {
+		return nameOfEvent;
+	}
+	public void setNameOfEvent(String nameOfEvent) {
+		this.nameOfEvent = nameOfEvent;
 	}
 	public String getCity() {
 		return city;
@@ -57,5 +74,17 @@ public class Event {
 	}
 	public void setCountry(String country) {
 		this.country = country;
+	}
+	public String getCover_url() {
+		return cover_url;
+	}
+	public void setCover_url(String cover_url) {
+		this.cover_url = cover_url;
+	}
+	public String getDescription() {
+		return description;
+	}
+	public void setDescription(String description) {
+		this.description = description;
 	}
 }
