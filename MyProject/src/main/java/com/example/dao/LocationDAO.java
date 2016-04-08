@@ -30,13 +30,26 @@ public class LocationDAO implements ILocationDAO {
 	public String getCityNameByIp(String ip) {
 	/*	String ipToGeotag = "http://api.db-ip.com/addrinfo?addr=" + ip
 				+ "&api_key=2847ed47c9cf4242bb2e09a10aeb3c313c5ebb06";*/
-		String ipToGeotag ="https://api.geoips.com/ip/"+ip+"/key/2e4183014fa31519084f3046206bbd8e/output/json";
+		
+		String ipToGeotag ="http://api.db-ip.com/addrinfo?addr=" + ip
+				+ "&api_key=2847ed47c9cf4242bb2e09a10aeb3c313c5ebb06";
+		RestTemplate restTemplate = new RestTemplate();
+		String data = restTemplate.getForObject(ipToGeotag, String.class);
+		String cityName = new JsonParser().parse(data).getAsJsonObject().get("city").getAsString();
+		String countryName = new JsonParser().parse(data).getAsJsonObject().get("country").getAsString();
+		
+		
+		
+		
+		
+		
+		/*String ipToGeotag ="https://api.geoips.com/ip/"+ip+"/key/75c01d0131baef1af4571fa4be7f1b3f/output/json";
 		RestTemplate restTemplate = new RestTemplate();
 		String data = restTemplate.getForObject(ipToGeotag, String.class);
 		String cityName = new JsonParser().parse(data).getAsJsonObject().get("response").getAsJsonObject().get("location").getAsJsonObject().get("city_name").getAsString();
 		String countryName = new JsonParser().parse(data).getAsJsonObject().get("response").getAsJsonObject().get("location").getAsJsonObject().get("country_name").getAsString();
 		cityName=WordUtils.capitalize(cityName.toLowerCase());
-		countryName=WordUtils.capitalize(countryName.toLowerCase());
+		countryName=WordUtils.capitalize(countryName.toLowerCase());*/
 		return countryName + "/" + cityName;
 	}
 	

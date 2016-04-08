@@ -100,9 +100,19 @@ public class UserDAO implements IUserDAO {
 
 	@Override
 	public User logIn(String userName, String password) throws SQLException {
+		System.out.println("From log in dao                                                    \n\n\n" +userName+", "+password );
 		User user = extractUser(userName);
+		
+		System.out.println(user.toString());
+		try {
+			System.out.println("-------------------------encrypted password "+encript("Qwer123"));
+		} catch (NoSuchAlgorithmException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		if(user!=null)
 			try {
+				
 				if(user.getPassword().equals(encript(password))){
 					System.out.println(user.getPassword()+"            "+encript(password));
 					return extractUser(userName);
@@ -116,10 +126,17 @@ public class UserDAO implements IUserDAO {
 
 	@Override
 	public void updateSettings(User user) throws SQLException, DataAccessException, NoSuchAlgorithmException {
+		String pass=null;
+		if(user.getPassword().length()<30){
+			pass = encript(user.getPassword());
+		}
+		else{
+			pass = user.getPassword();
+		}
 		 String sql = "UPDATE "+DB_NAME+"."+USER_TABLE+" SET  password=?, language=?,unit=?,icon=? "
                  + "WHERE U_ID=?";
-     jdbcTemplate.update(sql, encript(user.getPassword()),user.getLanguage(),user.getUnit(),user.getIcon(),user.getUserId());
-		
+     jdbcTemplate.update(sql,pass ,user.getLanguage(),user.getUnit(),user.getIcon(),user.getUserId());
+		System.out.println("from updateDAO" +user.toString());
 	}
 
 	@Override
@@ -154,9 +171,13 @@ public class UserDAO implements IUserDAO {
 					user.setIcon(rs.getString(6));
 					return user;
 				}
+				
 				return null;
 			}
 		});
+		 System.out.println("from extractor");
+		 System.out.println( user.toString());
+		 
 		 if(user!=null){
 			String sqlFav ="SELECT LOCATION FROM  "+DB_NAME+"."+FAVOURITES_TABLE+" WHERE U_ID="+user.getUserId();
 			List<String> favourites = jdbcTemplate.query(sqlFav, new RowMapper<String>() {
@@ -172,5 +193,16 @@ public class UserDAO implements IUserDAO {
 		
 		return user;
 		
+	}
+
+	@Override
+	public boolean checkPassword(String userName, String password) throws NoSuchAlgorithmException {
+		User user = extractUser(userName);
+		String encripted = encript(password);
+		System.out.println(user.toString());
+		System.out.println(encripted);
+		if(encripted.equals(user.getPassword()))
+			return true;
+		return false;
 	}
 }

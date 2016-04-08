@@ -17,4 +17,5 @@ public interface IUserDAO {
 	void updateSettings(User user) throws SQLException, DataAccessException, NoSuchAlgorithmException;
 	boolean addToFavourites(int userID, String location);
 	boolean removeFromFavourites(int userID, String location);
+	boolean checkPassword(String Username,String password) throws NoSuchAlgorithmException;
 }

@@ -95,7 +95,7 @@ public class UserController {
 	}
 	//update ->  uptates user pass and settings {POST}
 	@RequestMapping(value="edit")
-	String edit(@RequestParam("pass1") String password,@RequestParam("icon") String icon,@RequestParam("language") String language,@RequestParam("unit") String unit, HttpSession session ){
+	String edit(@RequestParam("oldPass") String oldPass,@RequestParam("pass1") String password,@RequestParam("icon") String icon,@RequestParam("language") String language,@RequestParam("unit") String unit, HttpSession session ){
 			
 			System.out.println("```````````````````````From edit``````````````````````````");
 
@@ -103,10 +103,22 @@ public class UserController {
 			System.out.println(icon);
 			System.out.println(unit);
 			*/
-			User user = (User) session.getAttribute("user");
 		
-			if(password!="")
-				user.setPassword(password);
+			User user = (User) session.getAttribute("user");
+/*			System.out.println(user.getPassword());*/
+			if(oldPass!=""){
+				try {
+					if(dao.checkPassword(user.getUserName(), oldPass))
+						user.setPassword(password);
+					else{
+						return "index";
+					}
+				} catch (NoSuchAlgorithmException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			
 			if(icon!=null)
 				user.setIcon(icon);
 	
@@ -130,7 +142,7 @@ public class UserController {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			return "redirect:index";
+			return "forward:index";
 		}
 	
 	//addFavourite -> adds favourite location {PUT}

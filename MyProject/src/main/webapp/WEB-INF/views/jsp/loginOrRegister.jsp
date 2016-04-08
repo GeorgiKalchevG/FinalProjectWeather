@@ -84,11 +84,11 @@
 				<h3><spring:message code="menu.edit"/></h3>
 				<form action="edit" method="post" id="editform">
 				
-					<p><input type="text" autocomplete="off"	name="oldPass" id="username" placeholder="Old password"/></p>
+					<p><input type="password" autocomplete="off"	name="oldPass" id="oldPassEdit" placeholder="Old password"/></p>
 			
-               	   	<p><input type="password" autocomplete="off" placeholder="New password" name="pass1" id="pass1" onkeyup="checkPass(); return false;"></p>
+               	   	<p><input type="password" autocomplete="off" placeholder="New password" name="pass1" id="pass1Edit"  ></p>
            
-                	<p><input type="password"  autocomplete="off" placeholder="Confirm new password" name="pass2" id="pass2" onkeyup="checkPass(); return false;"></p>
+                	<p><input type="password"  autocomplete="off" placeholder="Confirm new password" name="pass2" id="pass2Edit" ></p>
                 </form>
                	<p>
                		<select name = "language" form="editform">
@@ -111,7 +111,7 @@
 				<p><img alt="sky" src="http://icons.wxug.com/i/c/i/partlycloudy.gif" ><input type="radio" name = "icon" value="i" form="editform">
 				<img alt="sky" src="http://icons.wxug.com/i/c/k/partlycloudy.gif" ><input type="radio" name = "icon" value="k" form="editform"></p>
 				
-				<input form="editform"  type="submit" value="<spring:message code="menu.save"/>"  class="btn btn-primary"/>
+				<input form="editform"  type="submit" value="<spring:message code="menu.save"/>" id="editButton"  class="btn btn-primary"/>
 		</div>
 	</div>
 </div>
@@ -165,7 +165,7 @@ $('#check').on('click',
 $('#pass1,#pass2').on('keyup', function(){
 	var pass1 = $('#pass1').val();
 	var pass2 = $('#pass2').val();
-	var regex = /^(?![0-9]{6})[0-9a-zA-Z]{6,}$/;
+	var regex = /(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}/;
 	console.log(pass1);
 	console.log(pass2);
 	console.log(regex.test(pass1));
@@ -174,6 +174,26 @@ $('#pass1,#pass2').on('keyup', function(){
 	}
 	else{
 		$('#regButton').attr('disabled','disabled');
+	}
+});
+$('#pass1Edit,#pass2Edit').on('keyup', function(){
+	var pass1 = $('#pass1Edit').val();
+	var pass2 = $('#pass2Edit').val();
+	var oldPass = $('#oldPassEdit').val();
+	console.log(oldPass);
+	var regex = /(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}/;
+	if(oldPass===''){
+		$('#editButton').attr('disabled','disabled');
+	}else{
+		console.log(pass1);
+		console.log(pass2);
+		console.log(regex.test(pass1));
+		if(pass1===pass2&&regex.test(pass1)){
+			 $('#editButton').removeAttr('disabled');
+		}
+		else{
+			$('#editButton').attr('disabled','disabled');
+		}
 	}
 });
 	
