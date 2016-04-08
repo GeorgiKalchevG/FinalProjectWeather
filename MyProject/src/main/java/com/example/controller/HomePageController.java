@@ -49,6 +49,7 @@ public class HomePageController {
 			session.setAttribute("unitTemp", "&#8451");
 			session.setAttribute("unitSpeed", "Km/h");
 			session.setAttribute("unitMM", "mm");
+			session.setAttribute("unitKmMiles", "Km");
 		}
 		if (session.getAttribute("icons") == null) {
 			System.out.println("setvam icons na i");
@@ -182,12 +183,14 @@ public class HomePageController {
 			session.setAttribute("unitTemp", "&#8451");
 			session.setAttribute("unitSpeed", "Km/h");
 			session.setAttribute("unitMM", "mm");
+			session.setAttribute("unitKmMiles", "Km");
 		} else {
 			System.out.println("smenqm ot false na true");
 			session.setAttribute("units", "false");
 			session.setAttribute("unitTemp", "F");
 			session.setAttribute("unitSpeed", "Mph");
 			session.setAttribute("unitMM", "In");
+			session.setAttribute("unitKmMiles", "Miles");
 		}
 		return "index";
 	}

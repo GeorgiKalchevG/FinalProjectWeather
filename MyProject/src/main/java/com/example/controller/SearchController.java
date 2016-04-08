@@ -68,6 +68,13 @@ public class SearchController {
 			return "false";
 		}
 	}
+	@CrossOrigin(origins = "http://localhost:8080")
+	@RequestMapping(value="/logoutFromFacebook", method = RequestMethod.POST)
+	@ResponseBody
+	void logoutFromFacebook(HttpSession session){
+		session.removeAttribute("facebookForecast");
+		System.out.println("tuka izobshto vliza li?");
+	}
 	
 	
 	
