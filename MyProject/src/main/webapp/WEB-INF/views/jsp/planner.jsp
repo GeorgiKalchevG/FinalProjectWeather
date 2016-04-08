@@ -7,13 +7,26 @@
 
 
 
-<link rel="stylesheet" type="text/css"
-	href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css" />
+<!--
 
-<script type="text/javascript"
-	src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
-<script type="text/javascript"
-	src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.18/jquery-ui.min.js"></script>
+$(function() {
+    $( '#from' ).datepicker({
+        dateFormat: 'dd-mm-yy',
+        minDate: '+5d',
+        changeMonth: true,
+        changeYear: true,
+        altField: "#idTourDateDetailsHidden",
+        altFormat: "yy-mm-dd"
+    });
+  });
+
+//-->
+
+
+
+
+
+
 <div class="row">
 	<div class="col-sm-12">
 
@@ -26,21 +39,18 @@
 <div class="row">
 	<div class="col-sm-12">
 
-		<form class="form-inline" role="form" action="plan" method="post"
-			class="date">
+		<form class="form-inline" role="form" action="plan" method="post"class="date">
 			<div class="col-xs-3">
 				<label for="from"><spring:message code="planner.start" />:
-				</label> <input class="from" type="text" id="from" name="from" />
+				</label> <input class="from" type="text" id="from" name="from"/>
 			</div>
 			<div class="col-xs-3">
-				<label for="to"><spring:message code="planner.end" />: </label><input
-					class="to" type="text" id="to" name="to">
+				<label for="to"><spring:message code="planner.end" />: </label><input class="to" type="text" id="to" name="to">
 			</div>
 			<div class="col-xs-3">
 
 				<label for="select"><spring:message code="planner.select" />:
-				</label><input id="search-city1" type="text" placeholder="search city"
-					class="form-control1" id="email" name="city">
+				</label><input id="search-city1" type="text" placeholder="search city"class="form-control1" id="email" name="city">
 			</div>
 			<div class="col-xs-3">
 			<label for="select">Submit your query </label>
@@ -139,23 +149,88 @@
 
 <script>
 var dateToday = new Date();
-var dates = $("#from, #to").datepicker(
+console.log(dateToday);
+/*  var dates =  $("#from").datepicker(
 				{
 
 					changeMonth : true,
 					numberOfMonths : 1,
-					minDate : dateToday,
+					minDate : dateToday
 					onSelect : function(selectedDate) {
-						var option = this.id == "from" ? "minDate"
-								: "maxDate", instance = $(this).data(
-								"datepicker"), date = $.datepicker
-								.parseDate(
-										instance.settings.dateFormat
-												|| $.datepicker._defaults.dateFormat,
+						var option = this.id == "from" ? "minDate": "maxDate", instance = $(this).data(
+								"datepicker"), date = $.datepicker.parseDate(	instance.settings.dateFormat|| $.datepicker._defaults.dateFormat,
 										selectedDate, instance.settings);
 						dates.not(this).datepicker("option", option, date);
-					}
+					}  
+					
 				});
+
+var limitTo = "";
+ */
+ jQuery.noConflict(true);
+ (function( $ ) {
+$(function() {
+
+    $( "#from" ).datepicker({
+      minDate: dateToday,
+      changeMonth: true,
+      numberOfMonths: 1,
+      onClose: function( selectedDate ) {
+        $( "#to" ).datepicker( "option", "minDate", selectedDate);
+        console.log(selectedDate);
+        var max = new Date(selectedDate);
+      
+     	max.setDate(max.getDate()+29);
+        console.log(max);
+        $( "#to" ).datepicker( "option", "maxDate", max);
+        console.log(selectedDate);
+      }
+    });
+    $( "#to" ).datepicker({
+      
+      changeMonth: true,
+      numberOfMonths: 1,
+      onClose: function( selectedDate ) {
+        $( "#from" ).datepicker( "option", "maxDate", selectedDate );
+      }
+    });
+
+ });
+
+ })(jQuery);
+/* $('.from').on('change', function(){
+	console.log($(".from").val())
+	limitTo=$(".from").val();
+	var selectedDate = new Date(limitTo);
+	console.log(selectedDate.toString());
+	
+	
+});
+$(".to").datepicker(
+		{
+
+			changeMonth : true,
+			numberOfMonths : 1,
+			minDate : dateToday
+		}); */
+
+/* $("#to").datepicker(
+		{
+
+			changeMonth : true,
+			numberOfMonths : 1,
+			minDate : selectedDate
+			 maxDate : +30 
+		onSelect : function(selectedDate) {
+				var option = this.id == "from" ? "minDate": "maxDate", instance = $(this).data(
+						"datepicker"), date = $.datepicker
+						.parseDate(	instance.settings.dateFormat|| $.datepicker._defaults.dateFormat,
+								selectedDate, instance.settings);
+				dates.not(this).datepicker("option", option, date);
+			} 
+		})
+		 */
+				/* console.log(dates); */ 
 
 /* $('.open-additional-info').on('click', function() {
 	$('.additional-info').toggleClass('opened');
