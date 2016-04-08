@@ -28,16 +28,12 @@ public class LocationDAO implements ILocationDAO {
 
 	@Override
 	public String getCityNameByIp(String ip) {
-	/*	String ipToGeotag = "http://api.db-ip.com/addrinfo?addr=" + ip
-				+ "&api_key=2847ed47c9cf4242bb2e09a10aeb3c313c5ebb06";*/
 		String ipToGeotag ="http://api.db-ip.com/addrinfo?addr=" + ip
 				+ "&api_key=2847ed47c9cf4242bb2e09a10aeb3c313c5ebb06";
 		RestTemplate restTemplate = new RestTemplate();
 		String data = restTemplate.getForObject(ipToGeotag, String.class);
 		String cityName = new JsonParser().parse(data).getAsJsonObject().get("city").getAsString();
 		String countryName = new JsonParser().parse(data).getAsJsonObject().get("country").getAsString();
-		cityName=WordUtils.capitalize(cityName.toLowerCase());
-		countryName=WordUtils.capitalize(countryName.toLowerCase());
 		return countryName + "/" + cityName;
 	}
 	

@@ -40,10 +40,16 @@ public class SearchController {
 	String buildPlan(@RequestParam("from") String from, @RequestParam("to") String to, @RequestParam("city") String city, HttpSession session){
 		System.out.println("From planner "+from);
 		System.out.println("From planner "+to);
-		System.out.println("From planner "+city.split(", ")[0]);
-		System.out.println("From planner "+city.split(", ")[1]);
-		
-		String plan  = dao.plannerResponse(from, to, city.split(", ")[0], city.split(", ")[1]);
+	/*	System.out.println("From planner "+city.split(", ")[0]);
+		System.out.println("From planner "+city.split(", ")[1]);*/
+		String plan =null;
+		try{
+			plan  = dao.plannerResponse(from, to, city.split(", ")[0], city.split(", ")[1]);
+		}
+		catch (Exception e){
+			session.setAttribute("page", "notFound.jsp");
+		    return "index"; ///return actual list
+		}
 		System.out.println("Printing the plan /*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*");
 		System.out.println(plan);
 		session.setAttribute("location", city);

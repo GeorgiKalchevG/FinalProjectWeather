@@ -94,17 +94,32 @@ public class HomePageController {
 	@CrossOrigin(origins = "http://localhost:8080")
 	@RequestMapping("search")
 	String getDataForLocation(HttpSession session, @RequestParam String city, @RequestParam String country) {
+		if(country.isEmpty()){
+			try{
+			if(city.split(", ")[1]!=null){
+				country = city.split(", ")[1];
+				city = city.split(", ")[1];
+			}
+			}catch(Exception e){
+				System.out.println("vrushta sled krainiq if pri index");
+				session.setAttribute("page", "notFound.jsp");
+				return "index";
+			}
+			
+				
+		}
 
-		if (!city.isEmpty()) {
+		if (!country.isEmpty()) {
+			
 			System.out.println("city name: "+city);
 			System.out.println("country name: "+country);
 			ArrayList<ArrayList<DayForcast>> forTheThreeTablesAtOnce = dao.getFiveDaysFromWUnderground(country, city,
 					session.getAttribute("language").toString(),(User)session.getAttribute("user"));
 			if (forTheThreeTablesAtOnce == null) {
-				saveOrNullItemsInSession(session,"Couldnt find this city",forTheThreeTablesAtOnce,null,null,null,null);
+				saveOrNullItemsInSession(session,"N/A",forTheThreeTablesAtOnce,null,null,null,null);
 				System.out.println("vrushta ako e null pri city info");
 				session.setAttribute("page", "cityInfo.jsp");
-				return "cityInfo";
+				return "index";
 			}
 			else if(forTheThreeTablesAtOnce.get(0).get(0).getIcon_url()==null){
 				session.setAttribute("cityForCurrentSearch", WordUtils.capitalize(city));
@@ -130,10 +145,12 @@ public class HomePageController {
 				return "index";
 			}
 			System.out.println("vrushta sled celiq if pri city info");
-			return "cityInfo";
+			session.setAttribute("page", "cityInfo.jsp");
+			return "index";
 			
 		}
 		System.out.println("vrushta sled krainiq if pri index");
+		session.setAttribute("page", "notFound.jsp");
 		return "index";
 
 	}
