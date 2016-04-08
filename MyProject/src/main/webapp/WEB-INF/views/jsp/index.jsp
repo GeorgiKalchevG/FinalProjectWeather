@@ -284,12 +284,14 @@ body {
 			type : 'POST',
 			data : {
 				city : $(this).attr('city'),
-				country : $(this).attr('country')
+				country : $(this).attr('country'),
+				fromAjax : 'aaa'
 			},
 			success : function(response) {
+				$('.cities').removeClass('opened');
 				$(".city-weather").text('');
 				$(".city-weather").append(response);
-				$('.cities').removeClass('opened');
+			
 			},
 			fail : function() {
 

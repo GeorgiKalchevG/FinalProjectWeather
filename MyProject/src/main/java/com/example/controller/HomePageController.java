@@ -2,7 +2,11 @@ package com.example.controller;
 
 import org.springframework.web.bind.annotation.CrossOrigin;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Queue;
 import java.util.TreeMap;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -11,7 +15,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang.WordUtils;
+import org.apache.hadoop.mapred.legacyjobhistory_jsp;
 import org.apache.shiro.web.session.HttpServletSession;
+import org.neo4j.cypher.internal.compiler.v2_2.perty.recipe.formatErrors;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -35,9 +41,13 @@ import com.google.gson.JsonParser;
 @Controller
 public class HomePageController {
 	ILocationDAO dao = new LocationDAO();
+	String[] arr = {"Afghanistan","Albania","Algeria","Andorra","Angola","Antigua and Barbuda","Argentina","Armenia","Australia","Austria","Azerbaijan","Bahamas","Bahrain","BG","Bangladesh","Barbados","Belarus","Belgium","Belize","Benin","Bhutan","Bolivia","Bosnia and Herzegovina","Botswana","Brazil","Brunei","Bulgaria","Burkina Faso","Burundi","Cabo Verde","Cambodia","Cameroon","Canada","Central African Republic","Chad","Chile","China","Colombia","Comoros","Congo","Costa Rica","Cote d'Ivoire","Croatia","Cuba","Cyprus","Czech Republic","Denmark","Djibouti","Dominica","Dominican Republic","Ecuador","Egypt","El Salvador","Equatorial Guinea","Eritrea","Estonia","Ethiopia","Fiji","Finland","France","Gabon","Gambia","Georgia","Germany","Ghana","Greece","Grenada","Guatemala","Guinea","Guinea-Bissau","Guyana","Haiti","Honduras","Hungary","Iceland","India","Indonesia","Iran","Iraq","Ireland","Israel","Italy","JamaicaJapan","Jordan","Kazakhstan","Kenya","Kiribati","Kosovo","Kuwait","Kyrgyzstan","Laos","Latvia","Lebanon","Lesotho","Liberia","Libya","Liecht","ensteinLithuania","Luxembourg","Macedonia","Madagascar","Malawi","Malaysia","Maldives","Mali","Malta","Marshall Islands","Mauritania","Mauritius","Mexico","Micronesia","Moldova","Monaco","Mongolia","Montenegro","Morocco","Mozambique","Myanmar (Burma)","Namibia","Nauru","Nepal","Netherlands","New Zealand","Nicaragua","Niger","Nigeria","North Korea","Norway","Oman","Pakistan","Palau","Palestine","Panama","Papua New Guinea","Paraguay","Peru","Philippines","Poland","Portugal","Qatar","Romania","Russia","Rwanda","St. Kitts and Nevis","St. Lucia","St. Vincent and The Grenadines","Samoa","San Marino","Sao Tome and Principe","Saudi Arabia","Senegal","Serbia","Seychelles","Sierra Leone","Singapore","Slovakia","Slovenia","Solomon Islands","Somalia","South Africa","South Korea","South Sudan","Spain","Sri Lanka","Sudan","Suriname","Swaziland","Sweden","Switzerland","Syria","Taiwan","Tajikistan","Tanzania","Thailand","Timor-Leste","Togo","Tonga","Trinidad and Tobago","Tunisia","Turkey","Turkmenistan","Tuvalu","Uganda","Ukraine","United Arab Emirates","United Kingdom","United States of America","Uruguay","Uzbekistan","Vanuatu","Vatican City","Venezuela","Vietnam","Yemen","Zambia","Zimbabwe"};
+	ArrayList<String> allCountries = new ArrayList<>(Arrays.asList(arr));
+	
 
 	@RequestMapping(value = "index")
 	String loadHomePage(Model model, HttpServletRequest request, HttpSession session) {
+		
 		if (session.getAttribute("language") == null) {
 			session.setAttribute("language", "EN");
 			session.setAttribute("flag", "http://www.printableworldflags.com/icon-flags/32/Bulgaria.png");
@@ -92,12 +102,16 @@ public class HomePageController {
 
 	@CrossOrigin(origins = "http://localhost:8080")
 	@RequestMapping("search")
-	String getDataForLocation(HttpSession session, @RequestParam String city, @RequestParam String country) {
+	String getDataForLocation(HttpSession session, @RequestParam String city, @RequestParam String country, HttpServletRequest req) {
+		
 		if(country.isEmpty()){
 			try{
 			if(city.split(", ")[1]!=null){
-				country = city.split(", ")[1];
-				city = city.split(", ")[1];
+				country = WordUtils.capitalize(city.split(", ")[1].toLowerCase());
+				city = WordUtils.capitalize(city.split(", ")[0].toLowerCase());
+				if(!allCountries.contains(country)){
+					country="";
+				}
 			}
 			}catch(Exception e){
 				System.out.println("vrushta sled krainiq if pri index");
@@ -144,8 +158,13 @@ public class HomePageController {
 				return "index";
 			}
 			System.out.println("vrushta sled celiq if pri city info");
-			session.setAttribute("page", "cityInfo.jsp");
-			return "index";
+			if(req.getParameter("fromAjax") != null){
+				return "cityInfo";
+			}else{
+				session.setAttribute("page", "cityInfo.jsp");
+				return "index";
+			}
+				
 			
 		}
 		System.out.println("vrushta sled krainiq if pri index");
