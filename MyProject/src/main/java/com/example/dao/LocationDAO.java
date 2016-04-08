@@ -28,28 +28,12 @@ public class LocationDAO implements ILocationDAO {
 
 	@Override
 	public String getCityNameByIp(String ip) {
-	/*	String ipToGeotag = "http://api.db-ip.com/addrinfo?addr=" + ip
-				+ "&api_key=2847ed47c9cf4242bb2e09a10aeb3c313c5ebb06";*/
-		
 		String ipToGeotag ="http://api.db-ip.com/addrinfo?addr=" + ip
 				+ "&api_key=2847ed47c9cf4242bb2e09a10aeb3c313c5ebb06";
 		RestTemplate restTemplate = new RestTemplate();
 		String data = restTemplate.getForObject(ipToGeotag, String.class);
 		String cityName = new JsonParser().parse(data).getAsJsonObject().get("city").getAsString();
 		String countryName = new JsonParser().parse(data).getAsJsonObject().get("country").getAsString();
-		
-		
-		
-		
-		
-		
-		/*String ipToGeotag ="https://api.geoips.com/ip/"+ip+"/key/75c01d0131baef1af4571fa4be7f1b3f/output/json";
-		RestTemplate restTemplate = new RestTemplate();
-		String data = restTemplate.getForObject(ipToGeotag, String.class);
-		String cityName = new JsonParser().parse(data).getAsJsonObject().get("response").getAsJsonObject().get("location").getAsJsonObject().get("city_name").getAsString();
-		String countryName = new JsonParser().parse(data).getAsJsonObject().get("response").getAsJsonObject().get("location").getAsJsonObject().get("country_name").getAsString();
-		cityName=WordUtils.capitalize(cityName.toLowerCase());
-		countryName=WordUtils.capitalize(countryName.toLowerCase());*/
 		return countryName + "/" + cityName;
 	}
 	
@@ -83,7 +67,7 @@ public class LocationDAO implements ILocationDAO {
 		forcast.setYear(Integer.parseInt(jsonElement.get("FCTTIME").getAsJsonObject().get("year").getAsString()));
 		forcast.setMonth(Integer.parseInt(jsonElement.get("FCTTIME").getAsJsonObject().get("mon").getAsString()));
 		forcast.setDay(Integer.parseInt(jsonElement.get("FCTTIME").getAsJsonObject().get("mday").getAsString()));
-		forcast.setWeekday(jsonElement.get("FCTTIME").getAsJsonObject().get("weekday_name").getAsString());
+		forcast.setWeekday(language.equals("BU")?changeDayLanguage(jsonElement.get("FCTTIME").getAsJsonObject().get("weekday_name").getAsString()):jsonElement.get("FCTTIME").getAsJsonObject().get("weekday_name").getAsString());
 		forcast.setTempC(Integer.parseInt(jsonElement.get("temp").getAsJsonObject().get("metric").getAsString()));
 		forcast.setTempFH(Integer.parseInt(jsonElement.get("temp").getAsJsonObject().get("english").getAsString()));
 		forcast.setConditions(language.equals("BU")?changeFromEnglishToBularian(jsonElement.get("condition").getAsString()):jsonElement.get("condition").getAsString());
@@ -116,7 +100,7 @@ public class LocationDAO implements ILocationDAO {
 		forcast.setCityName(cityName);
 		forcast.setCountryName(countryName);
 		forcast.setConditions(language.equals("BU")?changeFromEnglishToBularian(jsonElement.get("conditions").getAsString()):jsonElement.get("conditions").getAsString());
-		forcast.setWeekday(jsonElement.get("date").getAsJsonObject().get("weekday").getAsString());
+		forcast.setWeekday(language.equals("BU")?changeDayLanguage(jsonElement.get("date").getAsJsonObject().get("weekday").getAsString()):jsonElement.get("date").getAsJsonObject().get("weekday").getAsString());
 		forcast.setDay(jsonElement.get("date").getAsJsonObject().get("day").getAsInt());
 		forcast.setMonth(jsonElement.get("date").getAsJsonObject().get("month").getAsInt());
 		forcast.setYear(jsonElement.get("date").getAsJsonObject().get("year").getAsInt());
@@ -306,6 +290,7 @@ public class LocationDAO implements ILocationDAO {
 		System.out.println(url);
 		RestTemplate restTemplate = new RestTemplate();
 		JsonObject obj = new JsonParser().parse(restTemplate.getForObject(url, String.class)).getAsJsonObject().get("currently").getAsJsonObject();
+		System.out.println(obj.toString());
 		currForcast = g.fromJson(obj, CurrentForcast.class);
 		return currForcast;
 	}
@@ -338,6 +323,17 @@ public class LocationDAO implements ILocationDAO {
 		case "Overcast":	return "Облачно"; 
 		case "Scattered Clouds":	return "Разпръснати облаци";  
 		default: return fromEnglish;
+		}
+	}
+	public static String changeDayLanguage(String fromDay){
+		switch(fromDay){
+		case "Monday": return "Понеделник";
+		case "Tuesday": return "Вторник";
+		case "Wednesday": return "Сряда";
+		case "Thursday": return "Четвърък";
+		case "Friday": return "Петък";
+		case "Saturday": return "Събота";
+		default: return "Неделя";
 		}
 	}
 	public static String switchUserIcons(String fromIcon,char toIcon){

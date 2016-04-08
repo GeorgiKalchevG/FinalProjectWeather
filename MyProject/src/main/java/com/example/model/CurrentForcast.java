@@ -26,17 +26,32 @@ public class CurrentForcast {
 	private String windSpeedMPH;
 	private String windBearing;
 	private String visibility;
+	private String visibilityMiles;
 	private String cloudCover;
 	private String pressure;
 	private String ozone;
 
+	public String getVisibilityMiles() {
+		try {
+			if (this.visibilityMiles == null)
+				this.visibilityMiles = ((Double.parseDouble(this.visibility) * 0.621371192)+ "").substring(0, 4);
+		} catch (NullPointerException e) {
+			System.out.println("nqma visibility v km dafuq?");
+		}
+		return visibilityMiles;
+	}
+
+	public void setVisibilityMiles(String visibilityMiles) {
+		this.visibilityMiles = visibilityMiles;
+	}
+
 	public String getStartTime() {
 		if (this.startTime == null) {
-			System.out.println("Parse long "+ Long.parseLong(this.time));
-			System.out.println("This time "+this.time);
-			long miliseconds = Long.parseLong(this.time)*1000;
+			System.out.println("Parse long " + Long.parseLong(this.time));
+			System.out.println("This time " + this.time);
+			long miliseconds = Long.parseLong(this.time) * 1000;
 			Date d = new Date(miliseconds);
-			System.out.println("kak taka nqma start time"+d+" "+ miliseconds);
+			System.out.println("kak taka nqma start time" + d + " " + miliseconds);
 			DateFormat df = new SimpleDateFormat("dd.MM.yyyy HH:mm");
 			this.startTime = df.format(d);
 		}
@@ -136,6 +151,8 @@ public class CurrentForcast {
 	}
 
 	public String getTemperatureFH() {
+		if (this.temperatureFH == null)
+			this.temperatureFH = ((Double.parseDouble(this.temperature) * 9 / 5 + 32) + "").substring(0, 4);
 		return temperatureFH;
 	}
 
@@ -184,6 +201,9 @@ public class CurrentForcast {
 	}
 
 	public String getWindSpeedMPH() {
+		if (windSpeedMPH == null) {
+			this.windSpeedMPH = (Double.parseDouble(windSpeed)*0.621371192 + "").substring(0, 4);
+		}
 		return windSpeedMPH;
 	}
 

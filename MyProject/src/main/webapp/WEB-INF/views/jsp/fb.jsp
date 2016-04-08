@@ -1,27 +1,24 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
+	<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+	<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+	
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html lang="en">
 <head>
 <script>
-	// This is called with the results from from FB.getLoginStatus().
 	function statusChangeCallback(response) {
 		console.log('statusChangeCallback');
 		console.log(response);
-		// The response object is returned with a status field that lets the
-		// app know the current login status of the person.
-		// Full docs on the response object can be found in the documentation
-		// for FB.getLoginStatus().
 		if (response.status === 'connected') {
-			// Logged into your app and Facebook.
 			testAPI();
 		} else if (response.status === 'not_authorized') {
-			// The person is logged into Facebook, but not your app.
 			document.getElementById('status').innerHTML = 'Please log '
 					+ 'into this app.';
 		} else {
-			// The person is not logged into Facebook, so we're not sure if
-			// they are logged into this app or not.
+			console.log('Izpalnqvam kato ne sam lognat');
+			document.getElementById('showOrHide').style.display = 'none';
+			document.getElementById('showOrHide1').style.display = 'none';
 			document.getElementById('status').innerHTML = 'Please log '
 					+ 'into Facebook.';
 		}
@@ -107,13 +104,13 @@
 															success : function(
 																	data) {
 																if (data == "true") {
-																	location
-																			.reload();
+																	location.reload();
 																}
-																document
-																		.getElementById('status').innerHTML = 'Thank you for wait '
+																document.getElementById('status').innerHTML = 'Thank you for wait '
 																		+ response.name
 																		+ '. Here is your weather for incoming events you will be attending. ';
+																document.getElementById('showOrHide').style.display = 'inline';
+																document.getElementById('showOrHide1').style.display = 'inline';
 															},
 															fail : function() {
 															}
@@ -123,44 +120,25 @@
 	}
 	function logoutFromFB() {
 		FB.logout(function(response) {
-			// Person is now logged out
-		});
-	}
-	function getFromFB() {
-		FB
-				.api(
-						'/me',
-						'GET',
-						{
-							"fields" : "name,events.limit(5){cover,description,name,place,start_time,ticket_uri}"
-						}, function(response) {
-							var rezz = JSON.stringify(response);
-							console.log('Response: ' + resp);
-							$.ajax({
-								url : "facebook",
-								type : 'POST',
-								data : {
-									ivanshishman : rezz,
-									kakvo : "ds"
-								},
-								success : function() {
-								},
-								fail : function() {
-								}
-							});
-						});
+			$
+			.ajax({
+				url : "logoutFromFacebook",
+				type : 'POST',
+				success : function() {
+					console.log('tova tuka izpalnqva li se izosbtho');
+					document.getElementById('showOrHide').style.display = 'none';
+					document.getElementById('showOrHide1').style.display = 'none';
+					document.getElementById('status').innerHTML = 'You just logged out from Facebook';
+				}
+			});
+				});
 	}
 </script>
 <meta http-equiv="content-type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
-<title>Holo Theme</title>
 <meta name="generator" content="Bootply" />
 <meta name="viewport"
 	content="width=device-width, initial-scale=1, maximum-scale=1">
-<link href="css/bootstrap.min.css" rel="stylesheet">
-<!--[if lt IE 9]>
-			<script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
-		<![endif]-->
 <link href="css/styles.css" rel="stylesheet">
 </head>
 <body>
@@ -168,19 +146,21 @@
 
 		<div class="container-fluid">
 			<div class="row row-offcanvas row-offcanvas-left">
-
 				<!--sidebar-->
 				<div class="col-xs-6 col-sm-3 sidebar-offcanvas" id="sidebar"
 					role="navigation">
 					<div data-spy="affix" data-offset-top="45" data-offset-bottom="90">
+						<div id="showOrHide" style="display:none;">
 						<ul class="nav" id="sidebar-nav">
-							<li><a href="#">To the top</a></li>
+							<li><a href="#"><spring:message code="facebook.top" /></a></li>
 							<li><a href="#section1">${facebookForecast[0].nameOfEvent}</a></li>
 							<li><a href="#section2">${facebookForecast[1].nameOfEvent}</a></li>
 							<li><a href="#section3">${facebookForecast[2].nameOfEvent}</a></li>
 							<li><a href="#section4">${facebookForecast[3].nameOfEvent}</a></li>
 							<li><a href="#section5">${facebookForecast[4].nameOfEvent}</a></li>
+							
 						</ul>
+						</div>
 					</div>
 				</div>
 				<div class="col-xs-12 col-sm-9" data-spy="scroll"
@@ -192,11 +172,11 @@
 									<h4>
 										Login
 										<fb:login-button scope="user_events,public_profile,email"
-											onlogin="checkLoginState();">
+											onlogin="checkLoginState()">
 										</fb:login-button>
 										Logout
-										<fb:login-button autologoutlink="true" scope="user_events,public_profile,email"
-											onlogin="logoutFromFB();">
+										<fb:login-button scope="user_events,public_profile,email"
+											onlogin="logoutFromFB()">
 										</fb:login-button>
 									</h4>
 								</div>
@@ -212,12 +192,12 @@
 
 					</div>
 					<!--/row-->
-
+<div id="showOrHide1" style="display:none;">
 					<h1 id="section1">${facebookForecast[0].nameOfEvent}</h1>
-
+						<c:set var="whatUnit" scope="session" value="${units}" />
 					<div class="panel panel-default">
 						<div class="panel-heading">
-							<h4>Start time of event:
+							<h4><spring:message code="facebook.starttime" />:
 								${facebookForecast[0].weather.startTime}</h4>
 						</div>
 						<div class="panel-body">
@@ -227,54 +207,47 @@
 								<p>${facebookForecast[0].country},
 									${facebookForecast[0].city},${facebookForecast[0].street},
 									${facebookForecast[0].nameOfPlace}
-								<p>${facebookForecast[0].description} <a href="${facebookForecast[0].ticket_uri}">Tickets</a>
+								<p>${facebookForecast[0].description}
+									<a href="${facebookForecast[0].ticket_uri}">Tickets</a>
 								</p>
 								</p>
 
 							</div>
 							<div class="col-sm-4">
-								<h3>Weather forcast for this event</h3>
+								<h3><spring:message code="facebook.forcast" /></h3>
 								<table class="table table-bordered">
 									<tbody>
 										<tr>
-											<td>Summary</td>
+											<td><spring:message code="weather.sky" /></td>
 											<td>${facebookForecast[0].weather.summary}</td>
 										</tr>
 										<tr>
-											<td>Temperature</td>
-											<td>${facebookForecast[0].weather.temperature}</td>
+											<td><spring:message code="weather.temp" /></td>
+											<td>${ whatUnit =='true' ? facebookForecast[0].weather.temperature : facebookForecast[0].weather.temperatureFH} ${unitTemp}</td>
 										</tr>
 										<tr>
-											<td>Apparent temperature</td>
-											<td>${facebookForecast[0].weather.apparentTemperature}</td>
+											<td><spring:message code="weather.windspeed" /></td>
+											<td>${ whatUnit =='true' ? facebookForecast[0].weather.windSpeed  : facebookForecast[0].weather.windSpeedMPH} ${unitSpeed}</td>
 										</tr>
 										<tr>
-											<td>Wind speed</td>
-											<td>${facebookForecast[0].weather.windSpeed}</td>
+											<td><spring:message code="weather.visibility" /></td>
+											<td>${ whatUnit =='true' ? facebookForecast[0].weather.visibility  : facebookForecast[0].weather.visibilityMiles} ${unitKmMiles}</td>
 										</tr>
 										<tr>
-											<td>Visibility</td>
-											<td>${facebookForecast[0].weather.visibility}</td>
+											<td><spring:message code="weather.cloudy" /></td>
+											<td>${facebookForecast[0].weather.cloudCover}%</td>
 										</tr>
 										<tr>
-											<td>Cloud cover</td>
-											<td>${facebookForecast[0].weather.cloudCover}</td>
+											<td><spring:message code="weather.humidity" /></td>
+											<td>${facebookForecast[0].weather.humidity}%</td>
 										</tr>
 										<tr>
-											<td>Humidity</td>
-											<td>${facebookForecast[0].weather.humidity}</td>
-										</tr>
-										<tr>
-											<td>Pressure</td>
-											<td>${facebookForecast[0].weather.pressure}</td>
+											<td><spring:message code="weather.pressure"/></td>
+											<td>${facebookForecast[0].weather.pressure} hPa</td>
 										</tr>
 										<tr>
 											<td>Ozone</td>
 											<td>${facebookForecast[0].weather.ozone}</td>
-										</tr>
-										<tr>
-											<td>Dew point</td>
-											<td>${facebookForecast[0].weather.dewPoint}</td>
 										</tr>
 									</tbody>
 								</table>
@@ -297,7 +270,9 @@
 								<p>${facebookForecast[1].country},
 									${facebookForecast[1].city},${facebookForecast[1].street},
 									${facebookForecast[1].nameOfPlace}
-								<p>${facebookForecast[1].description}.<a href="${facebookForecast[1].ticket_uri}">Tickets</a></p>
+								<p>${facebookForecast[1].description}.<a
+										href="${facebookForecast[1].ticket_uri}">Tickets</a>
+								</p>
 								</p>
 							</div>
 							<div class="col-sm-4">
@@ -305,44 +280,36 @@
 								<table class="table table-bordered">
 									<tbody>
 										<tr>
-											<td>Summary</td>
+											<td><spring:message code="weather.sky" /></td>
 											<td>${facebookForecast[1].weather.summary}</td>
 										</tr>
 										<tr>
-											<td>Temperature</td>
-											<td>${facebookForecast[1].weather.temperature}</td>
+											<td><spring:message code="weather.temp" /></td>
+											<td>${ whatUnit =='true' ? facebookForecast[1].weather.temperature : facebookForecast[1].weather.temperatureFH} ${unitTemp}</td>
 										</tr>
 										<tr>
-											<td>Apparent temperature</td>
-											<td>${facebookForecast[1].weather.apparentTemperature}</td>
+											<td><spring:message code="weather.windspeed" /></td>
+											<td>${ whatUnit =='true' ? facebookForecast[1].weather.windSpeed  : facebookForecast[1].weather.windSpeedMPH} ${unitSpeed}</td>
 										</tr>
 										<tr>
-											<td>Wind speed</td>
-											<td>${facebookForecast[1].weather.windSpeed}</td>
+											<td><spring:message code="weather.visibility" /></td>
+											<td>${ whatUnit =='true' ? facebookForecast[1].weather.visibility  : facebookForecast[1].weather.visibilityMiles} ${unitKmMiles}</td>
 										</tr>
 										<tr>
-											<td>Visibility</td>
-											<td>${facebookForecast[1].weather.visibility}</td>
+											<td><spring:message code="weather.cloudy" /></td>
+											<td>${facebookForecast[1].weather.cloudCover}%</td>
 										</tr>
 										<tr>
-											<td>Cloud cover</td>
-											<td>${facebookForecast[1].weather.cloudCover}</td>
+											<td><spring:message code="weather.humidity" /></td>
+											<td>${facebookForecast[1].weather.humidity}%</td>
 										</tr>
 										<tr>
-											<td>Humidity</td>
-											<td>${facebookForecast[1].weather.humidity}</td>
-										</tr>
-										<tr>
-											<td>Pressure</td>
-											<td>${facebookForecast[1].weather.pressure}</td>
+											<td><spring:message code="weather.pressure"/></td>
+											<td>${facebookForecast[1].weather.pressure} hPa</td>
 										</tr>
 										<tr>
 											<td>Ozone</td>
 											<td>${facebookForecast[1].weather.ozone}</td>
-										</tr>
-										<tr>
-											<td>Dew point</td>
-											<td>${facebookForecast[1].weather.dewPoint}</td>
 										</tr>
 									</tbody>
 								</table>
@@ -363,7 +330,9 @@
 								<p>${facebookForecast[2].country},
 									${facebookForecast[2].city},${facebookForecast[2].street},
 									${facebookForecast[2].nameOfPlace}
-								<p>${facebookForecast[2].description}.<a href="${facebookForecast[2].ticket_uri}">Tickets</a></p>
+								<p>${facebookForecast[2].description}.<a
+										href="${facebookForecast[2].ticket_uri}">Tickets</a>
+								</p>
 								</p>
 							</div>
 							<div class="col-sm-4">
@@ -371,44 +340,36 @@
 								<table class="table table-bordered">
 									<tbody>
 										<tr>
-											<td>Summary</td>
+											<td><spring:message code="weather.sky" /></td>
 											<td>${facebookForecast[2].weather.summary}</td>
 										</tr>
 										<tr>
-											<td>Temperature</td>
-											<td>${facebookForecast[2].weather.temperature}</td>
+											<td><spring:message code="weather.temp" /></td>
+											<td>${ whatUnit =='true' ? facebookForecast[2].weather.temperature : facebookForecast[2].weather.temperatureFH} ${unitTemp}</td>
 										</tr>
 										<tr>
-											<td>Apparent temperature</td>
-											<td>${facebookForecast[2].weather.apparentTemperature}</td>
+											<td><spring:message code="weather.windspeed" /></td>
+											<td>${ whatUnit =='true' ? facebookForecast[2].weather.windSpeed  : facebookForecast[2].weather.windSpeedMPH} ${unitSpeed}</td>
 										</tr>
 										<tr>
-											<td>Wind speed</td>
-											<td>${facebookForecast[2].weather.windSpeed}</td>
+											<td><spring:message code="weather.visibility" /></td>
+											<td>${ whatUnit =='true' ? facebookForecast[2].weather.visibility  : facebookForecast[2].weather.visibilityMiles} ${unitKmMiles}</td>
 										</tr>
 										<tr>
-											<td>Visibility</td>
-											<td>${facebookForecast[2].weather.visibility}</td>
+											<td><spring:message code="weather.cloudy" /></td>
+											<td>${facebookForecast[2].weather.cloudCover}%</td>
 										</tr>
 										<tr>
-											<td>Cloud cover</td>
-											<td>${facebookForecast[2].weather.cloudCover}</td>
+											<td><spring:message code="weather.humidity" /></td>
+											<td>${facebookForecast[2].weather.humidity}%</td>
 										</tr>
 										<tr>
-											<td>Humidity</td>
-											<td>${facebookForecast[2].weather.humidity}</td>
-										</tr>
-										<tr>
-											<td>Pressure</td>
-											<td>${facebookForecast[2].weather.pressure}</td>
+											<td><spring:message code="weather.pressure"/></td>
+											<td>${facebookForecast[2].weather.pressure} hPa</td>
 										</tr>
 										<tr>
 											<td>Ozone</td>
 											<td>${facebookForecast[2].weather.ozone}</td>
-										</tr>
-										<tr>
-											<td>Dew point</td>
-											<td>${facebookForecast[2].weather.dewPoint}</td>
 										</tr>
 									</tbody>
 								</table>
@@ -429,7 +390,9 @@
 								<p>${facebookForecast[3].country},
 									${facebookForecast[3].city},${facebookForecast[3].street},
 									${facebookForecast[3].nameOfPlace}
-								<p>${facebookForecast[3].description}.<a href="${facebookForecast[3].ticket_uri}">Tickets</a></p>
+								<p>${facebookForecast[3].description}.<a
+										href="${facebookForecast[3].ticket_uri}">Tickets</a>
+								</p>
 								</p>
 							</div>
 							<div class="col-sm-4">
@@ -437,44 +400,36 @@
 								<table class="table table-bordered">
 									<tbody>
 										<tr>
-											<td>Summary</td>
+											<td><spring:message code="weather.sky" /></td>
 											<td>${facebookForecast[3].weather.summary}</td>
 										</tr>
 										<tr>
-											<td>Temperature</td>
-											<td>${facebookForecast[3].weather.temperature}</td>
+											<td><spring:message code="weather.temp" /></td>
+											<td>${ whatUnit =='true' ? facebookForecast[3].weather.temperature : facebookForecast[3].weather.temperatureFH} ${unitTemp}</td>
 										</tr>
 										<tr>
-											<td>Apparent temperature</td>
-											<td>${facebookForecast[3].weather.apparentTemperature}</td>
+											<td><spring:message code="weather.windspeed" /></td>
+											<td>${ whatUnit =='true' ? facebookForecast[3].weather.windSpeed  : facebookForecast[3].weather.windSpeedMPH} ${unitSpeed}</td>
 										</tr>
 										<tr>
-											<td>Wind speed</td>
-											<td>${facebookForecast[3].weather.windSpeed}</td>
+											<td><spring:message code="weather.visibility" /></td>
+											<td>${ whatUnit =='true' ? facebookForecast[3].weather.visibility  : facebookForecast[3].weather.visibilityMiles} ${unitKmMiles}</td>
 										</tr>
 										<tr>
-											<td>Visibility</td>
-											<td>${facebookForecast[3].weather.visibility}</td>
+											<td><spring:message code="weather.cloudy" /></td>
+											<td>${facebookForecast[3].weather.cloudCover}%</td>
 										</tr>
 										<tr>
-											<td>Cloud cover</td>
-											<td>${facebookForecast[3].weather.cloudCover}</td>
+											<td><spring:message code="weather.humidity" /></td>
+											<td>${facebookForecast[3].weather.humidity}%</td>
 										</tr>
 										<tr>
-											<td>Humidity</td>
-											<td>${facebookForecast[3].weather.humidity}</td>
-										</tr>
-										<tr>
-											<td>Pressure</td>
-											<td>${facebookForecast[3].weather.pressure}</td>
+											<td><spring:message code="weather.pressure"/></td>
+											<td>${facebookForecast[3].weather.pressure} hPa</td>
 										</tr>
 										<tr>
 											<td>Ozone</td>
 											<td>${facebookForecast[3].weather.ozone}</td>
-										</tr>
-										<tr>
-											<td>Dew point</td>
-											<td>${facebookForecast[3].weather.dewPoint}</td>
 										</tr>
 									</tbody>
 								</table>
@@ -495,7 +450,9 @@
 								<p>${facebookForecast[4].country},
 									${facebookForecast[4].city},${facebookForecast[4].street},
 									${facebookForecast[4].nameOfPlace}
-								<p>${facebookForecast[4].description}.<a href="${facebookForecast[4].ticket_uri}">Tickets</a></p>
+								<p>${facebookForecast[4].description}.<a
+										href="${facebookForecast[4].ticket_uri}">Tickets</a>
+								</p>
 								</p>
 							</div>
 							<div class="col-sm-4">
@@ -503,44 +460,36 @@
 								<table class="table table-bordered">
 									<tbody>
 										<tr>
-											<td>Summary</td>
+											<td><spring:message code="weather.sky" /></td>
 											<td>${facebookForecast[4].weather.summary}</td>
 										</tr>
 										<tr>
-											<td>Temperature</td>
-											<td>${facebookForecast[4].weather.temperature}</td>
+											<td><spring:message code="weather.temp" /></td>
+											<td>${ whatUnit =='true' ? facebookForecast[4].weather.temperature : facebookForecast[4].weather.temperatureFH} ${unitTemp}</td>
 										</tr>
 										<tr>
-											<td>Apparent temperature</td>
-											<td>${facebookForecast[4].weather.apparentTemperature}</td>
+											<td><spring:message code="weather.windspeed" /></td>
+											<td>${ whatUnit =='true' ? facebookForecast[4].weather.windSpeed  : facebookForecast[4].weather.windSpeedMPH} ${unitSpeed}</td>
 										</tr>
 										<tr>
-											<td>Wind speed</td>
-											<td>${facebookForecast[4].weather.windSpeed}</td>
+											<td><spring:message code="weather.visibility" /></td>
+											<td>${ whatUnit =='true' ? facebookForecast[4].weather.visibility  : facebookForecast[4].weather.visibilityMiles} ${unitKmMiles}</td>
 										</tr>
 										<tr>
-											<td>Visibility</td>
-											<td>${facebookForecast[4].weather.visibility}</td>
+											<td><spring:message code="weather.cloudy" /></td>
+											<td>${facebookForecast[4].weather.cloudCover}%</td>
 										</tr>
 										<tr>
-											<td>Cloud cover</td>
-											<td>${facebookForecast[4].weather.cloudCover}</td>
+											<td><spring:message code="weather.humidity" /></td>
+											<td>${facebookForecast[4].weather.humidity}%</td>
 										</tr>
 										<tr>
-											<td>Humidity</td>
-											<td>${facebookForecast[4].weather.humidity}</td>
-										</tr>
-										<tr>
-											<td>Pressure</td>
-											<td>${facebookForecast[4].weather.pressure}</td>
+											<td><spring:message code="weather.pressure"/></td>
+											<td>${facebookForecast[4].weather.pressure} hPa</td>
 										</tr>
 										<tr>
 											<td>Ozone</td>
 											<td>${facebookForecast[4].weather.ozone}</td>
-										</tr>
-										<tr>
-											<td>Dew point</td>
-											<td>${facebookForecast[4].weather.dewPoint}</td>
 										</tr>
 									</tbody>
 								</table>
@@ -549,15 +498,14 @@
 						</div>
 					</div>
 					<!--/panel-->
+					</div>
 				</div>
 			</div>
 			<!--/.col-xs-12-->
 		</div>
 		<!--/.row-->
 	</div>
-	</div>
-	<!--/.container-->
-	</div>
+	
 	<!--/.page-container-->
 
 	<!-- script references -->
