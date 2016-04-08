@@ -213,7 +213,7 @@ public class HomePageController {
 	}
 	@RequestMapping(value = "worldMap")
 	public String loadWorldMap(HttpSession session) {
-		session.setAttribute("page", "worldMap.jsp");
+		session.setAttribute("page", "map.jsp");
 		return "index";
 	}
 }

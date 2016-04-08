@@ -12,7 +12,7 @@
     }
     #map-canvas {
      min-width:240px;
-   	 min-height:240px;  
+   	 min-height:900px;  
     }
     .gm-style-iw {
       text-align: center;
@@ -26,11 +26,11 @@
   var request;
   var gettingData = false;
   var openWeatherMapKey = "9885a830e31d144089368b0a44b2f9f7"
-	  var lon = ${location.lon};
-	  var lat = ${location.lat};
+	  var lat = " 42.696552";/*${location.lon};*/
+	  var lon  = "23.32601";/*${location.lat};*/
   function initialize() {
     var mapOptions = {
-      zoom: 9,
+      zoom: 7,
       center: new google.maps.LatLng(lat,lon)
     };
 
