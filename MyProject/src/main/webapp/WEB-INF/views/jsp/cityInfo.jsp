@@ -5,7 +5,7 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
-
+<script src="https://cdn.plot.ly/plotly-latest.min.js"></script> 
 <c:set var="whatUnit" scope="session" value="${units}" />
 <div class="row">
 	<div class="col-sm-12"style="background-color: azure; border: solid; border-width: 1px;">
@@ -50,11 +50,12 @@
 						<div class="table-wrapper">
 							<div class="main-info">
 								<table class="table" style="width: 100%;">
+							
 									<tr>
-										<!-- trqbwa da napravim kolekciq ot gif za razli4noto vreme -->
-										<th rowspan="4" background="${backGroundGIF }"
-											style="background-repeat: no-repeat;"><img alt="" src="" />
-											<h3 style="color: white;">
+										<!-- "${backGroundGIF}" -->
+										<th rowspan="4" <%-- background=" --%>
+											style="background-repeat: no-repeat;"><img alt="" src="<c:url value="${backGroundGIF}" />" />
+											<h5>
 												<c:set var="whatUnit" scope="session" value="${units}" />
 												<spring:message code="weather.temp" />
 												: ${ whatUnit =='true' ? list24hours[0].tempC : list24hours[0].tempFH}
@@ -62,7 +63,7 @@
 												<spring:message code="weather.feels_like" />
 												: ${ whatUnit =='true' ? list24hours[0].feelsLikeC  : list24hours[0].feelsLikeFH}
 												${unitTemp} ${list24hours[0].conditions}
-											</h3></th>
+											</h5></th>
 										<c:forEach items="${list3days}" var="entry">
 											<th><img src="${entry.icon_url}"> ${entry.weekday}</th>
 										</c:forEach>
@@ -342,9 +343,10 @@
 				<div class="panel panel-default">
 					<div class="panel-heading">
 						<h4 class="panel-title">
-							<a data-toggle="collapse" data-parent="#accordion" href="#collapse1" id="lastSearched1"><c:if test="${not empty queueforCities[0].countryName}">
-							${queueforCities[0].countryName}/${queueforCities[0].cityName}</c:if></a>
+							<a data-toggle="collapse" data-parent="#accordion" href="#collapse1" id="lastSearched1">
+							${queueforCities[0].countryName}/${queueforCities[0].cityName}</a>
 							<span class="glyphicon glyphicon-search lastVisited" data-city="${queueforCities[0].cityName}" data-country="${queueforCities[0].countryName}"></span>
+							
 						</h4>
 					</div>
 					<div id="collapse1" class="panel-collapse collapse in">
@@ -366,8 +368,9 @@
 							<c:if test="${not empty queueforCities[1].countryName}">
 									<a data-toggle="collapse" data-parent="#accordion" id="lastSearched2"
 										href="#collapse2">${queueforCities[1].countryName}/${queueforCities[1].cityName}</a>
-										</c:if>
-										<span class="glyphicon glyphicon-search lastVisited"data-city="${queueforCities[1].cityName}" data-country="${queueforCities[1].countryName}"></span>
+								
+										<span class="glyphicon glyphicon-search lastVisited" data-city="${queueforCities[1].cityName}" data-country="${queueforCities[1].countryName}"></span>
+												</c:if>
 						</h4>
 					</div>
 					<div id="collapse2" class="panel-collapse collapse">
@@ -389,8 +392,9 @@
 									<a data-toggle="collapse" data-parent="#accordion" id="lastSearched3"
 										href="#collapse3">${queueforCities[2].countryName} /
 										${queueforCities[2].cityName}</a>
-										</c:if>
+									
 										<span class="glyphicon glyphicon-search lastVisited" data-city="${queueforCities[2].cityName}" data-country="${queueforCities[2].countryName}"></span>
+											</c:if>
 						</h4>
 					</div>
 					<div id="collapse3" class="panel-collapse collapse">
@@ -415,8 +419,79 @@
 
 
 </div>
+<div class="row">
+		<div class="col-sm-8">
+		 <div id="myDiv" style="width:100%; height:100%; align: center;"></div>
+	</div>
+</div> 
 
 	<script>
+$(window).on('load',buildGraph());	
+	
+function buildGraph(){
+	var h=[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23];
+	var t=[];
+	var hu=[];
+	var c=[];
+
+	<c:forEach items="${list24hours}" var="listItem">
+
+		t.push("<c:out value="${listItem.tempC}" />");
+		hu.push("<c:out value="${listItem.humidity}" />");
+		c.push("<c:out value="${listItem.sky}" />");
+		
+	</c:forEach>
+		
+	
+	
+	console.log(h);
+	console.log(t);
+	console.log(c);
+	console.log(hu);
+	
+	
+	
+	var trace1 = {
+			  x: h,
+			  y: hu,
+			  mode: 'markers',
+			  name: '&#9926;',
+			  marker: {
+				    
+				    size: 8
+				  },
+			};
+
+	var trace2 = {
+	  x: h,
+	  y: t,
+	  mode: 'lines',
+	  name: '&#8451;',
+	};
+	
+	var trace3 = {
+	  x: h,
+	  y: c,
+	  mode: 'lines+markers',
+	  name:  '&#9729;',
+	  marker: {
+		    color: 'rgb(166, 166, 166)',
+		    size: 5
+		  },
+	  
+	};
+
+			var data = [ trace1, trace2, trace3 ];
+
+			var layout = {
+			  title:''
+			
+			};
+
+			Plotly.newPlot('myDiv', data, layout);
+}
+	
+	
 		$('.open-additional-info').on('click', function() {
 			$('.additional-info').toggleClass('opened');
 		});
@@ -439,6 +514,62 @@
 			location.reload(true);
 		});
 
+		
+
+		
+		
+		$('.list-group').on(
+				'click',
+				'.remove',
+				function() {
+					
+		var cityData = $(this).data("city");
+		var loc = $('.list-item[data-city="' + cityData + '"]').text();
+		console.log(cityData);
+		console.log('removing');
+		console.log(loc);
+		$.ajax({
+			url : "removeFavorite",
+			type : 'POST',
+			data : {
+				location : loc,
+
+						},
+						success : function() {
+							$('span#myLocation ').hide();
+							location.reload(true);
+						}
+					});
+
+				});
+		
+		
+			
+		$('.panel-group').on('click','.lastVisited', function(event) {
+			event.preventDefault();
+			console.log("click");
+			$.ajax({
+			
+				url : "search",
+				type : 'POST',
+				data : {
+					city : $(this).attr('data-city'),
+					country : $(this).attr('data-country'),
+					fromAjax : 'aaa'
+				},
+				success : function(response) {
+					$('.cities').removeClass('opened');
+					$(".city-weather").text('');
+					$(".city-weather").append(response);
+					buildGraph();
+				},
+				fail : function() {
+
+				}
+			});
+
+		});
+	
 		var favorites = '${user.locations}'.replace("[", "").replace("]", "");
 		var favsArray = favorites.split(", ");
 		function loadFavs(favs) {
@@ -500,59 +631,5 @@
 
 			}
 		}
-		loadFavs(favsArray);
-
-		
-		
-		$('.list-group').on(
-				'click',
-				'.remove',
-				function() {
-
-		var cityData = $(this).data("city");
-		var loc = $('.list-item[data-city="' + cityData + '"]').text();
-		console.log(cityData);
-		console.log('removing');
-		console.log(loc);
-		$.ajax({
-			url : "removeFavorite",
-			type : 'POST',
-			data : {
-				location : loc,
-
-						},
-						success : function() {
-							$('span#myLocation ').hide();
-							location.reload(true);
-						}
-					});
-
-				});
-		
-		
-			
-		$('.panel-group').on('click','.lastVisited', function() {
-			console.log("click");
-			$.ajax({
-			
-				url : "search",
-				type : 'POST',
-				data : {
-					city : $(this).attr('data-city'),
-					country : $(this).attr('data-country'),
-					fromAjax : 'aaa'
-				},
-				success : function(response) {
-					$('.cities').removeClass('opened');
-					$(".city-weather").text('');
-					$(".city-weather").append(response);
-				
-				},
-				fail : function() {
-
-				}
-			});
-
-		});
-	
+		loadFavs(favsArray);		
 	</script>

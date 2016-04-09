@@ -7,6 +7,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
+<!--    -->
 <link rel="icon" type="image/png" href="https://cdn4.iconfinder.com/data/icons/iconsimple-freebies/512/umbrella.png">
 <title>Weather</title>
 <meta charset="utf-8">

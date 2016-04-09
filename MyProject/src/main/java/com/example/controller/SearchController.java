@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -116,6 +117,7 @@ public class SearchController {
 		return "index";
 	}
 	public static String chooseBackGroundGIF(ArrayList<HourForcast> list24hours){
+		int currentHour = java.time.LocalDateTime.now().getHour();
 		String currGIF=null;
 		if(list24hours!=null){
 		currGIF = list24hours.get(0).getIcon_url();
@@ -131,8 +133,36 @@ public class SearchController {
 			k--;
 		}
 		currGIF=currGIF.substring(k);
+		currGIF = currGIF.replace("nt_", "");
+		System.out.println("**********************************************************");
+		System.out.println(currGIF);
+		System.out.println("**********************************************************");
 		switch(currGIF){
-		case "chancesnow.gif":	return "https://media.giphy.com/media/xTcnThWTvBZGrgx2dW/giphy.gif"; 
+		case "chancesnow.gif":	return "/imgs/13.png"; 
+		case "chanceflurries.gif": return "/imgs/14.png"; 
+		case "flurries.gif": return "/imgs/16.png"; 
+		case "snow.gif": return "/imgs/16.png"; 
+		case "chancerain.gif": return (currentHour>7&&currentHour<18?"/imgs/39.png":"/imgs/45.png");
+		case "rain.gif": return "/imgs/8.png"; 
+		case "chancesleet.gif": return "/imgs/18.png"; 
+		case "sleet.gif": return "/imgs/18.png"; 
+		case "chancetstorms.gif": return (currentHour>7&&currentHour<18?"/imgs/38.png":"/imgs/47.png"); 
+		case "tstorms.gif": return "/imgs/35.png"; 
+		case "clear.gif": return (currentHour>7&&currentHour<18?"/imgs/32.png":"/imgs/31.png"); 
+		case "sunny.gif": return "/imgs/32.png"; 
+		case "cloudy.gif": return (currentHour>7&&currentHour<18?"/imgs/28.png":"/imgs/29.png"); 
+		case "fog.gif": return "/imgs/22.png"; 
+		case "hazy.gif": return "/imgs/20.png"; 
+		case "mostlycloudy.gif": return (currentHour>7&&currentHour<18?"/imgs/28.png":"/imgs/29.png"); 
+		case "partlycloudy.gif": return (currentHour>7&&currentHour<18?"/imgs/34.png":"/imgs/33.png");  
+		default: return "/imgs/44.png"; 
+		}
+	}
+
+}
+/*/imgs/
+ * 
+ * case "chancesnow.gif":	return "https://media.giphy.com/media/xTcnThWTvBZGrgx2dW/giphy.gif"; 
 		case "chanceflurries.gif": return "https://media.giphy.com/media/xTcnThWTvBZGrgx2dW/giphy.gif"; 
 		case "flurries.gif": return "https://media.giphy.com/media/xTcnThWTvBZGrgx2dW/giphy.gif"; 
 		case "snow.gif": return "https://media.giphy.com/media/xTcnThWTvBZGrgx2dW/giphy.gif"; 
@@ -148,7 +178,6 @@ public class SearchController {
 		case "fog.gif": return "https://media.giphy.com/media/xTcnThWTvBZGrgx2dW/giphy.gif"; 
 		case "hazy.gif": return "https://media.giphy.com/media/ZWRCWdUymIGNW/giphy.gif"; 
 		default: return "https://d13yacurqjgara.cloudfront.net/users/345826/screenshots/1163640/weather-partly-cloudy.gif"; 
-		}
-	}
-
-}
+ * 
+ * 
+ * */
