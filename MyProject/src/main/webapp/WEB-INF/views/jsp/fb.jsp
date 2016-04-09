@@ -245,10 +245,6 @@
 											<td><spring:message code="weather.pressure"/></td>
 											<td>${facebookForecast[0].weather.pressure} hPa</td>
 										</tr>
-										<tr>
-											<td><spring:message code="weather.rain_chance"/></td>
-											<td>${facebookForecast[0].weather.precipProbabilty}%</td>
-										</tr>
 									</tbody>
 								</table>
 							</div>
@@ -307,10 +303,6 @@
 											<td><spring:message code="weather.pressure"/></td>
 											<td>${facebookForecast[1].weather.pressure} hPa</td>
 										</tr>
-										<tr>
-											<td>Ozone</td>
-											<td>${facebookForecast[1].weather.ozone}</td>
-										</tr>
 									</tbody>
 								</table>
 							</div>
@@ -366,10 +358,6 @@
 										<tr>
 											<td><spring:message code="weather.pressure"/></td>
 											<td>${facebookForecast[2].weather.pressure} hPa</td>
-										</tr>
-										<tr>
-											<td>Ozone</td>
-											<td>${facebookForecast[2].weather.ozone}</td>
 										</tr>
 									</tbody>
 								</table>
@@ -427,10 +415,6 @@
 											<td><spring:message code="weather.pressure"/></td>
 											<td>${facebookForecast[3].weather.pressure} hPa</td>
 										</tr>
-										<tr>
-											<td>Ozone</td>
-											<td>${facebookForecast[3].weather.ozone}</td>
-										</tr>
 									</tbody>
 								</table>
 							</div>
@@ -486,10 +470,6 @@
 										<tr>
 											<td><spring:message code="weather.pressure"/></td>
 											<td>${facebookForecast[4].weather.pressure} hPa</td>
-										</tr>
-										<tr>
-											<td>Ozone</td>
-											<td>${facebookForecast[4].weather.ozone}</td>
 										</tr>
 									</tbody>
 								</table>

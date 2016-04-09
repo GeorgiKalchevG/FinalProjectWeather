@@ -140,10 +140,8 @@ public class LocationDAO implements ILocationDAO {
 		ArrayList<DayForcast> weekendDayForcast = new ArrayList<>();
 		
 		System.out.println("from location dao ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
-
-		String wundergroungUrl = "http://api.wunderground.com/api/ba6800955f5db321/forecast10day/q/" + country.replace(' ', '_') + "/" + city.replace(' ', '_') + ".json";		JsonObject weatherData = new JsonParser().parse(restTemplate.getForObject(wundergroungUrl, String.class))
-
-				.getAsJsonObject();
+		String wundergroungUrl = "http://api.wunderground.com/api/d1141c29f3b4adb3/forecast10day/q/" + country.replace(' ', '_') + "/" + city.replace(' ', '_') + ".json";
+		JsonObject weatherData = new JsonParser().parse(restTemplate.getForObject(wundergroungUrl, String.class)).getAsJsonObject();
 		System.out.println(wundergroungUrl);
 		System.out.println(weatherData.toString());
 		JsonArray array;
