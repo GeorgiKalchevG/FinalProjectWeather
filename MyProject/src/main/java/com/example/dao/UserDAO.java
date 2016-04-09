@@ -175,8 +175,6 @@ public class UserDAO implements IUserDAO {
 				return null;
 			}
 		});
-		 System.out.println("from extractor");
-		 System.out.println( user.toString());
 		 
 		 if(user!=null){
 			String sqlFav ="SELECT LOCATION FROM  "+DB_NAME+"."+FAVOURITES_TABLE+" WHERE U_ID="+user.getUserId();
