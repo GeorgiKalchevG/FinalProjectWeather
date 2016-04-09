@@ -1,12 +1,17 @@
 package com.example.controller;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedList;
 
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+
+import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpRequest;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.example.dao.ILocationDAO;
 import com.example.dao.LocationDAO;
@@ -27,7 +33,9 @@ import com.example.model.HourForcast;
 import com.example.model.Loc;
 import com.example.model.Location;
 import com.example.model.User;
+import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
 
 
@@ -90,7 +98,17 @@ public class SearchController {
 	String loadChart(){
 		return "polarChart";
 	}
-	
+	@CrossOrigin(origins = "http://localhost:8080")
+	@RequestMapping(value = "searchFromMap", method = RequestMethod.POST)
+	@ResponseBody
+	public String searchFromMap(@RequestParam String latitude, @RequestParam String longitude,HttpServletRequest request,HttpServletResponse response) throws ServletException, IOException {
+
+		String query = "http://api.wunderground.com/api/ba6800955f5db321/geolookup/q/"+latitude+","+longitude+".json;";
+		RestTemplate restTemplate = new RestTemplate();
+		System.out.println(query);
+		String data = restTemplate.getForObject(query, String.class);
+		return data; /// return actual
+	}
 	
 	@CrossOrigin(origins = "http://localhost:8080")
 	@RequestMapping(value = "searchInSpecificCountry", method = RequestMethod.POST)

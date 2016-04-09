@@ -124,6 +124,7 @@ public class HomePageController {
 			
 			System.out.println("city name: "+city);
 			System.out.println("country name: "+country);
+			System.out.println("tuka li sme");
 			ArrayList<ArrayList<DayForcast>> forTheThreeTablesAtOnce = dao.getFiveDaysFromWUnderground(country, city,
 					session.getAttribute("language").toString(),(User)session.getAttribute("user"));
 			if (forTheThreeTablesAtOnce == null) {
@@ -160,14 +161,19 @@ public class HomePageController {
 			}
 			System.out.println("vrushta sled celiq if pri city info");
 			if(req.getParameter("fromAjax") != null){
+				System.out.println("tuka from ajaxa");
 				return "cityInfo";
+			}
+			else if(req.getParameter("fromMap")!=null){
+				System.out.println("ot mapa");
+				session.setAttribute("page", "cityInfo.jsp");
+				return "redirect:index";
+			}
 			}else{
+				System.out.println("tuka ne e from ajaxa");
 				session.setAttribute("page", "cityInfo.jsp");
 				return "index";
 			}
-				
-			
-		}
 		System.out.println("vrushta sled krainiq if pri index");
 		session.setAttribute("page", "notFound.jsp");
 		return "index";

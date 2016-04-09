@@ -20,4 +20,5 @@ public interface ILocationDAO {
 	String getCityNameByIp(String ip);
 	String plannerResponse(String from, String to, String city, String country);
 	ArrayList<Event> getEventsFromFacebookForcast(String responseFromFB);
+	String getCityAndCountyByCoordinates(String latitude, String longitude);
 }

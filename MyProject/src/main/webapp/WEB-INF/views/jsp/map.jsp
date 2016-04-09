@@ -1,6 +1,30 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+<script src="//code.jquery.com/jquery-1.10.2.js"></script>
+<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+<script	src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"
+	integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7"
+	crossorigin="anonymous">
+<!-- Optional theme -->
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css"
+	integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r"
+	crossorigin="anonymous">
+<!-- Latest compiled and minified JavaScript -->
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"
+	integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS"
+	crossorigin="anonymous"></script>
+<link rel="stylesheet"
+	href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/themes/base/jquery-ui.css"
+	type="text/css" media="all">
   <meta charset="UTF-8">
   <title>Weather layer</title>
   <style>
@@ -38,15 +62,14 @@
         mapOptions);
     // Add interaction listeners to make weather requests
     google.maps.event.addListener(map, 'idle', checkIfDataRequested);
-
     // Sets up and populates the info window with details
-    map.data.addListener('click', function(event) {
-      infowindow.setContent(
-       "<img src=" + event.feature.getProperty("icon") + ">"
+    map.data.addListener('click', function(event) { 
+    	console.log('BAHUR');
+      infowindow.setContent( 
+       "<img onclick='javascript:searchIt("+event.latLng.lat()+","+event.latLng.lng()+",\""+event.feature.getProperty("city")+"\")' src=" + event.feature.getProperty("icon") + ">"
        + "<br /><strong>" + event.feature.getProperty("city") + " </strong>"
-   		+"<span id=&quot;searchIt&quot; class=&quot;glyphicon glyphicon-heart&quot;></span>"
        + "<br />" + event.feature.getProperty("temperature") + "&deg;C"
-       + "<br />" + event.feature.getProperty("weather")
+       + "<br />" + event.feature.getProperty("weather") 
        );
       infowindow.setOptions({
           position:{
@@ -166,6 +189,34 @@
   };
 
   google.maps.event.addDomListener(window, 'load', initialize);
+  function searchIt(lat,lng,cityName){
+	  console.log('latitude '+ lat +'longitude'+ lng + 'city name'+cityName);
+	  $.ajax({
+			url : "searchFromMap",
+			type : 'POST',
+			data : {
+				latitude : lat,
+				longitude : lng
+			},
+			success : function(response) {
+				var response = JSON.parse(response);
+				var loc = response.location;
+				console.log('city  '+ loc.city +'country '+ loc.country_name+' cityName '+ cityName);
+				$.ajax({
+					url : "search",
+					type : 'POST',
+					data : {
+						city : cityName,
+						country : loc.country_name,
+						fromMap : true
+					},
+					success : function(){
+						console.log('Uspeshno');
+					}
+				});
+			}
+		});
+  }
 </script>
 </head>
 <body>
