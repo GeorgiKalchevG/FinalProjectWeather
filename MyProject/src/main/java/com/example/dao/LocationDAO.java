@@ -49,7 +49,9 @@ public class LocationDAO implements ILocationDAO {
 		RestTemplate restTemplate = new RestTemplate();
 		ArrayList<HourForcast> DayForcast = new ArrayList<>();
 		
+
 		String wundergroungUrl = "http://api.wunderground.com/api/ba6800955f5db321/hourly/q/"
+
 				+ country.replace(' ', '_') + "/" + city.replace(' ', '_') + ".json";
 		JsonObject weatherData = new JsonParser().parse(restTemplate.getForObject(wundergroungUrl, String.class))
 				.getAsJsonObject();
@@ -138,7 +140,9 @@ public class LocationDAO implements ILocationDAO {
 		ArrayList<DayForcast> weekendDayForcast = new ArrayList<>();
 		
 		System.out.println("from location dao ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+
 		String wundergroungUrl = "http://api.wunderground.com/api/ba6800955f5db321/forecast10day/q/" + country.replace(' ', '_') + "/" + city.replace(' ', '_') + ".json";		JsonObject weatherData = new JsonParser().parse(restTemplate.getForObject(wundergroungUrl, String.class))
+
 				.getAsJsonObject();
 		System.out.println(wundergroungUrl);
 		System.out.println(weatherData.toString());
@@ -199,7 +203,9 @@ public class LocationDAO implements ILocationDAO {
 	}
 	@Override
 	public String plannerResponse(String from, String to, String city, String country) {
+
 		String url = "http://api.wunderground.com/api/ba6800955f5db321/planner_" + from.split("/")[0]
+
 				+ from.split("/")[1] + to.split("/")[0] + to.split("/")[1] + "/q/" + country + "/" + city + ".json";
 		System.out.println(url);
 		RestTemplate restTemplate = new RestTemplate();
