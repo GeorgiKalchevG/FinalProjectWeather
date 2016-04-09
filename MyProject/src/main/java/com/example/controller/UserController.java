@@ -41,9 +41,7 @@ public class UserController {
 		User user = null;
 		try {
 			user = dao.logIn(username, password);
-			if(user==null)
-				session.setAttribute("userFail", 1);
-			else{
+			if(user!=null){
 				session.setAttribute("user", user);
 				session.setAttribute((String)session.getAttribute("city")+session.getAttribute("language"), null);
 				session.setAttribute("language", user.getLanguage());
@@ -54,7 +52,7 @@ public class UserController {
 					session.setAttribute("units", "false");
 				}
 				HomePageController.changeUnits(session);
-				session.setAttribute("userFail", 0);
+		
 			}
 			//System.out.println(user.toString());
 		} catch (SQLException e) {
