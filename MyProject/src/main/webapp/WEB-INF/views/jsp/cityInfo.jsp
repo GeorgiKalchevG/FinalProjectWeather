@@ -8,9 +8,23 @@
 
 <c:set var="whatUnit" scope="session" value="${units}" />
 <div class="row">
+	<div class="col-sm-12"style="background-color: azure; border: solid; border-width: 1px;">
+		<c:if test="${not empty user}">
+			<c:if test="${not empty user.locations}">
+				<div class="roll">
+		
+					<ul class="list-group" id="favLocations" onload="loadFavs();" style="margin: 10px;"><spring:message code="favourites.list" />
+					
+					</ul>
+				</div>
+			</c:if>
+		</c:if>
+	</div>
+</div>
+<div class="row">
 	<div class="main-container">
 		<div class="col-sm-8"
-			style="background-color: lightyellow; border: solid; border-width: 5px;">
+			style="background-color: azure; border: solid; border-width: 1px;">
 			<div class="container-fluid">
 
 				<h2>
@@ -81,7 +95,7 @@
 									</tr>
 								</table>
 							</div>
-							<div id="open-additional-info" class="open-additional-info">
+							<div id="open-additional-info" class="open-additional-info" style="text-align: center;">
 								<spring:message code="table.moreInfo" />
 							</div>
 							<div class="additional-info">
@@ -319,7 +333,7 @@
 			</div>
 		</div>
 		<div class="col-sm-4"
-			style="background-color: lightyellow; border: solid; border-width: 5px;">
+			style="background-color: azure; border: solid; border-width: 1px;">
 			<h2>
 				<spring:message code="sidemenu.lastvisited" />
 			</h2>
@@ -327,8 +341,7 @@
 				<div class="panel panel-default">
 					<div class="panel-heading">
 						<h4 class="panel-title">
-							<a data-toggle="collapse" data-parent="#accordion"
-								href="#collapse1">${queueforCities[0].countryName} /
+							<a data-toggle="collapse" data-parent="#accordion" href="#collapse1">${queueforCities[0].countryName} /
 								${queueforCities[0].cityName}</a>
 						</h4>
 					</div>
@@ -343,48 +356,46 @@
 							
 						</div>
 					</div>
-					<c:if test="${not empty queueforCities[1].countryName}">
-						<div class="panel panel-default">
-							<div class="panel-heading">
-								<h4 class="panel-title">
+				</div>
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<h4 class="panel-title">
+							<a data-toggle="collapse" data-parent="#accordion" href="#collapse2">${queueforCities[1].cityName}</a>
 									<a data-toggle="collapse" data-parent="#accordion"
 										href="#collapse2">${queueforCities[1].countryName} /
 										${queueforCities[1].cityName} </a>
-								</h4>
-							</div>
-							<div id="collapse2" class="panel-collapse collapse">
-								<div class="panel-body">
-									<spring:message code="weather.max_temp2" />
-									: ${ whatUnit =='true' ? queueforCities[1].tempHighCel  : queueforCities[1].tempHighFahr}
-									${unitTemp}
-									<spring:message code="weather.min_temp2" />
-									: ${ whatUnit =='true' ? queueforCities[1].tempLowCel : queueforCities[1].tempLowFahr}
-									${unitTemp}. ${queueforCities[1].conditions}
-								</div>
-							</div>
+						</h4>
+					</div>
+					<div id="collapse2" class="panel-collapse collapse">
+						<div class="panel-body">
+							<spring:message code="weather.max_temp2" />
+							: ${ whatUnit =='true' ? queueforCities[1].tempHighCel  : queueforCities[1].tempHighFahr}
+							${unitTemp}
+							<spring:message code="weather.min_temp2" />
+							: ${ whatUnit =='true' ? queueforCities[1].tempLowCel : queueforCities[1].tempLowFahr}
+							${unitTemp}. ${queueforCities[1].conditions}
 						</div>
-					</c:if>
-					<c:if test="${not empty queueforCities[2].countryName}">
-						<div class="panel panel-default">
-							<div class="panel-heading">
-								<h4 class="panel-title">
+					</div>
+				</div>
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<h4 class="panel-title">
+							<a data-toggle="collapse" data-parent="#accordion"	href="#collapse3">${queueforCities[2].cityName}</a>
 									<a data-toggle="collapse" data-parent="#accordion"
 										href="#collapse3">${queueforCities[2].countryName} /
 										${queueforCities[2].cityName}</a>
-								</h4>
-							</div>
-							<div id="collapse3" class="panel-collapse collapse">
-								<div class="panel-body">
-									<spring:message code="weather.max_temp2" />
-									: ${ whatUnit =='true' ? queueforCities[2].tempHighCel  : queueforCities[2].tempHighFahr}
-									${unitTemp}
-									<spring:message code="weather.min_temp2" />
-									: ${ whatUnit =='true' ? queueforCities[2].tempLowCel : queueforCities[2].tempLowFahr}
-									${unitTemp}. ${queueforCities[2].conditions}
-								</div>
-							</div>
+						</h4>
+					</div>
+					<div id="collapse3" class="panel-collapse collapse">
+						<div class="panel-body">
+							<spring:message code="weather.max_temp2" />
+							: ${ whatUnit =='true' ? queueforCities[2].tempHighCel  : queueforCities[2].tempHighFahr}
+							${unitTemp}
+							<spring:message code="weather.min_temp2" />
+							: ${ whatUnit =='true' ? queueforCities[2].tempLowCel : queueforCities[2].tempLowFahr}
+							${unitTemp}. ${queueforCities[2].conditions}
 						</div>
-					</c:if>
+					
 				</div>
 
 			</div>
@@ -393,18 +404,10 @@
 
 
 	</div>
-	<c:if test="${not empty user}">
-		<c:if test="${not empty user.locations}">
-			<div class="roll">
 
-				<ul class="list-group" id="favLocations" onload="loadFavs();">
-					<%-- <c:forEach items="${user.locations}" var = "userFav">
-								<li id="myLocation" class="list-group-item" > <c:import url="http://api.openweathermap.org/data/2.5/weather?q=${userFav}&mode=html&appid=9885a830e31d144089368b0a44b2f9f7"></c:import> <span id="remove" class="glyphicon glyphicon-remove"></span> </li>
-							</c:forEach> --%>
-				</ul>
-			</div>
-		</c:if>
-	</c:if>
+
+
+</div>
 
 	<script>
 		$('.open-additional-info').on('click', function() {
@@ -469,24 +472,24 @@
 										units
 									}
 									;
-									countryAndCity = response.data.request[0].query;
-									list = '<li id="myLocation" class="list-group-item" data-city="'+i+'" ><span id="remove" data-city="'+i+'" class="glyphicon glyphicon-remove"></span>'
-											+ countryAndCity
-											+ ', '
-											+ (units === true ? response.data.current_condition[0].temp_C
-													+ '&#8451;'
-													: response.data.current_condition[0].temp_F
-															+ '&#8457;'
-															+ '</li>')
-									$('#favLocations').append(list);
-									console.log(countryAndCity);
-									i++;
-									console.log(i);
-								},
-								fail : function() {
-								}
-							});
-				}(i));
+									
+								countryAndCity = response.data.request[0].query;
+								list = '<li style="display:inline;" id="myLocation" class="list-item" data-city="'+i+'" ><span id="remove" data-city="'+i+'" class="glyphicon glyphicon-remove"></span>'
+										+ countryAndCity
+										+ ', '
+										+ (units === true ? response.data.current_condition[0].temp_F
+												+ '&#8457;'
+												: response.data.current_condition[0].temp_C
+														+ '&#8451;' + '</li>')
+								$('#favLocations').append(list);
+								console.log(countryAndCity);
+								i++;
+								console.log(i);
+							},
+							fail : function() {
+							}
+						});
+			}(i));
 
 			}
 		}
@@ -497,18 +500,16 @@
 				'.glyphicon',
 				function() {
 
-					var cityData = $(this).data("city");
-					var loc = $(
-							'.list-group-item[data-city="' + cityData + '"]')
-							.text();
-					console.log(cityData);
-					console.log('removing');
-					console.log(loc);
-					$.ajax({
-						url : "removeFavorite",
-						type : 'POST',
-						data : {
-							location : loc,
+		var cityData = $(this).data("city");
+		var loc = $('.list-item[data-city="' + cityData + '"]').text();
+		console.log(cityData);
+		console.log('removing');
+		console.log(loc);
+		$.ajax({
+			url : "removeFavorite",
+			type : 'POST',
+			data : {
+				location : loc,
 
 						},
 						success : function() {

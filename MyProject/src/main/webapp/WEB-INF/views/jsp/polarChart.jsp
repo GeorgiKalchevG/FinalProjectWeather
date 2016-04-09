@@ -8,10 +8,8 @@
 <spring:url value="js/Chart.js" var="chart" />
 <script type="text/javascript" src="${chart}"></script>
 <c:import url="planner.jsp"></c:import>
-<div class="row">
-	<div class="col-sm-3">
-		<div id="text-descr" ></div>
-	</div>
+<div class="row" style="border: solid;border-width: 1px">
+	
 	<div class="col-sm-5">
 			  <div id="myCarousel" class="carousel slide" data-ride="carousel">
 					  <!-- Indicators -->
@@ -57,12 +55,14 @@
 					</div>
 			</div>
 	<div class="col-sm-3">
+		<div id="text-descr" ></div>
+	</div>
+	<div class="col-sm-4">
 		<div id="info" ></div>
 	</div>
 
-
 	</div>
-<div class="row" ">
+<div class="row" style="border: solid;border-width: 1px">
 	
 	<div class="col-sm-6">
 		
