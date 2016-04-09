@@ -37,7 +37,14 @@ public class DayForcast {
 	private double minhumidity;
 	private int pop;
 	
-	
+	@Override
+	public boolean equals(Object obj) {
+		DayForcast thisObject = (DayForcast) obj;
+		if(thisObject.cityName.equals(this.cityName) && thisObject.countryName.equals(this.countryName)){
+			return true;
+		}
+		return false;
+	}
 	
 	
 	public double getPop() {

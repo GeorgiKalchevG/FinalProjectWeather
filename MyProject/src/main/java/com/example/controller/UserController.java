@@ -53,7 +53,7 @@ public class UserController {
 				else{
 					session.setAttribute("units", "false");
 				}
-				HomePageController.ChangeUnits(session);
+				HomePageController.changeUnits(session);
 				session.setAttribute("userFail", 0);
 			}
 			//System.out.println(user.toString());
@@ -86,7 +86,7 @@ public class UserController {
 			else{
 				session.setAttribute("units", "false");
 			}
-			HomePageController.ChangeUnits(session);
+			HomePageController.changeUnits(session);
 		} catch (SQLException | NoSuchAlgorithmException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -137,7 +137,7 @@ public class UserController {
 				else{
 					session.setAttribute("units", "false");
 				}
-				HomePageController.ChangeUnits(session);
+				HomePageController.changeUnits(session);
 			} catch (SQLException | DataAccessException | NoSuchAlgorithmException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

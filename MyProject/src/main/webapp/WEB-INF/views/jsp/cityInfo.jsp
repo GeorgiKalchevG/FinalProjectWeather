@@ -340,170 +340,182 @@
 							<spring:message code="weather.min_temp2" />
 							: ${ whatUnit =='true' ? queueforCities[0].tempLowCel : queueforCities[0].tempLowFahr}
 							${unitTemp}. ${queueforCities[0].conditions}
+							
 						</div>
 					</div>
-				</div>
-				<div class="panel panel-default">
-					<div class="panel-heading">
-						<h4 class="panel-title">
-							<a data-toggle="collapse" data-parent="#accordion"
-								href="#collapse2">${queueforCities[1].cityName}</a>
-						</h4>
-					</div>
-					<div id="collapse2" class="panel-collapse collapse">
-						<div class="panel-body">
-							<spring:message code="weather.max_temp2" />
-							: ${ whatUnit =='true' ? queueforCities[1].tempHighCel  : queueforCities[1].tempHighFahr}
-							${unitTemp}
-							<spring:message code="weather.min_temp2" />
-							: ${ whatUnit =='true' ? queueforCities[1].tempLowCel : queueforCities[1].tempLowFahr}
-							${unitTemp}. ${queueforCities[1].conditions}
+					<c:if test="${not empty queueforCities[1].countryName}">
+						<div class="panel panel-default">
+							<div class="panel-heading">
+								<h4 class="panel-title">
+									<a data-toggle="collapse" data-parent="#accordion"
+										href="#collapse2">${queueforCities[1].countryName} /
+										${queueforCities[1].cityName} </a>
+								</h4>
+							</div>
+							<div id="collapse2" class="panel-collapse collapse">
+								<div class="panel-body">
+									<spring:message code="weather.max_temp2" />
+									: ${ whatUnit =='true' ? queueforCities[1].tempHighCel  : queueforCities[1].tempHighFahr}
+									${unitTemp}
+									<spring:message code="weather.min_temp2" />
+									: ${ whatUnit =='true' ? queueforCities[1].tempLowCel : queueforCities[1].tempLowFahr}
+									${unitTemp}. ${queueforCities[1].conditions}
+								</div>
+							</div>
 						</div>
-					</div>
-				</div>
-				<div class="panel panel-default">
-					<div class="panel-heading">
-						<h4 class="panel-title">
-							<a data-toggle="collapse" data-parent="#accordion"
-								href="#collapse3">${queueforCities[2].cityName}</a>
-						</h4>
-					</div>
-					<div id="collapse3" class="panel-collapse collapse">
-						<div class="panel-body">
-							<spring:message code="weather.max_temp2" />
-							: ${ whatUnit =='true' ? queueforCities[2].tempHighCel  : queueforCities[2].tempHighFahr}
-							${unitTemp}
-							<spring:message code="weather.min_temp2" />
-							: ${ whatUnit =='true' ? queueforCities[2].tempLowCel : queueforCities[2].tempLowFahr}
-							${unitTemp}. ${queueforCities[2].conditions}
+					</c:if>
+					<c:if test="${not empty queueforCities[2].countryName}">
+						<div class="panel panel-default">
+							<div class="panel-heading">
+								<h4 class="panel-title">
+									<a data-toggle="collapse" data-parent="#accordion"
+										href="#collapse3">${queueforCities[2].countryName} /
+										${queueforCities[2].cityName}</a>
+								</h4>
+							</div>
+							<div id="collapse3" class="panel-collapse collapse">
+								<div class="panel-body">
+									<spring:message code="weather.max_temp2" />
+									: ${ whatUnit =='true' ? queueforCities[2].tempHighCel  : queueforCities[2].tempHighFahr}
+									${unitTemp}
+									<spring:message code="weather.min_temp2" />
+									: ${ whatUnit =='true' ? queueforCities[2].tempLowCel : queueforCities[2].tempLowFahr}
+									${unitTemp}. ${queueforCities[2].conditions}
+								</div>
+							</div>
 						</div>
-					</div>
+					</c:if>
 				</div>
+
 			</div>
 
 		</div>
 
+
 	</div>
+	<c:if test="${not empty user}">
+		<c:if test="${not empty user.locations}">
+			<div class="roll">
 
-
-</div>
-<c:if test="${not empty user}">
-	<c:if test="${not empty user.locations}">
-		<div class="roll">
-
-			<ul class="list-group" id="favLocations" onload="loadFavs();">
-				<%-- <c:forEach items="${user.locations}" var = "userFav">
+				<ul class="list-group" id="favLocations" onload="loadFavs();">
+					<%-- <c:forEach items="${user.locations}" var = "userFav">
 								<li id="myLocation" class="list-group-item" > <c:import url="http://api.openweathermap.org/data/2.5/weather?q=${userFav}&mode=html&appid=9885a830e31d144089368b0a44b2f9f7"></c:import> <span id="remove" class="glyphicon glyphicon-remove"></span> </li>
 							</c:forEach> --%>
-			</ul>
-		</div>
+				</ul>
+			</div>
+		</c:if>
 	</c:if>
-</c:if>
 
-<script>
-	$('.open-additional-info').on('click', function() {
-		$('.additional-info').toggleClass('opened');
-	});
-
-	$('#favIt').on('click', function() {
-		var loc = $('#location-holder').text();
-		console.log("from remove js" + loc);
-		$.ajax({
-			url : "addFavourite",
-			type : 'POST',
-			data : {
-				location : loc,
-
-			},
-			success : function() {
-				$('span#favIt').hide();
-
-			}
+	<script>
+		$('.open-additional-info').on('click', function() {
+			$('.additional-info').toggleClass('opened');
 		});
-		location.reload(true);
-	});
 
-	var favorites = '${user.locations}'.replace("[", "").replace("]", "");
-	var favsArray = favorites.split(", ");
-	function loadFavs(favs) {
-		this.favorites = favs;
-		console.log(favorites);
-		$('#favLocations').text('');
-		var countryAndCity = "";
+		$('#favIt').on('click', function() {
+			var loc = $('#location-holder').text();
+			console.log("from remove js" + loc);
+			$.ajax({
+				url : "addFavourite",
+				type : 'POST',
+				data : {
+					location : loc,
 
-		for (i = 0; i < favorites.length; i++) {
-			(function(i) {
+				},
+				success : function() {
+					$('span#favIt').hide();
 
-				console.log(favorites[i]);
+				}
+			});
+			location.reload(true);
+		});
 
-				countryAndCity = favorites[i];
-				var kelvin = 272.15;
-				var countryAndCitySpit = countryAndCity.split("/");
-				console.log(countryAndCitySpit);
-				var country = countryAndCitySpit[0];
-				var city = countryAndCitySpit[1];
-				country = country.replace(" ", "+");
-				city = city.replace(" ", "+");
-				console.log(city);
-				var url = "http://api.worldweatheronline.com/premium/v1/weather.ashx?key=9c4edfe458aa40db973185430160704&q="
-						+ city
-						+ ","
-						+ country
-						+ "&num_of_days=1&fx=no&format=json";
-				console.log(url);
-				$
-						.ajax({
-							url : url,
-							type : 'POST',
-							data : {},
-							success : function(response) {
+		var favorites = '${user.locations}'.replace("[", "").replace("]", "");
+		var favsArray = favorites.split(", ");
+		function loadFavs(favs) {
+			this.favorites = favs;
+			console.log(favorites);
+			$('#favLocations').text('');
+			var countryAndCity = "";
 
-								var units = $
-								{
-									units
+			for (i = 0; i < favorites.length; i++) {
+				(function(i) {
+
+					console.log(favorites[i]);
+
+					countryAndCity = favorites[i];
+					var kelvin = 272.15;
+					var countryAndCitySpit = countryAndCity.split("/");
+					console.log(countryAndCitySpit);
+					var country = countryAndCitySpit[0];
+					var city = countryAndCitySpit[1];
+					country = country.replace(" ", "+");
+					city = city.replace(" ", "+");
+					console.log(city);
+					var url = "http://api.worldweatheronline.com/premium/v1/weather.ashx?key=9c4edfe458aa40db973185430160704&q="
+							+ city
+							+ ","
+							+ country
+							+ "&num_of_days=1&fx=no&format=json";
+					console.log(url);
+					$
+							.ajax({
+								url : url,
+								type : 'POST',
+								data : {},
+								success : function(response) {
+
+									var units = $
+									{
+										units
+									}
+									;
+									countryAndCity = response.data.request[0].query;
+									list = '<li id="myLocation" class="list-group-item" data-city="'+i+'" ><span id="remove" data-city="'+i+'" class="glyphicon glyphicon-remove"></span>'
+											+ countryAndCity
+											+ ', '
+											+ (units === true ? response.data.current_condition[0].temp_C
+													+ '&#8451;'
+													: response.data.current_condition[0].temp_F
+															+ '&#8457;'
+															+ '</li>')
+									$('#favLocations').append(list);
+									console.log(countryAndCity);
+									i++;
+									console.log(i);
+								},
+								fail : function() {
 								}
-								;
-								countryAndCity = response.data.request[0].query;
-								list = '<li id="myLocation" class="list-group-item" data-city="'+i+'" ><span id="remove" data-city="'+i+'" class="glyphicon glyphicon-remove"></span>'
-										+ countryAndCity
-										+ ', '
-										+ (units === true ? response.data.current_condition[0].temp_C
-												+ '&#8451;'
-												: response.data.current_condition[0].temp_F
-														+ '&#8457;' + '</li>')
-								$('#favLocations').append(list);
-								console.log(countryAndCity);
-								i++;
-								console.log(i);
-							},
-							fail : function() {
-							}
-						});
-			}(i));
+							});
+				}(i));
 
-		}
-	}
-	loadFavs(favsArray);
-
-	$('.list-group').on('click', '.glyphicon', function() {
-
-		var cityData = $(this).data("city");
-		var loc = $('.list-group-item[data-city="' + cityData + '"]').text();
-		console.log(cityData);
-		console.log('removing');
-		console.log(loc);
-		$.ajax({
-			url : "removeFavorite",
-			type : 'POST',
-			data : {
-				location : loc,
-
-			},
-			success : function() {
-				$('span#myLocation ').hide();
-				location.reload(true);
 			}
-		});
+		}
+		loadFavs(favsArray);
 
-	});
-</script>
+		$('.list-group').on(
+				'click',
+				'.glyphicon',
+				function() {
+
+					var cityData = $(this).data("city");
+					var loc = $(
+							'.list-group-item[data-city="' + cityData + '"]')
+							.text();
+					console.log(cityData);
+					console.log('removing');
+					console.log(loc);
+					$.ajax({
+						url : "removeFavorite",
+						type : 'POST',
+						data : {
+							location : loc,
+
+						},
+						success : function() {
+							$('span#myLocation ').hide();
+							location.reload(true);
+						}
+					});
+
+				});
+	</script>

@@ -246,8 +246,8 @@
 											<td>${facebookForecast[0].weather.pressure} hPa</td>
 										</tr>
 										<tr>
-											<td>Ozone</td>
-											<td>${facebookForecast[0].weather.ozone}</td>
+											<td><spring:message code="weather.rain_chance"/></td>
+											<td>${facebookForecast[0].weather.precipProbabilty}%</td>
 										</tr>
 									</tbody>
 								</table>

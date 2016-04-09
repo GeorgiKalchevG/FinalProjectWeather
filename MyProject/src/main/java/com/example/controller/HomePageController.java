@@ -56,10 +56,7 @@ public class HomePageController {
 		if (session.getAttribute("units") == null) {
 			System.out.println("setvam units na true");
 			session.setAttribute("units", "true");
-			session.setAttribute("unitTemp", "&#8451");
-			session.setAttribute("unitSpeed", "Km/h");
-			session.setAttribute("unitMM", "mm");
-			session.setAttribute("unitKmMiles", "Km");
+			changeUnits(session);
 		}
 		if (session.getAttribute("icons") == null) {
 			System.out.println("setvam icons na i");
@@ -148,11 +145,14 @@ public class HomePageController {
 				saveOrNullItemsInSession(session,WordUtils.capitalize(country+"/"+city),forTheThreeTablesAtOnce,forTheThreeTablesAtOnce.get(0),forTheThreeTablesAtOnce.get(1),forTheThreeTablesAtOnce.get(2),list24hours);
 
 				LinkedList<DayForcast> queueCities = (LinkedList<DayForcast>) session.getAttribute("queueforCities");
+				System.out.println(queueCities.get(0)+"  "+forTheThreeTablesAtOnce.get(0).get(0));
+				if(!queueCities.contains(forTheThreeTablesAtOnce.get(0).get(0))){
 				if (queueCities.size() > 2) {
 					queueCities.removeLast();
 				}
 				queueCities.addFirst(forTheThreeTablesAtOnce.get(0).get(0));
 				session.setAttribute("queueforCities", queueCities);
+				}
 			}
 			if(country.equals("")){
 				System.out.println("vrushta sled celiq if pri index");
@@ -211,7 +211,7 @@ public class HomePageController {
 
 	@CrossOrigin(origins = "http://localhost:8080")
 	@RequestMapping(value = "ChangeUnits", method = RequestMethod.GET)
-	public static String ChangeUnits(HttpSession session) {
+	public static String changeUnits(HttpSession session) {
 		System.out.println("Sega e " + session.getAttribute("units"));
 		if (session.getAttribute("units").equals("false")) {
 			System.out.println("ot true na false");
