@@ -332,6 +332,7 @@
 				</div>
 			</div>
 		</div>
+</div>
 		<div class="col-sm-4"
 			style="background-color: azure; border: solid; border-width: 1px;">
 			<h2>
@@ -341,8 +342,9 @@
 				<div class="panel panel-default">
 					<div class="panel-heading">
 						<h4 class="panel-title">
-							<a data-toggle="collapse" data-parent="#accordion" href="#collapse1">${queueforCities[0].countryName} /
-								${queueforCities[0].cityName}</a>
+							<a data-toggle="collapse" data-parent="#accordion" href="#collapse1" id="lastSearched1"><c:if test="${not empty queueforCities[0].countryName}">
+							${queueforCities[0].countryName}/${queueforCities[0].cityName}</c:if></a>
+							<span class="glyphicon glyphicon-search lastVisited" data-city="${queueforCities[0].cityName}" data-country="${queueforCities[0].countryName}"></span>
 						</h4>
 					</div>
 					<div id="collapse1" class="panel-collapse collapse in">
@@ -360,10 +362,12 @@
 				<div class="panel panel-default">
 					<div class="panel-heading">
 						<h4 class="panel-title">
-							<a data-toggle="collapse" data-parent="#accordion" href="#collapse2">${queueforCities[1].cityName}</a>
-									<a data-toggle="collapse" data-parent="#accordion"
-										href="#collapse2">${queueforCities[1].countryName} /
-										${queueforCities[1].cityName} </a>
+							<a data-toggle="collapse" data-parent="#accordion" href="#collapse2"></a>
+							<c:if test="${not empty queueforCities[1].countryName}">
+									<a data-toggle="collapse" data-parent="#accordion" id="lastSearched2"
+										href="#collapse2">${queueforCities[1].countryName}/${queueforCities[1].cityName}</a>
+										</c:if>
+										<span class="glyphicon glyphicon-search lastVisited"data-city="${queueforCities[1].cityName}" data-country="${queueforCities[1].countryName}"></span>
 						</h4>
 					</div>
 					<div id="collapse2" class="panel-collapse collapse">
@@ -380,10 +384,13 @@
 				<div class="panel panel-default">
 					<div class="panel-heading">
 						<h4 class="panel-title">
-							<a data-toggle="collapse" data-parent="#accordion"	href="#collapse3">${queueforCities[2].cityName}</a>
-									<a data-toggle="collapse" data-parent="#accordion"
+							<a data-toggle="collapse" data-parent="#accordion"	href="#collapse3"></a>
+							<c:if test="${not empty queueforCities[2].countryName}">
+									<a data-toggle="collapse" data-parent="#accordion" id="lastSearched3"
 										href="#collapse3">${queueforCities[2].countryName} /
 										${queueforCities[2].cityName}</a>
+										</c:if>
+										<span class="glyphicon glyphicon-search lastVisited" data-city="${queueforCities[2].cityName}" data-country="${queueforCities[2].countryName}"></span>
 						</h4>
 					</div>
 					<div id="collapse3" class="panel-collapse collapse">
@@ -474,7 +481,7 @@
 									;
 									
 								countryAndCity = response.data.request[0].query;
-								list = '<li style="display:inline;" id="myLocation" class="list-item" data-city="'+i+'" ><span id="remove" data-city="'+i+'" class="glyphicon glyphicon-remove"></span>'
+								list = '<li style="display:inline;" id="myLocation" class="list-item" data-city="'+i+'" ><span id="remove" data-city="'+i+'" class="glyphicon glyphicon-remove remove"></span>'
 										+ countryAndCity
 										+ ', '
 										+ (units === true ? response.data.current_condition[0].temp_F
@@ -495,9 +502,11 @@
 		}
 		loadFavs(favsArray);
 
+		
+		
 		$('.list-group').on(
 				'click',
-				'.glyphicon',
+				'.remove',
 				function() {
 
 		var cityData = $(this).data("city");
@@ -519,4 +528,31 @@
 					});
 
 				});
+		
+		
+			
+		$('.panel-group').on('click','.lastVisited', function() {
+			console.log("click");
+			$.ajax({
+			
+				url : "search",
+				type : 'POST',
+				data : {
+					city : $(this).attr('data-city'),
+					country : $(this).attr('data-country'),
+					fromAjax : 'aaa'
+				},
+				success : function(response) {
+					$('.cities').removeClass('opened');
+					$(".city-weather").text('');
+					$(".city-weather").append(response);
+				
+				},
+				fail : function() {
+
+				}
+			});
+
+		});
+	
 	</script>
