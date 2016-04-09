@@ -103,7 +103,7 @@ public class UserDAO implements IUserDAO {
 		System.out.println("From log in dao                                                    \n\n\n" +userName+", "+password );
 		User user = extractUser(userName);
 		
-		System.out.println(user.toString());
+//		System.out.println(user.toString());
 		try {
 			System.out.println("-------------------------encrypted password "+encript("Qwer123"));
 		} catch (NoSuchAlgorithmException e1) {
@@ -176,7 +176,7 @@ public class UserDAO implements IUserDAO {
 			}
 		});
 		 System.out.println("from extractor");
-		 System.out.println( user.toString());
+//		 System.out.println( user.toString());
 		 
 		 if(user!=null){
 			String sqlFav ="SELECT LOCATION FROM  "+DB_NAME+"."+FAVOURITES_TABLE+" WHERE U_ID="+user.getUserId();
