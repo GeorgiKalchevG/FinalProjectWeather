@@ -26,7 +26,7 @@
   var request;
   var gettingData = false;
   var openWeatherMapKey = "9885a830e31d144089368b0a44b2f9f7"
-	  var lat = " 42.696552";/*${location.lon};*/
+	  var lat = "42.696552";/*${location.lon};*/
 	  var lon  = "23.32601";/*${location.lat};*/
   function initialize() {
     var mapOptions = {
@@ -43,7 +43,8 @@
     map.data.addListener('click', function(event) {
       infowindow.setContent(
        "<img src=" + event.feature.getProperty("icon") + ">"
-       + "<br /><strong>" + event.feature.getProperty("city") + "</strong>"
+       + "<br /><strong>" + event.feature.getProperty("city") + " </strong>"
+   		+"<span id=&quot;searchIt&quot; class=&quot;glyphicon glyphicon-heart&quot;></span>"
        + "<br />" + event.feature.getProperty("temperature") + "&deg;C"
        + "<br />" + event.feature.getProperty("weather")
        );

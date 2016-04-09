@@ -55,7 +55,7 @@ public class HomePageController {
 		session.setAttribute("page", "cityInfo.jsp");
 		if (session.getAttribute("units") == null) {
 			System.out.println("setvam units na true");
-			session.setAttribute("units", "true");
+			session.setAttribute("units", "false");
 			changeUnits(session);
 		}
 		if (session.getAttribute("icons") == null) {
