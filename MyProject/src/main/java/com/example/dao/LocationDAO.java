@@ -3,7 +3,7 @@ package com.example.dao;
 import java.util.ArrayList;
 import java.util.Calendar;
 
-
+import org.apache.commons.lang.WordUtils;
 import org.springframework.web.client.RestTemplate;
 
 import com.example.model.CurrentForcast;
@@ -25,12 +25,19 @@ public class LocationDAO implements ILocationDAO {
 
 	@Override
 	public String getCityNameByIp(String ip) {
-		String ipToGeotag = "http://api.db-ip.com/addrinfo?addr=" + ip
-				+ "&api_key=2847ed47c9cf4242bb2e09a10aeb3c313c5ebb06";
+		String ipToGeotag = "https://api.geoips.com/ip/"+ip+"/key/e75dc720b8ce4497cd1aed66d4c1cced/output/json";
 		RestTemplate restTemplate = new RestTemplate();
 		String data = restTemplate.getForObject(ipToGeotag, String.class);
-		String cityName = new JsonParser().parse(data).getAsJsonObject().get("city").getAsString();
-		String countryName = new JsonParser().parse(data).getAsJsonObject().get("country").getAsString();
+		JsonObject countryNameObject = new JsonParser().parse(data).getAsJsonObject().get("response").getAsJsonObject();
+		System.out.println(countryNameObject);
+		String countryName=countryNameObject.get("location").getAsJsonObject().get("country_name").getAsString();
+		countryName=WordUtils.capitalize(countryName.toLowerCase());
+		String ipToGeotag1 = "http://api.db-ip.com/addrinfo?addr=" + ip
+				+ "&api_key=2847ed47c9cf4242bb2e09a10aeb3c313c5ebb06";
+		//RestTemplate restTemplate = new RestTemplate();
+		String data1 = restTemplate.getForObject(ipToGeotag1, String.class);
+		String cityName = new JsonParser().parse(data1).getAsJsonObject().get("city").getAsString();
+		//String countryName = new JsonParser().parse(data).getAsJsonObject().get("country").getAsString();
 		return countryName + "/" + cityName;
 	}
 
