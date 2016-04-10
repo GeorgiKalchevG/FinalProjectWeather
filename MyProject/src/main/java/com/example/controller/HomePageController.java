@@ -3,24 +3,17 @@ package com.example.controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
+
 import java.util.LinkedList;
-import java.util.List;
-import java.util.Queue;
-import java.util.TreeMap;
-import java.util.concurrent.LinkedBlockingQueue;
-import java.lang.Object;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang.WordUtils;
-import org.apache.hadoop.mapred.legacyjobhistory_jsp;
-import org.apache.shiro.web.session.HttpServletSession;
-import org.neo4j.cypher.internal.compiler.v2_2.perty.recipe.formatErrors;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestBody;
+
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -29,14 +22,13 @@ import org.springframework.web.client.RestTemplate;
 
 import com.example.dao.ILocationDAO;
 import com.example.dao.LocationDAO;
-import com.example.model.Car;
+
 import com.example.model.DayForcast;
-import com.example.model.Forcast;
+
 import com.example.model.HourForcast;
-import com.example.model.Loc;
+
 import com.example.model.User;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
+
 
 @Controller
 public class HomePageController {

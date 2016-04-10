@@ -2,24 +2,21 @@ package com.example.dao;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.HashMap;
-import java.util.TreeMap;
 
-import org.apache.catalina.connector.Request;
-import org.apache.commons.lang.WordUtils;
+
 import org.springframework.web.client.RestTemplate;
 
 import com.example.model.CurrentForcast;
-//import com.example.model.ChanceOfTypeOfWeather;
+
 import com.example.model.DayForcast;
 import com.example.model.Event;
-import com.example.model.Forcast;
+
 import com.example.model.HourForcast;
 import com.example.model.Location;
 import com.example.model.User;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
+
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
@@ -50,11 +47,11 @@ public class LocationDAO implements ILocationDAO {
 		ArrayList<HourForcast> DayForcast = new ArrayList<>();
 		String wundergroungUrl;
 		if(locID!=null){
-			wundergroungUrl = "http://api.wunderground.com/api/ba6800955f5db321/hourly"+locID+".json";
+			wundergroungUrl = "http://api.wunderground.com/api/88f2b27b9585755c/hourly"+locID+".json";
 			System.out.println("za 24 4asa 1: location id "+locID+"zaqkva "+ wundergroungUrl);
 		}
 		else{
-			wundergroungUrl = "http://api.wunderground.com/api/ba6800955f5db321/hourly/q/"
+			wundergroungUrl = "http://api.wunderground.com/api/88f2b27b9585755c/hourly/q/"
 				+ country.replace(' ', '_') + "/" + city.replace(' ', '_') + ".json";
 			System.out.println("za 24 4asa 2: location id "+locID+"zaqkva "+ wundergroungUrl);
 		}
@@ -228,7 +225,7 @@ public class LocationDAO implements ILocationDAO {
 	@Override
 	public String plannerResponse(String from, String to, String city, String country) {
 
-		String url = "http://api.wunderground.com/api/ba6800955f5db321/planner_" + from.split("/")[0]
+		String url = "http://api.wunderground.com/api/88f2b27b9585755c/planner_" + from.split("/")[0]
 
 				+ from.split("/")[1] + to.split("/")[0] + to.split("/")[1] + "/q/" + country + "/" + city + ".json";
 		System.out.println(url);
@@ -441,4 +438,4 @@ public class LocationDAO implements ILocationDAO {
 
 }
 
-// http://api.wunderground.com/api/ba6800955f5db321/forecast10day/q/CA/San_Francisco.json
+// http://api.wunderground.com/api/88f2b27b9585755c/forecast10day/q/CA/San_Francisco.json
