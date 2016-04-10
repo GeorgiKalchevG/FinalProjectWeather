@@ -91,16 +91,16 @@
                 	<p><input type="password"  autocomplete="off" placeholder="Confirm new password" name="pass2" id="pass2Edit" ></p>
                 </form>
                	<p>
-               		<select name = "language" form="editform">
+               		<select name = "language" id = "language" form="editform">
                 		<option value="EN">English</option>
                 		<option value="BU">Български</option>
                 	</select>
-               		<select name = "unit" form="editform">
+               		<select name = "unit" id = "unit" form="editform">
                 		<option value="C">&#8451;</option>
                 		<option value="F">&#8457;</option>
                		</select>
                	</p>
-				<p><img alt="sky" src="http://icons.wxug.com/i/c/a/partlycloudy.gif" ><input type="radio" name = "icon" value="a" form="editform" checked="checked">
+				<p><img alt="sky" src="http://icons.wxug.com/i/c/a/partlycloudy.gif" ><input type="radio" name = "icon" value="a" form="editform">
 				<img alt="sky" src="http://icons.wxug.com/i/c/b/partlycloudy.gif" ><input type="radio" name = "icon" value="b" form="editform"></p>
 				<p><img alt="sky" src="http://icons.wxug.com/i/c/c/partlycloudy.gif" ><input type="radio" name = "icon" value="c" form="editform">
 				<img alt="sky" src="http://icons.wxug.com/i/c/d/partlycloudy.gif" ><input type="radio" name = "icon" value="d" form="editform"></p>
@@ -118,13 +118,18 @@
 	
 	
 <script >
-
 	function toggle_visibility(id) {
     var e = document.getElementById(id);
     if(e.style.display == 'block')
        e.style.display = 'none';
     else
        e.style.display = 'block';
+    if(id=='edit'){
+        console.log('haha '+' ${user.userName} '+' ${user.language} '+' ${user.unit} '+' ${user.icon} ');
+    	$(":radio[value='${user.icon}']").attr('checked','checked');
+    	$('#language').val('${user.language}');
+    	$('#unit').val('${user.unit}');
+    }
 }
 </script>	
 <script >
