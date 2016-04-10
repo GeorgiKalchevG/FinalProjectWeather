@@ -82,10 +82,10 @@ public class HomePageController {
 			saveOrNullItemsInSession(session,cityName,forTheThreeTablesAtOnce,forTheThreeTablesAtOnce.get(0),forTheThreeTablesAtOnce.get(1),forTheThreeTablesAtOnce.get(2),list24hours);
 		}else{
 		forTheThreeTablesAtOnce = dao.getFiveDaysFromWUnderground(
-				cityName.split("/")[0], cityName.split("/")[1], session.getAttribute("language").toString(),(User)session.getAttribute("user"));
+				cityName.split("/")[0], cityName.split("/")[1], session.getAttribute("language").toString(),(User)session.getAttribute("user"),null);
 		
 		ArrayList<HourForcast> list24hours = dao.getDayFromWUnderground(cityName.split("/")[0], cityName.split("/")[1],
-				session.getAttribute("language").toString(),(User)session.getAttribute("user"));
+				session.getAttribute("language").toString(),(User)session.getAttribute("user"),null);
 		saveOrNullItemsInSession(session,cityName,forTheThreeTablesAtOnce,forTheThreeTablesAtOnce.get(0),forTheThreeTablesAtOnce.get(1),forTheThreeTablesAtOnce.get(2),list24hours);
 
 		}
@@ -126,7 +126,7 @@ public class HomePageController {
 			System.out.println("country name: "+country);
 			System.out.println("tuka li sme");
 			ArrayList<ArrayList<DayForcast>> forTheThreeTablesAtOnce = dao.getFiveDaysFromWUnderground(country, city,
-					session.getAttribute("language").toString(),(User)session.getAttribute("user"));
+					session.getAttribute("language").toString(),(User)session.getAttribute("user"),req.getParameter("locID"));
 			if (forTheThreeTablesAtOnce == null) {
 				saveOrNullItemsInSession(session,"N/A",forTheThreeTablesAtOnce,null,null,null,null);
 				System.out.println("vrushta ako e null pri city info");
@@ -142,7 +142,7 @@ public class HomePageController {
 				return "index"; 
 			}else {
 				ArrayList<HourForcast> list24hours = dao.getDayFromWUnderground(country, city,
-						session.getAttribute("language").toString(),(User)session.getAttribute("user"));
+						session.getAttribute("language").toString(),(User)session.getAttribute("user"),req.getParameter("locID"));
 				saveOrNullItemsInSession(session,WordUtils.capitalize(country+"/"+city),forTheThreeTablesAtOnce,forTheThreeTablesAtOnce.get(0),forTheThreeTablesAtOnce.get(1),forTheThreeTablesAtOnce.get(2),list24hours);
 
 				LinkedList<DayForcast> queueCities = (LinkedList<DayForcast>) session.getAttribute("queueforCities");
@@ -162,12 +162,13 @@ public class HomePageController {
 			System.out.println("vrushta sled celiq if pri city info");
 			if(req.getParameter("fromAjax") != null){
 				System.out.println("tuka from ajaxa");
+				System.out.println(req.getParameter("locID"));
 				return "cityInfo";
 			}
 			else if(req.getParameter("fromMap")!=null){
 				System.out.println("ot mapa");
 				session.setAttribute("page", "cityInfo.jsp");
-				return "redirect:index";
+				return "index";
 			}
 			}else{
 				System.out.println("tuka ne e from ajaxa");

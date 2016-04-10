@@ -201,17 +201,22 @@
 			success : function(response) {
 				var response = JSON.parse(response);
 				var loc = response.location;
-				console.log('city  '+ loc.city +'country '+ loc.country_name+' cityName '+ cityName);
+				console.log('city  '+ response.timezoneId +'country '+ response.countryName+' cityName '+ cityName);
 				$.ajax({
 					url : "search",
 					type : 'POST',
 					data : {
 						city : cityName,
-						country : loc.country_name,
-						fromMap : true
+						country : response.countryName,
+						fromMap : true,
+						lat : lat,
+						lon : lng
 					},
-					success : function(){
+					success : function(response){
 						console.log('Uspeshno');
+						 document.open();
+						 document.write(response);
+						 document.close();
 					}
 				});
 			}

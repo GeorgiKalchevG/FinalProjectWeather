@@ -1,6 +1,12 @@
 package com.example.model;
 
-public class Event {
+import java.io.Serializable;
+
+public class Event implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 3005944159514971583L;
 	private String start_time;
 	private String cover_url;
 	private String description;

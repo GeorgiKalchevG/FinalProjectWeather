@@ -1,9 +1,14 @@
 package com.example.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class User {
+public class User implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 964200251932031406L;
 	private int userId;
 	private String userName;
 	private String password;

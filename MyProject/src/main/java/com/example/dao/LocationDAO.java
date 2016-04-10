@@ -44,14 +44,20 @@ public class LocationDAO implements ILocationDAO {
 	}
 
 	@Override
-	public ArrayList<HourForcast> getDayFromWUnderground(String country, String city, String language, User user) {
+	public ArrayList<HourForcast> getDayFromWUnderground(String country, String city, String language, User user, String locID) {
 		System.out.println("2          " + city.replace(' ', '_') + "/" + country.replace(' ', '_') + ".json");
 		RestTemplate restTemplate = new RestTemplate();
 		ArrayList<HourForcast> DayForcast = new ArrayList<>();
-
-		String wundergroungUrl = "http://api.wunderground.com/api/ba6800955f5db321/hourly/q/"
-
+		String wundergroungUrl;
+		if(locID!=null){
+			wundergroungUrl = "http://api.wunderground.com/api/ba6800955f5db321/hourly"+locID+".json";
+			System.out.println("za 24 4asa 1: location id "+locID+"zaqkva "+ wundergroungUrl);
+		}
+		else{
+			wundergroungUrl = "http://api.wunderground.com/api/ba6800955f5db321/hourly/q/"
 				+ country.replace(' ', '_') + "/" + city.replace(' ', '_') + ".json";
+			System.out.println("za 24 4asa 2: location id "+locID+"zaqkva "+ wundergroungUrl);
+		}
 		JsonObject weatherData = new JsonParser().parse(restTemplate.getForObject(wundergroungUrl, String.class))
 				.getAsJsonObject();
 		System.out.println(weatherData.toString());
@@ -142,17 +148,24 @@ public class LocationDAO implements ILocationDAO {
 
 	@Override
 	public ArrayList<ArrayList<DayForcast>> getFiveDaysFromWUnderground(String country, String city, String language,
-			User user) {
+			User user,String locID) {
 		System.out.println("city " + city + "country " + country);
 		ArrayList<ArrayList<DayForcast>> forTheThreeTablesAtOnce = new ArrayList<ArrayList<DayForcast>>();
 		RestTemplate restTemplate = new RestTemplate();
 		ArrayList<DayForcast> threeDayForcast = new ArrayList<>();
 		ArrayList<DayForcast> fiveDayForcast = new ArrayList<>();
 		ArrayList<DayForcast> weekendDayForcast = new ArrayList<>();
-
 		System.out.println("from location dao ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
-		String wundergroungUrl = "http://api.wunderground.com/api/d1141c29f3b4adb3/forecast10day/q/"
-				+ country.replace(' ', '_') + "/" + city.replace(' ', '_') + ".json";
+		String wundergroungUrl;
+		if(locID!=null){
+			wundergroungUrl="http://api.wunderground.com/api/d1141c29f3b4adb3/forecast10day"+locID+".json";
+			System.out.println("za 5 dena 1: location id "+locID+"zaqkva "+ wundergroungUrl);
+		}
+		else{
+			wundergroungUrl = "http://api.wunderground.com/api/d1141c29f3b4adb3/forecast10day/q/"
+					+ country.replace(' ', '_') + "/" + city.replace(' ', '_') + ".json";
+			System.out.println("za 5 dena 2: location id "+locID+"zaqkva "+ wundergroungUrl);
+		}
 		JsonObject weatherData = new JsonParser().parse(restTemplate.getForObject(wundergroungUrl, String.class))
 				.getAsJsonObject();
 		System.out.println(wundergroungUrl);
@@ -417,10 +430,10 @@ public class LocationDAO implements ILocationDAO {
 
 	@Override
 	public String getCityAndCountyByCoordinates(String latitude, String longitude) {
-		String query = "http://api.wunderground.com/api/ba6800955f5db321/geolookup/q/"+latitude+","+longitude+".json;";
+		String query = "http://api.geonames.org/timezoneJSON?lat="+latitude+"&lng="+longitude+"&username=gzufi1";
 		RestTemplate restTemplate = new RestTemplate();
 		JsonObject locationData = new JsonParser().parse(restTemplate.getForObject(query, String.class))
-				.getAsJsonObject().get("location").getAsJsonObject();
+				.getAsJsonObject();
 		String city=locationData.get("city").getAsString();
 		String country=locationData.get("country_name").getAsString();
 		return country+"/"+city;

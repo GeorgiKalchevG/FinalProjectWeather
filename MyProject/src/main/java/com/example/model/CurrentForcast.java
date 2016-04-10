@@ -1,10 +1,12 @@
 package com.example.model;
 
+import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class CurrentForcast {
+public class CurrentForcast implements Serializable {
+	private static final long serialVersionUID = 6505531860926358318L;
 	private String time;
 	private String day;
 	private String month;

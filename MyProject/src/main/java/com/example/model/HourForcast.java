@@ -1,6 +1,12 @@
 package com.example.model;
 
-public class HourForcast {
+import java.io.Serializable;
+
+public class HourForcast implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 5119458822591018562L;
 	private int day;
 	private int month;
 	private int year;

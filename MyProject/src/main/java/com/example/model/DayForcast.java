@@ -1,6 +1,12 @@
 package com.example.model;
 
-public class DayForcast {
+import java.io.Serializable;
+
+public class DayForcast implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 9112089845645250822L;
 	private String cityName;
 	private String countryName;
 	private long epoch;

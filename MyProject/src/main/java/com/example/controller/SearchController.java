@@ -103,7 +103,7 @@ public class SearchController {
 	@ResponseBody
 	public String searchFromMap(@RequestParam String latitude, @RequestParam String longitude,HttpServletRequest request,HttpServletResponse response) throws ServletException, IOException {
 
-		String query = "http://api.wunderground.com/api/ba6800955f5db321/geolookup/q/"+latitude+","+longitude+".json;";
+		String query = "http://api.geonames.org/timezoneJSON?lat="+latitude+"&lng="+longitude+"&username=gzufi1";
 		RestTemplate restTemplate = new RestTemplate();
 		System.out.println(query);
 		String data = restTemplate.getForObject(query, String.class);
@@ -116,9 +116,9 @@ public class SearchController {
 		String city= session.getAttribute("cityForCurrentSearch").toString();
 		System.out.println("vuv searchInSpecifiCountry city "+city+"   country   "+country);
 		ArrayList<ArrayList<DayForcast>> forTheThreeTablesAtOnce = dao.getFiveDaysFromWUnderground(country, city,
-				session.getAttribute("language").toString(),(User)session.getAttribute("user"));
+				session.getAttribute("language").toString(),(User)session.getAttribute("user"),null);
 		ArrayList<HourForcast> list24hours = dao.getDayFromWUnderground(country, city,
-				session.getAttribute("language").toString(),(User)session.getAttribute("user"));
+				session.getAttribute("language").toString(),(User)session.getAttribute("user"),null);
 		session.setAttribute("city", country+"/"+city);
 		session.setAttribute("list24hours", list24hours);
 		session.setAttribute("backGroundGIF", chooseBackGroundGIF(list24hours));

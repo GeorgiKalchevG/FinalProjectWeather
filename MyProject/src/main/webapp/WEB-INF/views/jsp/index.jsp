@@ -263,7 +263,7 @@ body {
 												// Create a variable to contain the array
 												var names = name.split(", ");
 
-												var list = '<li class="searched-city" city="' + names[0] + '" country="'+ names[1] +'">'
+												var list = '<li class="searched-city" city="' + names[0] + '" country="'+ names[1] +'" locID="' + cities[city].l + '">'
 														+ cities[city].name
 														+ '</li>';
 												$('.search-result')
@@ -286,6 +286,7 @@ body {
 			data : {
 				city : $(this).attr('city'),
 				country : $(this).attr('country'),
+				locID : $(this).attr('locID'),
 				fromAjax : 'aaa'
 			},
 			success : function(response) {
