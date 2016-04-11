@@ -53,7 +53,7 @@ $(function() {
 				</label><input id="search-city1" type="text" placeholder="search city"class="form-control1" id="email" name="city">
 			</div>
 			<div class="col-xs-3">
-			<label for="select">Submit your query </label>
+			<label for="select"></label>
 				<input class="search-for-city" type="submit" id="searchButton" value="		GO!			">
 			</div>
 		</form>

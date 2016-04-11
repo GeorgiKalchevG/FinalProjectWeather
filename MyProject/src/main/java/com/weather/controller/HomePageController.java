@@ -214,12 +214,17 @@ public class HomePageController {
 	@RequestMapping(value = "ChangeLanguage", method = RequestMethod.POST)
 	public String changeLanguage(HttpSession session) {
 		System.out.println("ezikyt v momenta e " + session.getAttribute(SESSION_LANGUAGE));
+		if (session.getAttribute(SESSION_LANGUAGE)==null){
+			session.setAttribute(SESSION_FLAG, "http://www.printableworldflags.com/icon-flags/32/Bulgaria.png");
+			session.setAttribute(SESSION_LANGUAGE, "EN");
+
+		}
+			
 		if (session.getAttribute(SESSION_LANGUAGE).equals("EN")) {
 			System.out.println("smenqm ot angliiski na bulgarski");
 			session.setAttribute(SESSION_FLAG, "http://www.printableworldflags.com/icon-flags/32/United%20Kingdom.png");
 	
 			session.setAttribute(SESSION_LANGUAGE, "BU");
-			
 			return "redirect:index?language=bu";
 		} else {
 			System.out.println("smenqm ot bulgarski na angliiski");
