@@ -220,7 +220,7 @@ public class HomePageController {
 	
 			session.setAttribute(SESSION_LANGUAGE, "BU");
 			
-			return "redirect:index?language=es";
+			return "redirect:index?language=bu";
 		} else {
 			System.out.println("smenqm ot bulgarski na angliiski");
 			session.setAttribute(SESSION_LANGUAGE, "EN");

@@ -23,10 +23,6 @@
 					+ 'into Facebook.';
 		}
 	}
-
-	// This function is called when someone finishes with the Login
-	// Button.  See the onlogin handler attached to it in the sample
-	// code below.
 	function checkLoginState() {
 		FB.getLoginStatus(function(response) {
 			statusChangeCallback(response);
@@ -35,31 +31,17 @@
 	window.fbAsyncInit = function() {
 		FB.init({
 			appId : '262037110796419',
-			cookie : true, // enable cookies to allow the server to access 
-			// the session
-			xfbml : true, // parse social plugins on this page
-			version : 'v2.5' // use graph api version 2.5
+			cookie : true, 
+			
+			xfbml : true, 
+			version : 'v2.5' 
 		});
-
-		// Now that we've initialized the JavaScript SDK, we call 
-		// FB.getLoginStatus().  This function gets the state of the
-		// person visiting this page and can return one of three states to
-		// the callback you provide.  They can be:
-		//
-		// 1. Logged into your app ('connected')
-		// 2. Logged into Facebook, but not your app ('not_authorized')
-		// 3. Not logged into Facebook and can't tell if they are logged into
-		//    your app or not.
-		//
-		// These three cases are handled in the callback function.
-
 		FB.getLoginStatus(function(response) {
 			statusChangeCallback(response);
 		});
 
 	};
 
-	// Load the SDK asynchronously
 	(function(d, s, id) {
 		var js, fjs = d.getElementsByTagName(s)[0];
 		if (d.getElementById(id))
@@ -69,9 +51,6 @@
 		js.src = "//connect.facebook.net/en_US/sdk.js";
 		fjs.parentNode.insertBefore(js, fjs);
 	}(document, 'script', 'facebook-jssdk'));
-
-	// Here we run a very simple test of the Graph API after login is
-	// successful.  See statusChangeCallback() for when this call is made.
 	function testAPI() {
 		console.log('Welcome!  Fetching your information.... ');
 		FB
@@ -91,10 +70,8 @@
 												"fields" : "name,events.limit(5){cover,description,name,place,start_time,ticket_uri}"
 											},
 											function(response) {
-												var rezz = JSON
-														.stringify(response);
-												$
-														.ajax({
+												var rezz = JSON.stringify(response);
+												$.ajax({
 															url : "facebook",
 															type : 'POST',
 															data : {
@@ -111,10 +88,12 @@
 																		+ '. Here is your weather for incoming events you will be attending. ';
 																document.getElementById('showOrHide').style.display = 'inline';
 																document.getElementById('showOrHide1').style.display = 'inline';
+																		
 															},
 															fail : function() {
 															}
 														});
+												
 											});
 						});
 	}
@@ -146,7 +125,6 @@
 
 		<div class="container-fluid">
 			<div class="row row-offcanvas row-offcanvas-left">
-				<!--sidebar-->
 				<div class="col-xs-6 col-sm-3 sidebar-offcanvas" id="sidebar"
 					role="navigation">
 					<div data-spy="affix" data-offset-top="45" data-offset-bottom="90">
@@ -184,14 +162,10 @@
 									<div id="status"></div>
 									<div id="resp"></div>
 								</div>
-								<!--/panel-body-->
 							</div>
-							<!--/panel-->
 						</div>
-						<!--/col-->
 
 					</div>
-					<!--/row-->
 <div id="showOrHide1" style="display:none;">
 					<h1 id="section1">${facebookForecast[0].nameOfEvent}</h1>
 						<c:set var="whatUnit" scope="session" value="${units}" />
@@ -204,10 +178,10 @@
 							<div class="col-sm-8">
 								<img class="img-responsive"
 									src="${facebookForecast[0].cover_url}">
-								<p>${facebookForecast[0].country},
+								<p><h3>${facebookForecast[0].country},
 									${facebookForecast[0].city},${facebookForecast[0].street},
-									${facebookForecast[0].nameOfPlace}
-								<p>${facebookForecast[0].description}
+									${facebookForecast[0].nameOfPlace}</h3>
+								<p>&emsp;&emsp; ${facebookForecast[0].description}
 									<a href="${facebookForecast[0].ticket_uri}">Tickets</a>
 								</p>
 								</p>
@@ -263,16 +237,16 @@
 							<div class="col-sm-8">
 								<img class="img-responsive"
 									src="${facebookForecast[1].cover_url}">
-								<p>${facebookForecast[1].country},
+								<p><h3>${facebookForecast[1].country},
 									${facebookForecast[1].city},${facebookForecast[1].street},
-									${facebookForecast[1].nameOfPlace}
-								<p>${facebookForecast[1].description}.<a
+									${facebookForecast[1].nameOfPlace}</h3>
+								<p>&emsp;&emsp; ${facebookForecast[1].description}.<a
 										href="${facebookForecast[1].ticket_uri}">Tickets</a>
 								</p>
 								</p>
 							</div>
 							<div class="col-sm-4">
-								<h3>Weather forcast for this event</h3>
+								<h3><spring:message code="facebook.forcast" /></h3>
 								<table class="table table-bordered">
 									<tbody>
 										<tr>
@@ -319,16 +293,16 @@
 							<div class="col-sm-8">
 								<img class="img-responsive"
 									src="${facebookForecast[2].cover_url}">
-								<p>${facebookForecast[2].country},
+								<p><h3>${facebookForecast[2].country},
 									${facebookForecast[2].city},${facebookForecast[2].street},
-									${facebookForecast[2].nameOfPlace}
-								<p>${facebookForecast[2].description}.<a
+									${facebookForecast[2].nameOfPlace}</h3>
+								<p>&emsp;&emsp; ${facebookForecast[2].description}.<a
 										href="${facebookForecast[2].ticket_uri}">Tickets</a>
 								</p>
 								</p>
 							</div>
 							<div class="col-sm-4">
-								<h3>Weather forcast for this event</h3>
+								<h3><spring:message code="facebook.forcast" /></h3>
 								<table class="table table-bordered">
 									<tbody>
 										<tr>
@@ -375,16 +349,16 @@
 							<div class="col-sm-8">
 								<img class="img-responsive"
 									src="${facebookForecast[3].cover_url}">
-								<p>${facebookForecast[3].country},
+								<p><h3>${facebookForecast[3].country},
 									${facebookForecast[3].city},${facebookForecast[3].street},
-									${facebookForecast[3].nameOfPlace}
-								<p>${facebookForecast[3].description}.<a
+									${facebookForecast[3].nameOfPlace}</h3>
+								<p>&emsp;&emsp; ${facebookForecast[3].description}.<a
 										href="${facebookForecast[3].ticket_uri}">Tickets</a>
 								</p>
 								</p>
 							</div>
 							<div class="col-sm-4">
-								<h3>Weather forcast for this event</h3>
+								<h3><spring:message code="facebook.forcast" /></h3>
 								<table class="table table-bordered">
 									<tbody>
 										<tr>
@@ -431,16 +405,16 @@
 							<div class="col-sm-8">
 								<img class="img-responsive"
 									src="${facebookForecast[4].cover_url}">
-								<p>${facebookForecast[4].country},
+								<p><h3>${facebookForecast[4].country},
 									${facebookForecast[4].city},${facebookForecast[4].street},
-									${facebookForecast[4].nameOfPlace}
-								<p>${facebookForecast[4].description}.<a
+									${facebookForecast[4].nameOfPlace}</h3>
+								<p>&emsp;&emsp; ${facebookForecast[4].description}.<a
 										href="${facebookForecast[4].ticket_uri}">Tickets</a>
 								</p>
 								</p>
 							</div>
 							<div class="col-sm-4">
-								<h3>Weather forcast for this event</h3>
+								<h3><spring:message code="facebook.forcast" /></h3>
 								<table class="table table-bordered">
 									<tbody>
 										<tr>
@@ -474,21 +448,13 @@
 									</tbody>
 								</table>
 							</div>
-
 						</div>
 					</div>
-					<!--/panel-->
 					</div>
 				</div>
 			</div>
-			<!--/.col-xs-12-->
 		</div>
-		<!--/.row-->
 	</div>
-	
-	<!--/.page-container-->
-
-	<!-- script references -->
 	<script
 		src="//ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js"></script>
 	<script src="js/bootstrap.min.js"></script>

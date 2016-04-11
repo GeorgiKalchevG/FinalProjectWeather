@@ -44,9 +44,8 @@ public class UserDAO implements IUserDAO {
 
 	@Override
 	public boolean isUsernameAvailable(String username) throws SQLException {
-		String sql = "SELECT ? FROM "+DB_NAME+"."+USER_TABLE+";";
-		return (boolean) jdbcTemplate.query(sql,new Object[] {username}, new ResultSetExtractor<Boolean>() {
-
+		String sql = "SELECT USERNAME FROM "+DB_NAME+"."+USER_TABLE+";";
+		return (boolean) jdbcTemplate.query(sql, new ResultSetExtractor<Boolean>() {
 			@Override
 			public Boolean extractData(ResultSet rs) throws SQLException, DataAccessException {
 				while(rs.next()){

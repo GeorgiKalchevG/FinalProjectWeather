@@ -89,21 +89,15 @@ public class UserController {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return "redirect:index";
+		return "redirect:index?language="+language;
 	}
 	//update ->  uptates user pass and settings {POST}
 	@RequestMapping(value="edit")
 	String edit(@RequestParam("oldPass") String oldPass,@RequestParam("pass1") String password,@RequestParam("icon") String icon,@RequestParam("language") String language,@RequestParam("unit") String unit, HttpSession session ){
 			
 			System.out.println("```````````````````````From edit``````````````````````````");
-
-			/*System.out.println(password);
-			System.out.println(icon);
-			System.out.println(unit);
-			*/
 		
 			User user = (User) session.getAttribute("user");
-/*			System.out.println(user.getPassword());*/
 			if(oldPass!=""){
 				try {
 					if(dao.checkPassword(user.getUserName(), oldPass))
@@ -112,7 +106,6 @@ public class UserController {
 						return "index";
 					}
 				} catch (NoSuchAlgorithmException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}
