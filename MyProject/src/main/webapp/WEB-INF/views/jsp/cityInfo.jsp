@@ -5,7 +5,7 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
-<script src="https://cdn.plot.ly/plotly-latest.min.js"></script> 
+
 <c:set var="whatUnit" scope="session" value="${units}" />
 <div class="row">
 	<div class="col-sm-12"style="background-color: azure; border: solid; border-width: 1px;">

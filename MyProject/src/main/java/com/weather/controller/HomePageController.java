@@ -119,6 +119,7 @@ public class HomePageController {
 		if(country.isEmpty()){
 			try{
 			if(city.split(", ")[1]!=null){
+				
 				country = WordUtils.capitalize(city.split(", ")[1].toLowerCase());
 				city = WordUtils.capitalize(city.split(", ")[0].toLowerCase());
 				if(!allCountries.contains(country)){
@@ -190,7 +191,7 @@ public class HomePageController {
 				return "index";
 			}
 		System.out.println("vrushta sled krainiq if pri index");
-		session.setAttribute(SESSION_PAGE, "notFound.jsp");
+		session.setAttribute(SESSION_PAGE, "cityInfo.jsp");
 		return "index";
 
 	}
