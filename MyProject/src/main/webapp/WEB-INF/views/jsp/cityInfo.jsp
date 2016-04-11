@@ -13,7 +13,7 @@
 			<c:if test="${not empty user.locations}">
 				<div class="roll">
 		
-					<ul class="list-group" id="favLocations" onload="loadFavs();" style="margin: 10px;"><spring:message code="favourites.list" />
+					<ul class="list-group well well-sm" id="favLocations" onload="loadFavs();" style="margin: 10px;"><spring:message code="favourites.list" />
 					
 					</ul>
 				</div>
@@ -537,7 +537,7 @@ function buildGraph(){
 						},
 						success : function() {
 							$('span#myLocation ').hide();
-							location.reload(true);
+							
 						}
 					});
 
