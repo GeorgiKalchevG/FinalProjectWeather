@@ -1,4 +1,4 @@
-package com.example;
+package com.weather;
 
 import java.util.Locale;
 
@@ -22,14 +22,14 @@ import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.web.servlet.view.JstlView;
 
-import com.example.dao.IUserDAO;
-import com.example.dao.UserDAO;
+import com.weather.dao.IUserDAO;
+import com.weather.dao.UserDAO;
 
 
 
 @Configuration
 @EnableWebMvc
-@ComponentScan("com.example")
+@ComponentScan("com.weather")
 public class SpringWebConfig extends WebMvcConfigurerAdapter {
 	
     @Override
@@ -79,8 +79,8 @@ public class SpringWebConfig extends WebMvcConfigurerAdapter {
 		dataSource.setDriverClassName("com.mysql.jdbc.Driver");
 		dataSource.setUrl("jdbc:mysql://localhost:3306/");
 		dataSource.setUsername("root");
-		dataSource.setPassword("venera");
-		//dataSource.setPassword("Gibraltar!@3");
+//		dataSource.setPassword("venera");
+		dataSource.setPassword("Gibraltar!@3");
 		return dataSource;
 		
 	}

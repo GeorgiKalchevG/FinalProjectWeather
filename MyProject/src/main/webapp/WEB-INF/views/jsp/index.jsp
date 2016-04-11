@@ -40,11 +40,10 @@
 	<!-- css -->
 	<spring:url value="css/popup.css" var="popupCss" />
 
-	<%-- <spring:url value="/static/js/main.js" var="mainJs" /> --%>
 	
 	<link href="${popupCss}" rel="stylesheet" />
   
-    <%-- <script src="${mainJs}"></script> --%>
+
 </head>
 
 <body>

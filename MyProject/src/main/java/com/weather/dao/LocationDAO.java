@@ -1,4 +1,4 @@
-package com.example.dao;
+package com.weather.dao;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -6,19 +6,17 @@ import java.util.Calendar;
 import org.apache.commons.lang.WordUtils;
 import org.springframework.web.client.RestTemplate;
 
-import com.example.model.CurrentForcast;
-
-import com.example.model.DayForcast;
-import com.example.model.Event;
-
-import com.example.model.HourForcast;
-import com.example.model.Location;
-import com.example.model.User;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.weather.model.CurrentForcast;
+import com.weather.model.DayForcast;
+import com.weather.model.Event;
+import com.weather.model.HourForcast;
+import com.weather.model.Location;
+import com.weather.model.User;
 
 public class LocationDAO implements ILocationDAO {
 	String apiKey = "9885a830e31d144089368b0a44b2f9f7";

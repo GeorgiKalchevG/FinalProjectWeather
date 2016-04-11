@@ -1,4 +1,4 @@
-package com.example.model;
+package com.weather.model;
 
 import java.util.ArrayList;
 import java.util.HashMap;

@@ -612,7 +612,7 @@ function buildGraph(){
 									;
 									
 								countryAndCity = response.data.request[0].query;
-								list = '<li style="display:inline;" id="myLocation" class="list-item" data-city="'+i+'" ><span id="remove" data-city="'+i+'" class="glyphicon glyphicon-remove remove"></span>'
+								list = '<li style="display:inline; margin-left:5em" id="myLocation" class="list-item" data-city="'+i+'" ><span id="remove" data-city="'+i+'" class="glyphicon glyphicon-remove remove"></span>'
 										+ countryAndCity
 										+ ', '
 										+ (units === true ? response.data.current_condition[0].temp_F

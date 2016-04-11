@@ -49,9 +49,9 @@
   var geoJSON;
   var request;
   var gettingData = false;
-  var openWeatherMapKey = "9885a830e31d144089368b0a44b2f9f7"
-	  var lat = "42.696552";/*${location.lon};*/
-	  var lon  = "23.32601";/*${location.lat};*/
+  var openWeatherMapKey = "9885a830e31d144089368b0a44b2f9f7";
+	  var lat = "42.696552";
+	  var lon  = "23.32601";
   function initialize() {
     var mapOptions = {
       zoom: 7,

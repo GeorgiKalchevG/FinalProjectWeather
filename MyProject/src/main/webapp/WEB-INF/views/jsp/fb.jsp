@@ -172,11 +172,11 @@
 									<h4>
 										Login
 										<fb:login-button scope="user_events,public_profile,email"
-											onlogin="checkLoginState()">
+											onlogin="checkLoginState();">
 										</fb:login-button>
 										Logout
 										<fb:login-button scope="user_events,public_profile,email"
-											onlogin="logoutFromFB()">
+											onlogin="logoutFromFB();">
 										</fb:login-button>
 									</h4>
 								</div>

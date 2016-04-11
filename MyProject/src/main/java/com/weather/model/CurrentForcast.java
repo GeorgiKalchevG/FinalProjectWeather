@@ -1,4 +1,4 @@
-package com.example.model;
+package com.weather.model;
 
 import java.io.Serializable;
 import java.text.DateFormat;

@@ -1,15 +1,12 @@
-package com.example.dao;
+package com.weather.dao;
 
 import java.util.ArrayList;
 
-
-
-import com.example.model.DayForcast;
-import com.example.model.Event;
-
-import com.example.model.HourForcast;
-import com.example.model.Location;
-import com.example.model.User;
+import com.weather.model.DayForcast;
+import com.weather.model.Event;
+import com.weather.model.HourForcast;
+import com.weather.model.Location;
+import com.weather.model.User;
 
 
 public interface ILocationDAO {

@@ -1,11 +1,11 @@
-package com.example.dao;
+package com.weather.dao;
 
 import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
 
 import org.springframework.dao.DataAccessException;
 
-import com.example.model.User;
+import com.weather.model.User;
 
 public interface IUserDAO {
 	String DB_NAME = "weather";

@@ -1,4 +1,4 @@
-package com.example.dao;
+package com.weather.dao;
 
 import java.io.UnsupportedEncodingException;
 
@@ -17,7 +17,7 @@ import org.springframework.jdbc.core.ResultSetExtractor;
 
 import org.springframework.jdbc.core.RowMapper;
 
-import com.example.model.User;
+import com.weather.model.User;
 
 
 public class UserDAO implements IUserDAO {

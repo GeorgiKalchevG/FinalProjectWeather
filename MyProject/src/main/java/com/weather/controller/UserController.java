@@ -1,4 +1,4 @@
-package com.example.controller;
+package com.weather.controller;
 
 import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
@@ -14,8 +14,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.example.dao.IUserDAO;
-import com.example.model.User;
+import com.weather.dao.IUserDAO;
+import com.weather.model.User;
 
 @Controller
 public class UserController {

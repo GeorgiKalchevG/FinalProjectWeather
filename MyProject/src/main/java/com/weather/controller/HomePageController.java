@@ -1,4 +1,4 @@
-package com.example.controller;
+package com.weather.controller;
 
 import org.springframework.web.bind.annotation.CrossOrigin;
 import java.util.ArrayList;
@@ -20,14 +20,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.client.RestTemplate;
 
-import com.example.dao.ILocationDAO;
-import com.example.dao.LocationDAO;
-
-import com.example.model.DayForcast;
-
-import com.example.model.HourForcast;
-
-import com.example.model.User;
+import com.weather.dao.ILocationDAO;
+import com.weather.dao.LocationDAO;
+import com.weather.model.DayForcast;
+import com.weather.model.HourForcast;
+import com.weather.model.User;
 
 
 @Controller

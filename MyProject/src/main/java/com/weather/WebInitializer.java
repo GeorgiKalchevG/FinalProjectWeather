@@ -1,4 +1,4 @@
-package com.example;
+package com.weather;
 
 import org.springframework.web.servlet.support.
 AbstractAnnotationConfigDispatcherServletInitializer;
