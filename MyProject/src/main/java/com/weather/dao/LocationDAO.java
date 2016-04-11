@@ -81,6 +81,7 @@ public class LocationDAO implements ILocationDAO {
 	private static final String HIGH = "high";
 	private static final String CM = "cm";
 	private static final String SNOW_ALLDAY = "snow_allday";
+	private static final int FOR_THREE_DAYS_FORCAST =3;
 	private static final String MM = "mm";
 	private static final String IN = "in";
 	private static final String QPF_ALLDAY = "qpf_allday";
@@ -274,7 +275,6 @@ public class LocationDAO implements ILocationDAO {
 		System.out.println("from location dao ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
 		String wundergroungUrl;
 		if(locID==null){
-			//opitvam se da namerq locID
 			locID=tryToFindLocID(country,city);
 		}
 		if(locID!=null){
@@ -327,7 +327,7 @@ public class LocationDAO implements ILocationDAO {
 		for (int i = dayOfWeek; i < dayOfWeek + 3; i++) {
 			weekendDayForcast.add(createDay(array.get(i).getAsJsonObject(), city, country, language, user));
 		}
-		for (int i = 0; i < 3; i++) { // vrushta prognoza za 5 dena i go puham v
+		for (int i = 0; i < FOR_THREE_DAYS_FORCAST; i++) { // vrushta prognoza za 5 dena i go puham v
 										// purvoto pole na arraylista
 			threeDayForcast.add(createDay(array.get(i).getAsJsonObject(), city, country, language, user));
 		}
@@ -573,7 +573,7 @@ public class LocationDAO implements ILocationDAO {
 				System.out.println("vrushtam L");
 				return currentLocation.get("l").getAsString();
 			}
-		}
+		}//
 		System.out.println("vrushtam null pak");
 		// System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~" +
 		// object.toString());

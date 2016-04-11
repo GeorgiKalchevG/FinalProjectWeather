@@ -54,6 +54,7 @@ public class HomePageController {
 	private static final String SESSION_PAGE = "page";
 	private static final String SESSION_FLAG = "flag";
 	private static final String SESSION_LANGUAGE = "language";
+	private static final int MAX_HISTORY_CITIES = 3;
 	ILocationDAO dao = LocationDAO.getInstance();
 	String[] arr = {"Afghanistan","Albania","Algeria","Andorra","Angola","Antigua and Barbuda","Argentina","Armenia","Australia","Austria","Azerbaijan","Bahamas","Bahrain","BG","Bangladesh","Barbados","Belarus","Belgium","Belize","Benin","Bhutan","Bolivia","Bosnia and Herzegovina","Botswana","Brazil","Brunei","Bulgaria","Burkina Faso","Burundi","Cabo Verde","Cambodia","Cameroon","Canada","Central African Republic","Chad","Chile","China","Colombia","Comoros","Congo","Costa Rica","Cote d'Ivoire","Croatia","Cuba","Cyprus","Czech Republic","Denmark","Djibouti","Dominica","Dominican Republic","Ecuador","Egypt","El Salvador","Equatorial Guinea","Eritrea","Estonia","Ethiopia","Fiji","Finland","France","Gabon","Gambia","Georgia","Germany","Ghana","Greece","Grenada","Guatemala","Guinea","Guinea-Bissau","Guyana","Haiti","Honduras","Hungary","Iceland","India","Indonesia","Iran","Iraq","Ireland","Israel","Italy","JamaicaJapan","Jordan","Kazakhstan","Kenya","Kiribati","Kosovo","Kuwait","Kyrgyzstan","Laos","Latvia","Lebanon","Lesotho","Liberia","Libya","Liecht","ensteinLithuania","Luxembourg","Macedonia","Madagascar","Malawi","Malaysia","Maldives","Mali","Malta","Marshall Islands","Mauritania","Mauritius","Mexico","Micronesia","Moldova","Monaco","Mongolia","Montenegro","Morocco","Mozambique","Myanmar (Burma)","Namibia","Nauru","Nepal","Netherlands","New Zealand","Nicaragua","Niger","Nigeria","North Korea","Norway","Oman","Pakistan","Palau","Palestine","Panama","Papua New Guinea","Paraguay","Peru","Philippines","Poland","Portugal","Qatar","Romania","Russia","Rwanda","St. Kitts and Nevis","St. Lucia","St. Vincent and The Grenadines","Samoa","San Marino","Sao Tome and Principe","Saudi Arabia","Senegal","Serbia","Seychelles","Sierra Leone","Singapore","Slovakia","Slovenia","Solomon Islands","Somalia","South Africa","South Korea","South Sudan","Spain","Sri Lanka","Sudan","Suriname","Swaziland","Sweden","Switzerland","Syria","Taiwan","Tajikistan","Tanzania","Thailand","Timor-Leste","Togo","Tonga","Trinidad and Tobago","Tunisia","Turkey","Turkmenistan","Tuvalu","Uganda","Ukraine","United Arab Emirates","United Kingdom","United States of America","Uruguay","Uzbekistan","Vanuatu","Vatican City","Venezuela","Vietnam","Yemen","Zambia","Zimbabwe"};
 	ArrayList<String> allCountries = new ArrayList<>(Arrays.asList(arr));
@@ -61,21 +62,7 @@ public class HomePageController {
 
 	@RequestMapping(value = "index")
 	String loadHomePage(Model model, HttpServletRequest request, HttpSession session) {
-		
-		if (session.getAttribute(SESSION_LANGUAGE) == null) {
-			session.setAttribute(SESSION_LANGUAGE, "EN");
-			session.setAttribute(SESSION_FLAG, "http://www.printableworldflags.com/icon-flags/32/Bulgaria.png");
-		}
-		session.setAttribute(SESSION_PAGE, "cityInfo.jsp");
-		if (session.getAttribute(SESSION_UNITS) == null) {
-			System.out.println("setvam units na true");
-			session.setAttribute(SESSION_UNITS, "false");
-			changeUnits(session);
-		}
-		if (session.getAttribute(SESSION_ICONS) == null) {
-			System.out.println("setvam icons na i");
-			session.setAttribute(SESSION_ICONS, SESSION_DEFAUL_ICONS);
-		}
+		checkIfNewSession(session);
 		System.out.println("zarejdam vednuj indexa");
 		String ipAddress=(String) session.getAttribute(IP_ADDRESS);
 		if (ipAddress==null) {
@@ -115,7 +102,7 @@ public class HomePageController {
 	@CrossOrigin(origins = "http://localhost:8080")
 	@RequestMapping("search")
 	String getDataForLocation(HttpSession session, @RequestParam String city, @RequestParam String country, HttpServletRequest req) {
-		
+		checkIfNewSession(session);
 		if(country.isEmpty()){
 			try{
 			if(city.split(", ")[1]!=null){
@@ -160,10 +147,9 @@ public class HomePageController {
 						session.getAttribute(SESSION_LANGUAGE).toString(),(User)session.getAttribute(SESSION_USER),req.getParameter("locID"));
 				saveOrNullItemsInSession(session,WordUtils.capitalize(country+"/"+city),forTheThreeTablesAtOnce,forTheThreeTablesAtOnce.get(0),forTheThreeTablesAtOnce.get(1),forTheThreeTablesAtOnce.get(2),list24hours);
 
-				LinkedList<DayForcast> queueCities = (LinkedList<DayForcast>) session.getAttribute(SESSION_QUEUEFOR_CITIES);
-				System.out.println(queueCities.get(0)+"  "+forTheThreeTablesAtOnce.get(0).get(0));
+				LinkedList<DayForcast> queueCities = session.getAttribute(SESSION_QUEUEFOR_CITIES)==null?new LinkedList<DayForcast>():(LinkedList<DayForcast>) session.getAttribute(SESSION_QUEUEFOR_CITIES);
 				if(!queueCities.contains(forTheThreeTablesAtOnce.get(0).get(0))){
-				if (queueCities.size() > 2) {
+				if (queueCities.size() > MAX_HISTORY_CITIES) {
 					queueCities.removeLast();
 				}
 				queueCities.addFirst(forTheThreeTablesAtOnce.get(0).get(0));
@@ -213,6 +199,7 @@ public class HomePageController {
 	@CrossOrigin(origins = "http://localhost:8080")
 	@RequestMapping(value = "ChangeLanguage", method = RequestMethod.POST)
 	public String changeLanguage(HttpSession session) {
+		checkIfNewSession(session);
 		System.out.println("ezikyt v momenta e " + session.getAttribute(SESSION_LANGUAGE));
 		if (session.getAttribute(SESSION_LANGUAGE)==null){
 			session.setAttribute(SESSION_FLAG, "http://www.printableworldflags.com/icon-flags/32/Bulgaria.png");
@@ -239,6 +226,7 @@ public class HomePageController {
 	@CrossOrigin(origins = "http://localhost:8080")
 	@RequestMapping(value = "ChangeUnits", method = RequestMethod.GET)
 	public static String changeUnits(HttpSession session) {
+		HomePageController.checkIfNewSession(session);
 		System.out.println("Sega e " + session.getAttribute(SESSION_UNITS));
 		if (session.getAttribute(SESSION_UNITS).equals("false")) {
 			System.out.println("ot true na false");
@@ -281,5 +269,21 @@ public class HomePageController {
 	public String loadWorldMap(HttpSession session) {
 		session.setAttribute(SESSION_PAGE, MAP_JSP);
 		return "index";
+	}
+	public static void checkIfNewSession(HttpSession session){
+		if (session.getAttribute(SESSION_LANGUAGE) == null) {
+			session.setAttribute(SESSION_LANGUAGE, "EN");
+			session.setAttribute(SESSION_FLAG, "http://www.printableworldflags.com/icon-flags/32/Bulgaria.png");
+		}
+		session.setAttribute(SESSION_PAGE, "cityInfo.jsp");
+		if (session.getAttribute(SESSION_UNITS) == null) {
+			System.out.println("setvam units na true");
+			session.setAttribute(SESSION_UNITS, "false");
+			changeUnits(session);
+		}
+		if (session.getAttribute(SESSION_ICONS) == null) {
+			System.out.println("setvam icons na i");
+			session.setAttribute(SESSION_ICONS, SESSION_DEFAUL_ICONS);
+		}
 	}
 }
