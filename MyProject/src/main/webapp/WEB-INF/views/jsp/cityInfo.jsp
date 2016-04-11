@@ -569,6 +569,44 @@ function buildGraph(){
 			});
 
 		});
+		
+		
+		
+		$('.list-group').on(
+				'click',
+				'.list-item',
+				function() {
+					
+		var cityData = $(this).data("city");
+		var loc = $('.list-item[data-city="' + cityData + '"]').text();
+		console.log(cityData);
+		console.log('showing city info');
+		console.log(loc);
+		$.ajax({
+			url : "search",
+			type : 'POST',
+			
+			data : {
+				city : loc.split(", ")[0],
+				country : loc.split(", ")[1],
+				fromAjax : 'aaa'
+
+						},
+						success : function(response) {
+							$('.cities').removeClass('opened');
+							$(".city-weather").text('');
+							$(".city-weather").append(response);
+						}
+					});
+
+				});
+		
+		
+		
+		
+		
+		
+		
 	
 		var favorites = '${user.locations}'.replace("[", "").replace("]", "");
 		var favsArray = favorites.split(", ");
@@ -612,7 +650,7 @@ function buildGraph(){
 									;
 									
 								countryAndCity = response.data.request[0].query;
-								list = '<li style="display:inline; margin-left:5em" id="myLocation" class="list-item" data-city="'+i+'" ><span id="remove" data-city="'+i+'" class="glyphicon glyphicon-remove remove"></span>'
+								list = '<li style="display:inline; margin-left:5px;cursor: pointer;" id="myLocation" class="list-item" data-city="'+i+'" ><span id="remove" data-city="'+i+'" class="glyphicon glyphicon-remove remove"></span>'
 										+ countryAndCity
 										+ ', '
 										+ (units === true ? response.data.current_condition[0].temp_F
