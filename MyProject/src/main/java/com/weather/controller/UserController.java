@@ -89,7 +89,7 @@ public class UserController {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return "redirect:index";
+		return "index";
 	}
 	//update ->  uptates user pass and settings {POST}
 	@RequestMapping(value="edit")
