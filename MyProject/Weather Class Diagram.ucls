@@ -1,75 +1,57 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <class-diagram version="1.1.9" icons="true" always-add-relationships="false" generalizations="true" realizations="true" 
   associations="true" dependencies="false" nesting-relationships="true" router="FAN">  
-  <class id="1" language="java" name="com.example.model.User" project="MyProject" 
-    file="/MyProject/src/main/java/com/example/model/User.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="289" width="209" x="30" y="-497"/>    
+  <class id="1" language="java" name="com.weather.model.CurrentForcast" project="Weather" 
+    file="/Weather/src/main/java/com/weather/model/CurrentForcast.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="614" width="218" x="493" y="-334"/>    
     <display autosize="false" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="2" language="java" name="com.example.model.Location" project="MyProject" 
-    file="/MyProject/src/main/java/com/example/model/Location.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="452" width="212" x="31" y="-173"/>    
+  <class id="2" language="java" name="com.weather.model.User" project="Weather" 
+    file="/Weather/src/main/java/com/weather/model/User.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="129" y="-78"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="3" language="java" name="com.weather.model.DayForcast" project="Weather" 
+    file="/Weather/src/main/java/com/weather/model/DayForcast.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="805" width="194" x="754" y="-334"/>    
     <display autosize="false" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="3" language="java" name="com.example.model.HourForcast" project="MyProject" 
-    file="/MyProject/src/main/java/com/example/model/HourForcast.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="651" width="153" x="757" y="-498"/>    
+  <class id="4" language="java" name="com.weather.model.Event" project="Weather" 
+    file="/Weather/src/main/java/com/weather/model/Event.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="611" width="186" x="274" y="-334"/>    
     <display autosize="false" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="4" language="java" name="com.example.model.DayForcast" project="MyProject" 
-    file="/MyProject/src/main/java/com/example/model/DayForcast.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="793" width="194" x="950" y="-498"/>    
+  <class id="5" language="java" name="com.weather.model.HourForcast" project="Weather" 
+    file="/Weather/src/main/java/com/weather/model/HourForcast.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="683" width="153" x="988" y="-334"/>    
     <display autosize="false" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="5" language="java" name="com.example.model.Event" project="MyProject" 
-    file="/MyProject/src/main/java/com/example/model/Event.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="344" width="186" x="254" y="-495"/>    
-    <display autosize="false" stereotype="true" package="true" initial-value="false" signature="true" 
-      sort-features="false" accessors="true" visibility="true">      
-      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
-      <operations public="true" package="true" protected="true" private="true" static="true"/>    
-    </display>  
-  </class>  
-  <class id="6" language="java" name="com.example.model.CurrentForcast" project="MyProject" 
-    file="/MyProject/src/main/java/com/example/model/CurrentForcast.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="790" width="218" x="507" y="-498"/>    
-    <display autosize="false" stereotype="true" package="true" initial-value="false" signature="true" 
-      sort-features="false" accessors="true" visibility="true">      
-      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
-      <operations public="true" package="true" protected="true" private="true" static="true"/>    
-    </display>  
-  </class>  
-  <class id="7" language="java" name="com.example.model.ChanceOfTypeOfWeather" project="MyProject" 
-    file="/MyProject/src/main/java/com/example/model/ChanceOfTypeOfWeather.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="369" width="321" x="1162" y="-499"/>    
-    <display autosize="false" stereotype="true" package="true" initial-value="false" signature="true" 
-      sort-features="false" accessors="true" visibility="true">      
-      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
-      <operations public="true" package="true" protected="true" private="true" static="true"/>    
-    </display>  
-  </class>  
-  <association id="8">    
-    <end type="SOURCE" refId="5" navigable="false">      
-      <attribute id="9" name="weather"/>      
-      <multiplicity id="10" minimum="0" maximum="1"/>    
+  <association id="6">    
+    <end type="SOURCE" refId="4" navigable="false">      
+      <attribute id="7" name="weather"/>      
+      <multiplicity id="8" minimum="0" maximum="1"/>    
     </end>    
-    <end type="TARGET" refId="6" navigable="true"/>    
+    <end type="TARGET" refId="1" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
   <classifier-display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 

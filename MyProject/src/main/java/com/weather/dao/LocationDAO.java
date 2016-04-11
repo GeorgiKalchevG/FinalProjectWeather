@@ -15,12 +15,118 @@ import com.weather.model.CurrentForcast;
 import com.weather.model.DayForcast;
 import com.weather.model.Event;
 import com.weather.model.HourForcast;
-import com.weather.model.Location;
+
 import com.weather.model.User;
 
 public class LocationDAO implements ILocationDAO {
-	String apiKey = "9885a830e31d144089368b0a44b2f9f7";
-	
+	private static final String GEOIP_KEY = "f4907a66fb924bc6a9d34610ab082fd2"; //f4907a66fb924bc6a9d34610ab082fd2  e75dc720b8ce4497cd1aed66d4c1cced
+	private static final String CURRENTLY = "currently";
+	private static final String GEONAMES_USERNAME = "gzufi1";
+	private static final String FORECAST_IO_KEY = "034143e2c674af082f9336e044c19312";
+	private static final String FB_STREET = "street";
+	private static final String FB_LONGITUDE = "longitude";
+	private static final String FB_LATITUDE = "latitude";
+	private static final String FB_COUNTRY = "country";
+	private static final String FB_LOCATION = "location";
+	private static final String FB_PLACE = "place";
+	private static final String FB_NAME = "name";
+	private static final String FB_DESCRIPTION = "description";
+	private static final String FB_SOURCE = "source";
+	private static final String FB_COVER = "cover";
+	private static final String FB_START_TIME = "start_time";
+	private static final String FB_DATA = "data";
+	private static final String FB_EVENTS = "events";
+	private static final String VARIATION2 = "variation";
+	private static final String CLOUD_COVER2 = "cloudCover";
+	private static final String COND = "cond";
+	private static final String CLOUD_COVER = "cloud_cover";
+	private static final String TITLE_TRIP = "title";
+	private static final String CHANCEOFSNOWDAY = "chanceofsnowday";
+	private static final String TEMPOVERNINETY = "tempoverninety";
+	private static final String TEMPBELOWFREEZING = "tempbelowfreezing";
+	private static final String CHANCEOFHUMIDDAY = "chanceofhumidday";
+	private static final String CHANCEOFSULTRYDAY = "chanceofsultryday";
+	private static final String CHANCEOFTORNADODAY = "chanceoftornadoday";
+	private static final String CHANCEOFSNOWONGROUND = "chanceofsnowonground";
+	private static final String CHANCEOFHAILDAY = "chanceofhailday";
+	private static final String CHANCEOFTHUNDERDAY = "chanceofthunderday";
+	private static final String CHANCEOFWINDYDAY = "chanceofwindyday";
+	private static final String CHANCEOFFOGDAY = "chanceoffogday";
+	private static final String CHANCEOFCLOUDYDAY = "chanceofcloudyday";
+	private static final String CHANCEOFSUNNYCLOUDYDAY = "chanceofsunnycloudyday";
+	private static final String TEMPOVERFREEZING = "tempoverfreezing";
+	private static final String CHANCEOFRAINDAY = "chanceofrainday";
+	private static final String CHANCEOFPRECIP = "chanceofprecip";
+	private static final String CHANCEOFPARTLYCLOUDYDAY = "chanceofpartlycloudyday";
+	private static final String PERCENTAGE = "percentage";
+	private static final String TEMPOVERSIXTY = "tempoversixty";
+	private static final String MAX = "max";
+	private static final String AVG = "avg";
+	private static final String MIN = "min";
+	private static final String DEWPOINT_LOW = "dewpoint_low";
+	private static final String DEWPOINT_HIGH = "dewpoint_high";
+	private static final String PRECIP = "precip";
+	private static final String TEMP_LOW = "temp_low";
+	private static final String TEMP_HIGH = "temp_high";
+	private static final String CHANCE_OF = "chance_of";
+	private static final String TRIP = "trip";
+	private static final String FORECASTDAY = "forecastday";
+	private static final String FORECAST = "forecast";
+	private static final String MINHUMIDITY = "minhumidity";
+	private static final String MAXHUMIDITY = "maxhumidity";
+	private static final String AVEHUMIDITY = "avehumidity";
+	private static final String LOW = "low";
+	private static final String FAHRENHEIT = "fahrenheit";
+	private static final String CELSIUS = "celsius";
+	private static final String HIGH = "high";
+	private static final String CM = "cm";
+	private static final String SNOW_ALLDAY = "snow_allday";
+	private static final String MM = "mm";
+	private static final String IN = "in";
+	private static final String QPF_ALLDAY = "qpf_allday";
+	private static final String DATE_STYLE = "pretty";
+	private static final String MONTHNAME = "monthname";
+	private static final String MPH = "mph";
+	private static final String KPH = "kph";
+	private static final String MAXWIND = "maxwind";
+	private static final String EPOCH = "epoch";
+	private static final String MONTH = "month";
+	private static final String DAY = "day";
+	private static final String WEEKDAY = "weekday";
+	private static final String DATE = "date";
+	private static final String CONDITIONS = "conditions";
+	private static final String MSLP = "mslp";
+	private static final String POP = "pop";
+	private static final String SNOW = "snow";
+	private static final String QPF = "qpf";
+	private static final String FEELSLIKE = "feelslike";
+	private static final String HUMIDITY = "humidity";
+	private static final String UVI = "uvi";
+	private static final String DEGREES = "degrees";
+	private static final String WDIR = "wdir";
+	private static final String DIR = "dir";
+	private static final String WSPD = "wspd";
+	private static final String SKY = "sky";
+	private static final String ICON_URL = "icon_url";
+	private static final String BU = "BU";
+	private static final String TEMPERATURE = "temp";
+	private static final String CONDITION = "condition";
+	private static final String ENGLISH = "english";
+	private static final String METRIC = "metric";
+	private static final String WEEKDAY_NAME = "weekday_name";
+	private static final String MDAY = "mday";
+	private static final String MON = "mon";
+	private static final String YEAR = "year";
+	private static final String HOUR = "hour";
+	private static final String SIMPLEFORECAST = "simpleforecast";
+	private static final String RESULTS = "results";
+	private static final String WUNDERGROUND_KEY = "88f2b27b9585755c";
+	private static final String HOURLY_FORECAST = "hourly_forecast";
+	private static final String CITY = "city";
+	private static final String COUNTRY_NAME = "country_name";
+	private static final String RESPONSE = "response";
+	private final static String apiKey = "9885a830e31d144089368b0a44b2f9f7";
+	private final static String CITY_BY_IP_LOCATION = FB_LOCATION;
 	private static LocationDAO instance=null;
 	private  LocationDAO() {}
 	public synchronized static LocationDAO getInstance(){
@@ -30,27 +136,24 @@ public class LocationDAO implements ILocationDAO {
 	}
 	@Override
 	public String getCityNameByIp(String ip) {
-		String ipToGeotag = "https://api.geoips.com/ip/"+ip+"/key/e75dc720b8ce4497cd1aed66d4c1cced/output/json";
+		String ipToGeotag = "https://api.geoips.com/ip/"+ip+"/key/"+GEOIP_KEY+"/output/json";
 		RestTemplate restTemplate = new RestTemplate();
 		String data = restTemplate.getForObject(ipToGeotag, String.class);
-		JsonObject countryNameObject = new JsonParser().parse(data).getAsJsonObject().get("response").getAsJsonObject();
+		JsonObject countryNameObject = new JsonParser().parse(data).getAsJsonObject().get(RESPONSE).getAsJsonObject();
 		System.out.println(countryNameObject);
-		String countryName=countryNameObject.get("location").getAsJsonObject().get("country_name").getAsString();
+	
+		String countryName=countryNameObject.get(CITY_BY_IP_LOCATION).getAsJsonObject().get(COUNTRY_NAME).getAsString();
 		countryName=WordUtils.capitalize(countryName.toLowerCase());
 		String ipToGeotag1 = "http://api.db-ip.com/addrinfo?addr=" + ip
 				+ "&api_key=2847ed47c9cf4242bb2e09a10aeb3c313c5ebb06";
 		//RestTemplate restTemplate = new RestTemplate();
 		String data1 = restTemplate.getForObject(ipToGeotag1, String.class);
-		String cityName = new JsonParser().parse(data1).getAsJsonObject().get("city").getAsString();
+		String cityName = new JsonParser().parse(data1).getAsJsonObject().get(CITY).getAsString();
 		//String countryName = new JsonParser().parse(data).getAsJsonObject().get("country").getAsString();
 		return countryName + "/" + cityName;
 	}
 
-	@Override
-	public ArrayList<Location> collectMajorCitys(String ip) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	
 
 	@Override
 	public ArrayList<HourForcast> getDayFromWUnderground(String country, String city, String language, User user, String locID) {
@@ -58,19 +161,23 @@ public class LocationDAO implements ILocationDAO {
 		RestTemplate restTemplate = new RestTemplate();
 		ArrayList<HourForcast> DayForcast = new ArrayList<>();
 		String wundergroungUrl;
+		if(locID==null){
+			//opitvam se da namerq locID
+			locID=tryToFindLocID(country,city);
+		}
 		if(locID!=null){
-			wundergroungUrl = "http://api.wunderground.com/api/88f2b27b9585755c/hourly"+locID+".json";
+			wundergroungUrl = "http://api.wunderground.com/api/"+WUNDERGROUND_KEY+"/hourly"+locID+".json";
 			System.out.println("za 24 4asa 1: location id "+locID+"zaqkva "+ wundergroungUrl);
 		}
 		else{
-			wundergroungUrl = "http://api.wunderground.com/api/88f2b27b9585755c/hourly/q/"
+			wundergroungUrl = "http://api.wunderground.com/api/"+""+WUNDERGROUND_KEY+""+"/hourly/q/"
 				+ country.replace(' ', '_') + "/" + city.replace(' ', '_') + ".json";
 			System.out.println("za 24 4asa 2: location id "+locID+"zaqkva "+ wundergroungUrl);
 		}
 		JsonObject weatherData = new JsonParser().parse(restTemplate.getForObject(wundergroungUrl, String.class))
 				.getAsJsonObject();
 		System.out.println(weatherData.toString());
-		JsonArray array = weatherData.get("hourly_forecast").getAsJsonArray();
+		JsonArray array = weatherData.get(HOURLY_FORECAST).getAsJsonArray();
 		for (int i = 0; i < 24; i++) {
 			DayForcast.add(createHour(array.get(i).getAsJsonObject(), language, user));
 		}
@@ -79,39 +186,39 @@ public class LocationDAO implements ILocationDAO {
 
 	private HourForcast createHour(JsonObject jsonElement, String language, User user) {
 		HourForcast forcast = new HourForcast();
-		forcast.setHour(Integer.parseInt(jsonElement.get("FCTTIME").getAsJsonObject().get("hour").getAsString()));
-		forcast.setYear(Integer.parseInt(jsonElement.get("FCTTIME").getAsJsonObject().get("year").getAsString()));
-		forcast.setMonth(Integer.parseInt(jsonElement.get("FCTTIME").getAsJsonObject().get("mon").getAsString()));
-		forcast.setDay(Integer.parseInt(jsonElement.get("FCTTIME").getAsJsonObject().get("mday").getAsString()));
-		forcast.setWeekday(language.equals("BU")
-				? changeDayLanguage(jsonElement.get("FCTTIME").getAsJsonObject().get("weekday_name").getAsString())
-				: jsonElement.get("FCTTIME").getAsJsonObject().get("weekday_name").getAsString());
-		forcast.setTempC(Integer.parseInt(jsonElement.get("temp").getAsJsonObject().get("metric").getAsString()));
-		forcast.setTempFH(Integer.parseInt(jsonElement.get("temp").getAsJsonObject().get("english").getAsString()));
+		forcast.setHour(Integer.parseInt(jsonElement.get("FCTTIME").getAsJsonObject().get(HOUR).getAsString()));
+		forcast.setYear(Integer.parseInt(jsonElement.get("FCTTIME").getAsJsonObject().get(YEAR).getAsString()));
+		forcast.setMonth(Integer.parseInt(jsonElement.get("FCTTIME").getAsJsonObject().get(MON).getAsString()));
+		forcast.setDay(Integer.parseInt(jsonElement.get("FCTTIME").getAsJsonObject().get(MDAY).getAsString()));
+		forcast.setWeekday(language.equals(BU)
+				? changeDayLanguage(jsonElement.get("FCTTIME").getAsJsonObject().get(WEEKDAY_NAME).getAsString())
+				: jsonElement.get("FCTTIME").getAsJsonObject().get(WEEKDAY_NAME).getAsString());
+		forcast.setTempC(Integer.parseInt(jsonElement.get(TEMPERATURE).getAsJsonObject().get(METRIC).getAsString()));
+		forcast.setTempFH(Integer.parseInt(jsonElement.get(TEMPERATURE).getAsJsonObject().get(ENGLISH).getAsString()));
 		forcast.setConditions(
-				language.equals("BU") ? changeFromEnglishToBularian(jsonElement.get("condition").getAsString())
-						: jsonElement.get("condition").getAsString());
-		forcast.setIcon_url(user == null ? jsonElement.get("icon_url").getAsString()
-				: switchUserIcons(jsonElement.get("icon_url").getAsString(), user.getIcon().charAt(0)));
-		forcast.setSky(Integer.parseInt(jsonElement.get("sky").getAsString()));
-		forcast.setWindKPH(Integer.parseInt(jsonElement.get("wspd").getAsJsonObject().get("metric").getAsString()));
-		forcast.setWindMPH(Integer.parseInt(jsonElement.get("wspd").getAsJsonObject().get("english").getAsString()));
-		forcast.setDir(jsonElement.get("wdir").getAsJsonObject().get("dir").getAsString());
-		forcast.setDirDegrees(Integer.parseInt(jsonElement.get("wdir").getAsJsonObject().get("degrees").getAsString()));
-		forcast.setUvIndex(Integer.parseInt(jsonElement.get("uvi").getAsString()));
-		forcast.setHumidity(Integer.parseInt(jsonElement.get("humidity").getAsString()));
+				language.equals(BU) ? changeFromEnglishToBularian(jsonElement.get(CONDITION).getAsString())
+						: jsonElement.get(CONDITION).getAsString());
+		forcast.setIcon_url(user == null ? jsonElement.get(ICON_URL).getAsString()
+				: switchUserIcons(jsonElement.get(ICON_URL).getAsString(), user.getIcon().charAt(0)));
+		forcast.setSky(Integer.parseInt(jsonElement.get(SKY).getAsString()));
+		forcast.setWindKPH(Integer.parseInt(jsonElement.get(WSPD).getAsJsonObject().get(METRIC).getAsString()));
+		forcast.setWindMPH(Integer.parseInt(jsonElement.get(WSPD).getAsJsonObject().get(ENGLISH).getAsString()));
+		forcast.setDir(jsonElement.get(WDIR).getAsJsonObject().get(DIR).getAsString());
+		forcast.setDirDegrees(Integer.parseInt(jsonElement.get(WDIR).getAsJsonObject().get(DEGREES).getAsString()));
+		forcast.setUvIndex(Integer.parseInt(jsonElement.get(UVI).getAsString()));
+		forcast.setHumidity(Integer.parseInt(jsonElement.get(HUMIDITY).getAsString()));
 		forcast.setFeelsLikeC(
-				Integer.parseInt(jsonElement.get("feelslike").getAsJsonObject().get("metric").getAsString()));
+				Integer.parseInt(jsonElement.get(FEELSLIKE).getAsJsonObject().get(METRIC).getAsString()));
 		forcast.setFeelsLikeFH(
-				Integer.parseInt(jsonElement.get("feelslike").getAsJsonObject().get("english").getAsString()));
-		forcast.setQpfIN(Double.parseDouble(jsonElement.get("qpf").getAsJsonObject().get("english").getAsString()));
-		forcast.setQpfMM(Integer.parseInt(jsonElement.get("qpf").getAsJsonObject().get("metric").getAsString()));
-		forcast.setSnowIN(Double.parseDouble(jsonElement.get("snow").getAsJsonObject().get("english").getAsString()));
-		forcast.setSnowMM(Integer.parseInt(jsonElement.get("snow").getAsJsonObject().get("metric").getAsString()));
-		forcast.setPop(Integer.parseInt(jsonElement.get("pop").getAsString()));
+				Integer.parseInt(jsonElement.get(FEELSLIKE).getAsJsonObject().get(ENGLISH).getAsString()));
+		forcast.setQpfIN(Double.parseDouble(jsonElement.get(QPF).getAsJsonObject().get(ENGLISH).getAsString()));
+		forcast.setQpfMM(Integer.parseInt(jsonElement.get(QPF).getAsJsonObject().get(METRIC).getAsString()));
+		forcast.setSnowIN(Double.parseDouble(jsonElement.get(SNOW).getAsJsonObject().get(ENGLISH).getAsString()));
+		forcast.setSnowMM(Integer.parseInt(jsonElement.get(SNOW).getAsJsonObject().get(METRIC).getAsString()));
+		forcast.setPop(Integer.parseInt(jsonElement.get(POP).getAsString()));
 		forcast.setMslphinHg(
-				Double.parseDouble(jsonElement.get("mslp").getAsJsonObject().get("english").getAsString()));
-		forcast.setMslphPa(Integer.parseInt(jsonElement.get("mslp").getAsJsonObject().get("metric").getAsString()));
+				Double.parseDouble(jsonElement.get(MSLP).getAsJsonObject().get(ENGLISH).getAsString()));
+		forcast.setMslphPa(Integer.parseInt(jsonElement.get(MSLP).getAsJsonObject().get(METRIC).getAsString()));
 		return forcast;
 	}
 
@@ -122,36 +229,36 @@ public class LocationDAO implements ILocationDAO {
 		forcast.setCityName(cityName);
 		forcast.setCountryName(countryName);
 		forcast.setConditions(
-				language.equals("BU") ? changeFromEnglishToBularian(jsonElement.get("conditions").getAsString())
-						: jsonElement.get("conditions").getAsString());
-		forcast.setWeekday(language.equals("BU")
-				? changeDayLanguage(jsonElement.get("date").getAsJsonObject().get("weekday").getAsString())
-				: jsonElement.get("date").getAsJsonObject().get("weekday").getAsString());
-		forcast.setDay(jsonElement.get("date").getAsJsonObject().get("day").getAsInt());
-		forcast.setMonth(jsonElement.get("date").getAsJsonObject().get("month").getAsInt());
-		forcast.setYear(jsonElement.get("date").getAsJsonObject().get("year").getAsInt());
-		forcast.setEpoch(jsonElement.get("date").getAsJsonObject().get("epoch").getAsLong());
+				language.equals(BU) ? changeFromEnglishToBularian(jsonElement.get(CONDITIONS).getAsString())
+						: jsonElement.get(CONDITIONS).getAsString());
+		forcast.setWeekday(language.equals(BU)
+				? changeDayLanguage(jsonElement.get(DATE).getAsJsonObject().get(WEEKDAY).getAsString())
+				: jsonElement.get(DATE).getAsJsonObject().get(WEEKDAY).getAsString());
+		forcast.setDay(jsonElement.get(DATE).getAsJsonObject().get(DAY).getAsInt());
+		forcast.setMonth(jsonElement.get(DATE).getAsJsonObject().get(MONTH).getAsInt());
+		forcast.setYear(jsonElement.get(DATE).getAsJsonObject().get(YEAR).getAsInt());
+		forcast.setEpoch(jsonElement.get(DATE).getAsJsonObject().get(EPOCH).getAsLong());
 		System.out.println(user == null ? "null e manqk" : "ne e null");
-		forcast.setIcon_url(user == null ? (jsonElement.get("icon_url").getAsString())
-				: switchUserIcons(jsonElement.get("icon_url").getAsString(), user.getIcon().charAt(0)));
-		forcast.setPop(jsonElement.get("pop").getAsInt());
-		forcast.setMaxwind_degrees(jsonElement.get("maxwind").getAsJsonObject().get("degrees").getAsDouble());
-		forcast.setMaxwind_dir(jsonElement.get("maxwind").getAsJsonObject().get("dir").getAsString());
-		forcast.setMaxwind_kph(jsonElement.get("maxwind").getAsJsonObject().get("kph").getAsDouble());
-		forcast.setMaxwind_mph(jsonElement.get("maxwind").getAsJsonObject().get("mph").getAsDouble());
-		forcast.setMonthName(jsonElement.get("date").getAsJsonObject().get("monthname").getAsString());
-		forcast.setPretty(jsonElement.get("date").getAsJsonObject().get("pretty").getAsString());
-		forcast.setQpf_alldayIn(jsonElement.get("qpf_allday").getAsJsonObject().get("in").getAsDouble());
-		forcast.setQpf_alldayMM(jsonElement.get("qpf_allday").getAsJsonObject().get("mm").getAsDouble());
-		forcast.setSnow_alldayIn(jsonElement.get("snow_allday").getAsJsonObject().get("in").getAsDouble());
-		forcast.setSnow_alldayMM(jsonElement.get("snow_allday").getAsJsonObject().get("cm").getAsDouble());
-		forcast.setTempHighCel(jsonElement.get("high").getAsJsonObject().get("celsius").getAsString());
-		forcast.setTempHighFahr(jsonElement.get("high").getAsJsonObject().get("fahrenheit").getAsString());
-		forcast.setTempLowCel(jsonElement.get("low").getAsJsonObject().get("celsius").getAsString());
-		forcast.setTempLowFahr(jsonElement.get("low").getAsJsonObject().get("fahrenheit").getAsString());
-		forcast.setAvehumidity(jsonElement.get("avehumidity").getAsDouble());
-		forcast.setMaxhumidity(jsonElement.get("maxhumidity").getAsDouble());
-		forcast.setMinhumidity(jsonElement.get("minhumidity").getAsDouble());
+		forcast.setIcon_url(user == null ? (jsonElement.get(ICON_URL).getAsString())
+				: switchUserIcons(jsonElement.get(ICON_URL).getAsString(), user.getIcon().charAt(0)));
+		forcast.setPop(jsonElement.get(POP).getAsInt());
+		forcast.setMaxwind_degrees(jsonElement.get(MAXWIND).getAsJsonObject().get(DEGREES).getAsDouble());
+		forcast.setMaxwind_dir(jsonElement.get(MAXWIND).getAsJsonObject().get(DIR).getAsString());
+		forcast.setMaxwind_kph(jsonElement.get(MAXWIND).getAsJsonObject().get(KPH).getAsDouble());
+		forcast.setMaxwind_mph(jsonElement.get(MAXWIND).getAsJsonObject().get(MPH).getAsDouble());
+		forcast.setMonthName(jsonElement.get(DATE).getAsJsonObject().get(MONTHNAME).getAsString());
+		forcast.setPretty(jsonElement.get(DATE).getAsJsonObject().get(DATE_STYLE).getAsString());
+		forcast.setQpf_alldayIn(jsonElement.get(QPF_ALLDAY).getAsJsonObject().get(IN).getAsDouble());
+		forcast.setQpf_alldayMM(jsonElement.get(QPF_ALLDAY).getAsJsonObject().get(MM).getAsDouble());
+		forcast.setSnow_alldayIn(jsonElement.get(SNOW_ALLDAY).getAsJsonObject().get(IN).getAsDouble());
+		forcast.setSnow_alldayMM(jsonElement.get(SNOW_ALLDAY).getAsJsonObject().get(CM).getAsDouble());
+		forcast.setTempHighCel(jsonElement.get(HIGH).getAsJsonObject().get(CELSIUS).getAsString());
+		forcast.setTempHighFahr(jsonElement.get(HIGH).getAsJsonObject().get(FAHRENHEIT).getAsString());
+		forcast.setTempLowCel(jsonElement.get(LOW).getAsJsonObject().get(CELSIUS).getAsString());
+		forcast.setTempLowFahr(jsonElement.get(LOW).getAsJsonObject().get(FAHRENHEIT).getAsString());
+		forcast.setAvehumidity(jsonElement.get(AVEHUMIDITY).getAsDouble());
+		forcast.setMaxhumidity(jsonElement.get(MAXHUMIDITY).getAsDouble());
+		forcast.setMinhumidity(jsonElement.get(MINHUMIDITY).getAsDouble());
 		return forcast;
 	}
 
@@ -166,6 +273,10 @@ public class LocationDAO implements ILocationDAO {
 		ArrayList<DayForcast> weekendDayForcast = new ArrayList<>();
 		System.out.println("from location dao ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
 		String wundergroungUrl;
+		if(locID==null){
+			//opitvam se da namerq locID
+			locID=tryToFindLocID(country,city);
+		}
 		if(locID!=null){
 			wundergroungUrl="http://api.wunderground.com/api/d1141c29f3b4adb3/forecast10day"+locID+".json";
 			System.out.println("za 5 dena 1: location id "+locID+"zaqkva "+ wundergroungUrl);
@@ -181,16 +292,16 @@ public class LocationDAO implements ILocationDAO {
 		System.out.println(weatherData.toString());
 		JsonArray array;
 		try {
-			array = weatherData.get("forecast").getAsJsonObject().get("simpleforecast").getAsJsonObject()
-					.get("forecastday").getAsJsonArray();
+			array = weatherData.get(FORECAST).getAsJsonObject().get(SIMPLEFORECAST).getAsJsonObject()
+					.get(FORECASTDAY).getAsJsonArray();
 		} catch (NullPointerException e) {
 			try {
-				array = weatherData.get("response").getAsJsonObject().get("results").getAsJsonArray();
+				array = weatherData.get(RESPONSE).getAsJsonObject().get(RESULTS).getAsJsonArray();
 				ArrayList<DayForcast> arrayWithCities = new ArrayList<>();
 				for (int i = 0; i < array.size(); i++) {
 					DayForcast currLocation = new DayForcast();
 					JsonObject currObjectLocation = array.get(i).getAsJsonObject();
-					currLocation.setCountryName(currObjectLocation.get("country_name").getAsString());
+					currLocation.setCountryName(currObjectLocation.get(COUNTRY_NAME).getAsString());
 					arrayWithCities.add(currLocation);
 				}
 				forTheThreeTablesAtOnce.add(arrayWithCities);
@@ -237,26 +348,26 @@ public class LocationDAO implements ILocationDAO {
 	@Override
 	public String plannerResponse(String from, String to, String city, String country) {
 
-		String url = "http://api.wunderground.com/api/88f2b27b9585755c/planner_" + from.split("/")[0]
+		String url = "http://api.wunderground.com/api/"+WUNDERGROUND_KEY+"/planner_" + from.split("/")[0]
 
 				+ from.split("/")[1] + to.split("/")[0] + to.split("/")[1] + "/q/" + country + "/" + city + ".json";
 		System.out.println(url);
 		RestTemplate restTemplate = new RestTemplate();
 		JsonObject obj = new JsonParser().parse(restTemplate.getForObject(url, String.class)).getAsJsonObject();
 		System.out.println(obj.toString());
-		JsonObject chanceOf = obj.get("trip").getAsJsonObject().get("chance_of").getAsJsonObject();
-		JsonObject tempHiJson = obj.get("trip").getAsJsonObject().get("temp_high").getAsJsonObject();
-		JsonObject tempLoJson = obj.get("trip").getAsJsonObject().get("temp_low").getAsJsonObject();
-		JsonObject precipJson = obj.get("trip").getAsJsonObject().get("precip").getAsJsonObject();
-		JsonObject dewHiJson = obj.get("trip").getAsJsonObject().get("dewpoint_high").getAsJsonObject();
-		JsonObject dewLoJson = obj.get("trip").getAsJsonObject().get("dewpoint_low").getAsJsonObject();
+		JsonObject chanceOf = obj.get(TRIP).getAsJsonObject().get(CHANCE_OF).getAsJsonObject();
+		JsonObject tempHiJson = obj.get(TRIP).getAsJsonObject().get(TEMP_HIGH).getAsJsonObject();
+		JsonObject tempLoJson = obj.get(TRIP).getAsJsonObject().get(TEMP_LOW).getAsJsonObject();
+		JsonObject precipJson = obj.get(TRIP).getAsJsonObject().get(PRECIP).getAsJsonObject();
+		JsonObject dewHiJson = obj.get(TRIP).getAsJsonObject().get(DEWPOINT_HIGH).getAsJsonObject();
+		JsonObject dewLoJson = obj.get(TRIP).getAsJsonObject().get(DEWPOINT_LOW).getAsJsonObject();
 		JsonArray variation = new JsonArray();
-		String[] value = { "min", "avg", "max" };
+		String[] value = { MIN, AVG, MAX };
 		String unit = "C";
 		for (int i = 0; i < 3; i++) {
 			variation.add(Double.parseDouble(tempHiJson.get(value[i]).getAsJsonObject().get(unit).getAsString()));
 			variation.add(Double.parseDouble(tempLoJson.get(value[i]).getAsJsonObject().get(unit).getAsString()));
-			variation.add(Double.parseDouble(precipJson.get(value[i]).getAsJsonObject().get("cm").getAsString()));
+			variation.add(Double.parseDouble(precipJson.get(value[i]).getAsJsonObject().get(CM).getAsString()));
 			variation.add(Double.parseDouble(dewHiJson.get(value[i]).getAsJsonObject().get(unit).getAsString()));
 			variation.add(Double.parseDouble(dewLoJson.get(value[i]).getAsJsonObject().get(unit).getAsString()));
 			System.out.println(variation.toString());
@@ -264,34 +375,34 @@ public class LocationDAO implements ILocationDAO {
 
 		JsonObject obj1 = new JsonObject();
 		JsonArray arr = new JsonArray();
-		arr.add(Integer.parseInt(chanceOf.get("tempoversixty").getAsJsonObject().get("percentage").getAsString()));
+		arr.add(Integer.parseInt(chanceOf.get(TEMPOVERSIXTY).getAsJsonObject().get(PERCENTAGE).getAsString()));
 		arr.add(Integer
-				.parseInt(chanceOf.get("chanceofpartlycloudyday").getAsJsonObject().get("percentage").getAsString()));
-		arr.add(Integer.parseInt(chanceOf.get("chanceofprecip").getAsJsonObject().get("percentage").getAsString()));
-		arr.add(Integer.parseInt(chanceOf.get("chanceofrainday").getAsJsonObject().get("percentage").getAsString()));
-		arr.add(Integer.parseInt(chanceOf.get("tempoverfreezing").getAsJsonObject().get("percentage").getAsString()));
+				.parseInt(chanceOf.get(CHANCEOFPARTLYCLOUDYDAY).getAsJsonObject().get(PERCENTAGE).getAsString()));
+		arr.add(Integer.parseInt(chanceOf.get(CHANCEOFPRECIP).getAsJsonObject().get(PERCENTAGE).getAsString()));
+		arr.add(Integer.parseInt(chanceOf.get(CHANCEOFRAINDAY).getAsJsonObject().get(PERCENTAGE).getAsString()));
+		arr.add(Integer.parseInt(chanceOf.get(TEMPOVERFREEZING).getAsJsonObject().get(PERCENTAGE).getAsString()));
 		arr.add(Integer
-				.parseInt(chanceOf.get("chanceofsunnycloudyday").getAsJsonObject().get("percentage").getAsString()));
-		arr.add(Integer.parseInt(chanceOf.get("chanceofcloudyday").getAsJsonObject().get("percentage").getAsString()));
-		arr.add(Integer.parseInt(chanceOf.get("chanceoffogday").getAsJsonObject().get("percentage").getAsString()));
-		arr.add(Integer.parseInt(chanceOf.get("chanceofwindyday").getAsJsonObject().get("percentage").getAsString()));
-		arr.add(Integer.parseInt(chanceOf.get("chanceofthunderday").getAsJsonObject().get("percentage").getAsString()));
-		arr.add(Integer.parseInt(chanceOf.get("chanceofhailday").getAsJsonObject().get("percentage").getAsString()));
+				.parseInt(chanceOf.get(CHANCEOFSUNNYCLOUDYDAY).getAsJsonObject().get(PERCENTAGE).getAsString()));
+		arr.add(Integer.parseInt(chanceOf.get(CHANCEOFCLOUDYDAY).getAsJsonObject().get(PERCENTAGE).getAsString()));
+		arr.add(Integer.parseInt(chanceOf.get(CHANCEOFFOGDAY).getAsJsonObject().get(PERCENTAGE).getAsString()));
+		arr.add(Integer.parseInt(chanceOf.get(CHANCEOFWINDYDAY).getAsJsonObject().get(PERCENTAGE).getAsString()));
+		arr.add(Integer.parseInt(chanceOf.get(CHANCEOFTHUNDERDAY).getAsJsonObject().get(PERCENTAGE).getAsString()));
+		arr.add(Integer.parseInt(chanceOf.get(CHANCEOFHAILDAY).getAsJsonObject().get(PERCENTAGE).getAsString()));
 		arr.add(Integer
-				.parseInt(chanceOf.get("chanceofsnowonground").getAsJsonObject().get("percentage").getAsString()));
-		arr.add(Integer.parseInt(chanceOf.get("chanceoftornadoday").getAsJsonObject().get("percentage").getAsString()));
-		arr.add(Integer.parseInt(chanceOf.get("chanceofsultryday").getAsJsonObject().get("percentage").getAsString()));
-		arr.add(Integer.parseInt(chanceOf.get("chanceofhumidday").getAsJsonObject().get("percentage").getAsString()));
-		arr.add(Integer.parseInt(chanceOf.get("tempbelowfreezing").getAsJsonObject().get("percentage").getAsString()));
-		arr.add(Integer.parseInt(chanceOf.get("tempoverninety").getAsJsonObject().get("percentage").getAsString()));
-		arr.add(Integer.parseInt(chanceOf.get("chanceofsnowday").getAsJsonObject().get("percentage").getAsString()));
+				.parseInt(chanceOf.get(CHANCEOFSNOWONGROUND).getAsJsonObject().get(PERCENTAGE).getAsString()));
+		arr.add(Integer.parseInt(chanceOf.get(CHANCEOFTORNADODAY).getAsJsonObject().get(PERCENTAGE).getAsString()));
+		arr.add(Integer.parseInt(chanceOf.get(CHANCEOFSULTRYDAY).getAsJsonObject().get(PERCENTAGE).getAsString()));
+		arr.add(Integer.parseInt(chanceOf.get(CHANCEOFHUMIDDAY).getAsJsonObject().get(PERCENTAGE).getAsString()));
+		arr.add(Integer.parseInt(chanceOf.get(TEMPBELOWFREEZING).getAsJsonObject().get(PERCENTAGE).getAsString()));
+		arr.add(Integer.parseInt(chanceOf.get(TEMPOVERNINETY).getAsJsonObject().get(PERCENTAGE).getAsString()));
+		arr.add(Integer.parseInt(chanceOf.get(CHANCEOFSNOWDAY).getAsJsonObject().get(PERCENTAGE).getAsString()));
 		obj1.add("array", arr);
-		String title = obj.get("trip").getAsJsonObject().get("title").getAsString();
-		String cloudCover = obj.get("trip").getAsJsonObject().get("cloud_cover").getAsJsonObject().get("cond")
+		String title = obj.get(TRIP).getAsJsonObject().get(TITLE_TRIP).getAsString();
+		String cloudCover = obj.get(TRIP).getAsJsonObject().get(CLOUD_COVER).getAsJsonObject().get(COND)
 				.getAsString();
-		obj1.addProperty("title", title);
-		obj1.addProperty("cloudCover", cloudCover);
-		obj1.add("variation", variation);
+		obj1.addProperty(TITLE_TRIP, title);
+		obj1.addProperty(CLOUD_COVER2, cloudCover);
+		obj1.add(VARIATION2, variation);
 		return obj1.toString();// new
 								// ChanceOfTypeOfWeather(chanceOFTypeOfWeather,
 								// cloudCover, title, tempHigh, tempLow, precip,
@@ -301,30 +412,30 @@ public class LocationDAO implements ILocationDAO {
 	@Override
 	public ArrayList<Event> getEventsFromFacebookForcast(String responseFromFB) {
 		try {
-			JsonArray obj = new JsonParser().parse(responseFromFB).getAsJsonObject().get("events").getAsJsonObject()
-					.get("data").getAsJsonArray();
+			JsonArray obj = new JsonParser().parse(responseFromFB).getAsJsonObject().get(FB_EVENTS).getAsJsonObject()
+					.get(FB_DATA).getAsJsonArray();
 			ArrayList<Event> facebookEventsForcast = new ArrayList<Event>();
 			for (int i = 0; i < 5; i++) {
 				Event currEvent = new Event();
 				JsonObject data = obj.get(i).getAsJsonObject();
-				currEvent.setStart_time(data.get("start_time").getAsString());
-				currEvent.setCover_url(data.get("cover").getAsJsonObject().get("source").getAsString());
-				currEvent.setDescription(data.get("description").getAsString());
-				currEvent.setNameOfEvent(data.get("name").getAsString());
-				currEvent.setNameOfEvent(data.get("name").getAsString());
-				currEvent.setNameOfPlace(data.get("place").getAsJsonObject().get("name").getAsString());
-				currEvent.setCity(data.get("place").getAsJsonObject().get("location").getAsJsonObject().get("city")
+				currEvent.setStart_time(data.get(FB_START_TIME).getAsString());
+				currEvent.setCover_url(data.get(FB_COVER).getAsJsonObject().get(FB_SOURCE).getAsString());
+				currEvent.setDescription(data.get(FB_DESCRIPTION).getAsString());
+				currEvent.setNameOfEvent(data.get(FB_NAME).getAsString());
+				currEvent.setNameOfEvent(data.get(FB_NAME).getAsString());
+				currEvent.setNameOfPlace(data.get(FB_PLACE).getAsJsonObject().get(FB_NAME).getAsString());
+				currEvent.setCity(data.get(FB_PLACE).getAsJsonObject().get(FB_LOCATION).getAsJsonObject().get(CITY)
 						.getAsString());
-				currEvent.setCountry(data.get("place").getAsJsonObject().get("location").getAsJsonObject()
-						.get("country").getAsString());
-				currEvent.setLatitude(data.get("place").getAsJsonObject().get("location").getAsJsonObject()
-						.get("latitude").getAsString());
-				currEvent.setLongitude(data.get("place").getAsJsonObject().get("location").getAsJsonObject()
-						.get("longitude").getAsString());
+				currEvent.setCountry(data.get(FB_PLACE).getAsJsonObject().get(FB_LOCATION).getAsJsonObject()
+						.get(FB_COUNTRY).getAsString());
+				currEvent.setLatitude(data.get(FB_PLACE).getAsJsonObject().get(FB_LOCATION).getAsJsonObject()
+						.get(FB_LATITUDE).getAsString());
+				currEvent.setLongitude(data.get(FB_PLACE).getAsJsonObject().get(FB_LOCATION).getAsJsonObject()
+						.get(FB_LONGITUDE).getAsString());
 				try {
 					currEvent.setTicket_uri(data.get("ticket_uri").getAsString());
-					currEvent.setStreet(data.get("place").getAsJsonObject().get("location").getAsJsonObject()
-							.get("street").getAsString());
+					currEvent.setStreet(data.get(FB_PLACE).getAsJsonObject().get(FB_LOCATION).getAsJsonObject()
+							.get(FB_STREET).getAsString());
 				} catch (NullPointerException e) {
 					System.out.println("Nqma street v lokociqta na eventa ili ticket");
 				}
@@ -342,12 +453,12 @@ public class LocationDAO implements ILocationDAO {
 	private CurrentForcast getWeather(String latitude, String longitude, String startTime) {
 		CurrentForcast currForcast = new CurrentForcast();
 		Gson g = new Gson();
-		String url = "https://api.forecast.io/forecast/034143e2c674af082f9336e044c19312/" + latitude + "," + longitude
+		String url = "https://api.forecast.io/forecast/"+FORECAST_IO_KEY+"/" + latitude + "," + longitude
 				+ "," + startTime + "" + "?exclude=hourly,daily,flags&units=ca";
 		System.out.println(url);
 		RestTemplate restTemplate = new RestTemplate();
 		JsonObject obj = new JsonParser().parse(restTemplate.getForObject(url, String.class)).getAsJsonObject()
-				.get("currently").getAsJsonObject();
+				.get(CURRENTLY).getAsJsonObject();
 		System.out.println(obj.toString());
 		currForcast = g.fromJson(obj, CurrentForcast.class);
 		return currForcast;
@@ -439,15 +550,39 @@ public class LocationDAO implements ILocationDAO {
 
 	@Override
 	public String getCityAndCountyByCoordinates(String latitude, String longitude) {
-		String query = "http://api.geonames.org/timezoneJSON?lat="+latitude+"&lng="+longitude+"&username=gzufi1";
+		String query = "http://api.geonames.org/timezoneJSON?lat="+latitude+"&lng="+longitude+"&username="+GEONAMES_USERNAME;
 		RestTemplate restTemplate = new RestTemplate();
 		JsonObject locationData = new JsonParser().parse(restTemplate.getForObject(query, String.class))
 				.getAsJsonObject();
-		String city=locationData.get("city").getAsString();
-		String country=locationData.get("country_name").getAsString();
+		String city=locationData.get(CITY).getAsString();
+		String country=locationData.get(COUNTRY_NAME).getAsString();
 		return country+"/"+city;
 	}
+	public String tryToFindLocID(String country,String city){
+		System.out.println("Vlizam v tryTofind LOC ID");
+		String query = "http://autocomplete.wunderground.com/aq?query=" + city;
+		System.out.println("zaqvkata mi e "+ query );
+		RestTemplate restTemplate = new RestTemplate();
+		JsonArray results = new JsonParser().parse(restTemplate.getForObject(query, String.class))
+				.getAsJsonObject().get("RESULTS").getAsJsonArray();
+		System.out.println("rezultata "+results);
+		JsonObject currentLocation;
+		for(int i=0;i<results.size();i++){
+			currentLocation=results.get(i).getAsJsonObject();
+			if(currentLocation.get("name").getAsString().equals(city+", "+country)){
+				System.out.println("vrushtam L");
+				return currentLocation.get("l").getAsString();
+			}
+		}
+		System.out.println("vrushtam null pak");
+		// System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~" +
+		// object.toString());
+		return null;
+	}
+
+
+
 
 }
 
-// http://api.wunderground.com/api/88f2b27b9585755c/forecast10day/q/CA/San_Francisco.json
+// http://api.wunderground.com/api/"+"88f2b27b9585755c"+"/forecast10day/q/CA/San_Francisco.json
