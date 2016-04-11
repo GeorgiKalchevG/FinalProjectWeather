@@ -8,6 +8,11 @@ import org.springframework.dao.DataAccessException;
 import com.weather.model.User;
 
 public interface IUserDAO {
+	
+	
+	
+	
+
 	String DB_NAME = "weather";
 	String USER_TABLE = "users";
 	String FAVOURITES_TABLE = "favourites";

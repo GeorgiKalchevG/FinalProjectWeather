@@ -20,7 +20,14 @@ import com.weather.model.User;
 
 public class LocationDAO implements ILocationDAO {
 	String apiKey = "9885a830e31d144089368b0a44b2f9f7";
-
+	
+	private static LocationDAO instance=null;
+	private  LocationDAO() {}
+	public synchronized static LocationDAO getInstance(){
+		if(instance==null)
+			instance=new LocationDAO();
+		return instance;
+	}
 	@Override
 	public String getCityNameByIp(String ip) {
 		String ipToGeotag = "https://api.geoips.com/ip/"+ip+"/key/e75dc720b8ce4497cd1aed66d4c1cced/output/json";

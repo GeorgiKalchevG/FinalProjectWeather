@@ -33,7 +33,7 @@ import com.weather.model.User;
 
 @Controller
 public class SearchController {
- ILocationDAO dao = new LocationDAO(); 
+ ILocationDAO dao = LocationDAO.getInstance(); 
 	
 	@CrossOrigin(origins = "http://localhost:8080")
 	@RequestMapping(value="/plan", method = RequestMethod.POST)

@@ -26,7 +26,7 @@
 	href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/themes/base/jquery-ui.css"
 	type="text/css" media="all">
   <meta charset="UTF-8">
-  <title>Weather layer</title>
+  <title>Weather</title>
   <style>
     html, body{
       width: 100%;
@@ -36,7 +36,7 @@
     }
     #map-canvas {
      min-width:240px;
-   	 min-height:900px;  
+   	 min-height:780px;  
     }
     .gm-style-iw {
       text-align: center;

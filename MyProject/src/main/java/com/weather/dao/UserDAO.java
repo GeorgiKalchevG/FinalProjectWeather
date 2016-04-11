@@ -4,6 +4,7 @@ import java.io.UnsupportedEncodingException;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Formatter;
@@ -13,6 +14,7 @@ import javax.sql.DataSource;
 
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
+
 import org.springframework.jdbc.core.ResultSetExtractor;
 
 import org.springframework.jdbc.core.RowMapper;
@@ -29,7 +31,7 @@ public class UserDAO implements IUserDAO {
 		
 		String createUserTable="CREATE TABLE IF NOT EXISTS "+DB_NAME+"."+USER_TABLE+" (U_ID INT PRIMARY KEY AUTO_INCREMENT, USERNAME VARCHAR(255) UNIQUE NOT NULL, PASSWORD VARCHAR(255) NOT NULL, LANGUAGE VARCHAR(25) NOT NULL, UNIT VARCHAR(25) NOT NULL, ICON VARCHAR(25) NOT NULL);";
 		
-		String createFavouritesTable="CREATE TABLE IF NOT EXISTS "+DB_NAME+"."+FAVOURITES_TABLE+"(U_ID INT,LOCATION VARCHAR(255),CONSTRAINT pk_favs PRIMARY KEY (U_ID,LOCATION)); ";
+		String createFavouritesTable="CREATE TABLE IF NOT EXISTS "+DB_NAME+"."+FAVOURITES_TABLE+"(U_ID INT,LOCATION VARCHAR(255),CONSTRAINT pk_favs PRIMARY KEY (U_ID,LOCATION), CONSTRAINT FOREIGN KEY fk_favourites (U_ID) REFERENCES  "+DB_NAME+"."+USER_TABLE+" (U_ID)); ";
 		
 		System.out.println(createDB);
 		jdbcTemplate.execute(createDB);
@@ -37,12 +39,13 @@ public class UserDAO implements IUserDAO {
 		jdbcTemplate.execute(createUserTable);
 		System.out.println(createFavouritesTable);
 		jdbcTemplate.execute(createFavouritesTable);
+		
 	}
 
 	@Override
 	public boolean isUsernameAvailable(String username) throws SQLException {
-		String sql = "SELECT username FROM "+DB_NAME+"."+USER_TABLE+";";
-		return (boolean) jdbcTemplate.query(sql, new ResultSetExtractor<Boolean>() {
+		String sql = "SELECT ? FROM "+DB_NAME+"."+USER_TABLE+";";
+		return (boolean) jdbcTemplate.query(sql,new Object[] {username}, new ResultSetExtractor<Boolean>() {
 
 			@Override
 			public Boolean extractData(ResultSet rs) throws SQLException, DataAccessException {
@@ -107,8 +110,8 @@ public class UserDAO implements IUserDAO {
 		try {
 			System.out.println("-------------------------encrypted password "+encript("Qwer123"));
 		} catch (NoSuchAlgorithmException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
+			return null;
+	
 		}
 		if(user!=null)
 			try {
@@ -118,8 +121,8 @@ public class UserDAO implements IUserDAO {
 					return extractUser(userName);
 				}
 			} catch (NoSuchAlgorithmException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				return null;
+			
 			}
 		return null;
 	}
@@ -157,8 +160,8 @@ public class UserDAO implements IUserDAO {
 		return false;
 	}
 	private User extractUser(String userName){
-		 String sql = "SELECT  U_ID, username, password, language, unit,icon FROM "+DB_NAME+"."+USER_TABLE+" WHERE username='"+userName+"';";
-		 User user = jdbcTemplate.query(sql, new ResultSetExtractor<User>() {
+		 String sql = "SELECT  U_ID, username, password, language, unit,icon FROM "+DB_NAME+"."+USER_TABLE+" WHERE username=?;";
+		 User user = jdbcTemplate.query(sql,new Object[] {userName}, new ResultSetExtractor<User>() {
 			 @Override
 			public User extractData(ResultSet rs) throws SQLException, DataAccessException {
 				User user = new User();
@@ -179,8 +182,8 @@ public class UserDAO implements IUserDAO {
 //		 System.out.println( user.toString());
 		 
 		 if(user!=null){
-			String sqlFav ="SELECT LOCATION FROM  "+DB_NAME+"."+FAVOURITES_TABLE+" WHERE U_ID="+user.getUserId();
-			List<String> favourites = jdbcTemplate.query(sqlFav, new RowMapper<String>() {
+			String sqlFav ="SELECT LOCATION FROM  "+DB_NAME+"."+FAVOURITES_TABLE+" WHERE U_ID=?;";
+			List<String> favourites = jdbcTemplate.query(sqlFav,new Object[] {user.getUserId()}, new RowMapper<String>() {
 
 				@Override
 				public String mapRow(ResultSet rs, int rowNum) throws SQLException {
