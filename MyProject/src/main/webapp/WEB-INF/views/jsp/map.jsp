@@ -64,7 +64,7 @@
     google.maps.event.addListener(map, 'idle', checkIfDataRequested);
     // Sets up and populates the info window with details
     map.data.addListener('click', function(event) { 
-    	console.log('BAHUR');
+  
       infowindow.setContent( 
        "<img onclick='javascript:searchIt("+event.latLng.lat()+","+event.latLng.lng()+",\""+event.feature.getProperty("city")+"\")' src=" + event.feature.getProperty("icon") + ">"
        + "<br /><strong>" + event.feature.getProperty("city") + " </strong>"
