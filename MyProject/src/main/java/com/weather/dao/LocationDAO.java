@@ -343,14 +343,19 @@ public class LocationDAO implements ILocationDAO {
 		return forTheThreeTablesAtOnce; // na pyrvo mqsto s index 0 e 3dnevna
 										// index 1 e za weekenda index 2 e
 										// 5dnevnna
-	}
+	}//sled alexander i kiro
 
 	@Override
-	public String plannerResponse(String from, String to, String city, String country) {
-
-		String url = "http://api.wunderground.com/api/"+WUNDERGROUND_KEY+"/planner_" + from.split("/")[0]
-
-				+ from.split("/")[1] + to.split("/")[0] + to.split("/")[1] + "/q/" + country + "/" + city + ".json";
+	public String plannerResponse(String from, String to, String city, String country,String locID) {
+		String url;
+		if(locID==null){
+			locID=tryToFindLocID(country, city);
+		}
+		if(locID==null){
+		url = "http://api.wunderground.com/api/"+WUNDERGROUND_KEY+"/planner_" + from.split("/")[0]+ from.split("/")[1] + to.split("/")[0] + to.split("/")[1] + "/q/" + country + "/" + city + ".json";
+		}else{
+			url = "http://api.wunderground.com/api/"+WUNDERGROUND_KEY+"/planner_" + from.split("/")[0]+ from.split("/")[1] + to.split("/")[0] + to.split("/")[1] + locID+".json";
+		}
 		System.out.println(url);
 		RestTemplate restTemplate = new RestTemplate();
 		JsonObject obj = new JsonParser().parse(restTemplate.getForObject(url, String.class)).getAsJsonObject();
