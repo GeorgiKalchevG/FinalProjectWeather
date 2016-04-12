@@ -7,6 +7,12 @@
 <html lang="en">
 <head>
 <script>
+	window.onload = function() {
+		if('${facebookForecast[2].nameOfEvent}'!=""){
+			document.getElementById('showOrHide').style.display = 'inline';
+			document.getElementById('showOrHide1').style.display = 'inline';
+		}
+	};
 	function statusChangeCallback(response) {
 		console.log('statusChangeCallback');
 		console.log(response);
@@ -86,8 +92,6 @@
 																document.getElementById('status').innerHTML = 'Thank you for wait '
 																		+ response.name
 																		+ '. Here is your weather for incoming events you will be attending. ';
-																document.getElementById('showOrHide').style.display = 'inline';
-																document.getElementById('showOrHide1').style.display = 'inline';
 																		
 															},
 															fail : function() {
@@ -230,7 +234,7 @@
 					<h1 id="section2">${facebookForecast[1].nameOfEvent}</h1>
 					<div class="panel panel-default">
 						<div class="panel-heading">
-							<h4>Start time of event:
+							<h4><spring:message code="facebook.starttime" />:
 								${facebookForecast[1].weather.startTime}</h4>
 						</div>
 						<div class="panel-body">
@@ -286,7 +290,7 @@
 					<h1 id="section3">${facebookForecast[2].nameOfEvent}</h1>
 					<div class="panel panel-default">
 						<div class="panel-heading">
-							<h4>Start time of event:
+							<h4><spring:message code="facebook.starttime" />:
 								${facebookForecast[2].weather.startTime}</h4>
 						</div>
 						<div class="panel-body">
@@ -342,7 +346,7 @@
 					<h1 id="section4">${facebookForecast[3].nameOfEvent}</h1>
 					<div class="panel panel-default">
 						<div class="panel-heading">
-							<h4>Start time of event:
+							<h4><spring:message code="facebook.starttime" />:
 								${facebookForecast[3].weather.startTime}</h4>
 						</div>
 						<div class="panel-body">
@@ -398,7 +402,7 @@
 					<h1 id="section5">${facebookForecast[4].nameOfEvent}</h1>
 					<div class="panel panel-default">
 						<div class="panel-heading">
-							<h4>Start time of event:
+							<h4><spring:message code="facebook.starttime" />:
 								${facebookForecast[4].weather.startTime}</h4>
 						</div>
 						<div class="panel-body">

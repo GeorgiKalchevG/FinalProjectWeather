@@ -56,6 +56,7 @@ $(function() {
 			<label for="select"></label>
 				<input class="search-for-city" type="submit" id="searchButton" value="		GO!			">
 			</div>
+			<input type="hidden" id="locID" name="locID" >
 		</form>
 		<div class="cities1">
 			<ul class="search-result1"></ul>
@@ -260,7 +261,7 @@ $('#search-city1')
 											// Create a variable to contain the array
 											var names = name.split(", ");
 
-											var list = '<li class="searched-city1" city="' + names[0] + '" country="'+ names[1] +'">'
+											var list = '<li class="searched-city1" value="'+cities[city].l+'" city="' + names[0] + '" country="'+ names[1] +'">'
 													+ cities[city].name
 													+ '</li>';
 											$('.search-result1').append(
@@ -277,6 +278,7 @@ $('#search-city1')
 				});
 $('.search-result1').on('click', '.searched-city1', function() {
 	$('#search-city1').val($(this).text());
+	$('#locID').val($(this).attr('value'));
 	$('.cities1').removeClass('opened1');
 });
 $(".search-for-city").on('click',function() {

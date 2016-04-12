@@ -9,8 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-
-
+import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
 
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -37,14 +36,14 @@ public class SearchController {
 	
 	@CrossOrigin(origins = "http://localhost:8080")
 	@RequestMapping(value="/plan", method = RequestMethod.POST)
-	String buildPlan(@RequestParam("from") String from, @RequestParam("to") String to, @RequestParam("city") String city, HttpSession session){
+	String buildPlan(@RequestParam("from") String from, @RequestParam("to") String to, @RequestParam("city") String city, HttpSession session,HttpServletRequest request){
 		System.out.println("From planner "+from);
 		System.out.println("From planner "+to);
 	/*	System.out.println("From planner "+city.split(", ")[0]);
 		System.out.println("From planner "+city.split(", ")[1]);*/
 		String plan =null;
 		try{
-			plan  = dao.plannerResponse(from, to, city.split(", ")[0], city.split(", ")[1]);
+			plan  = dao.plannerResponse(from, to, city.split(", ")[0], city.split(", ")[1],request.getParameter("locID"));
 		}
 		catch (Exception e){
 			session.setAttribute("page", "notFound.jsp");
