@@ -186,7 +186,7 @@ $('#pass1Edit,#pass2Edit').on('keyup', function(){
 	var pass2 = $('#pass2Edit').val();
 	var oldPass = $('#oldPassEdit').val();
 	console.log(oldPass);
-	var regex = /(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}/;
+	var regex = /(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,20}/;
 	if(oldPass===''){
 		$('#editButton').attr('disabled','disabled');
 	}else{

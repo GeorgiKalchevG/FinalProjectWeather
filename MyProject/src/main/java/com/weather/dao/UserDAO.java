@@ -13,6 +13,7 @@ import java.util.List;
 import javax.sql.DataSource;
 
 import org.springframework.dao.DataAccessException;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import org.springframework.jdbc.core.ResultSetExtractor;
@@ -50,7 +51,7 @@ public class UserDAO implements IUserDAO {
 			public Boolean extractData(ResultSet rs) throws SQLException, DataAccessException {
 				System.out.println(rs.toString());
 				while(rs.next()){
-					if(rs.getString("USERNAME").equals(username)){
+					if(rs.getString("USERNAME").equalsIgnoreCase(username)){
 						return false;
 					}
 				}
@@ -61,12 +62,24 @@ public class UserDAO implements IUserDAO {
 
 	@Override
 	public User registerUser(String userName, String password, String language, String unit, String icon)
-			throws SQLException, NoSuchAlgorithmException {
-		String pass = encript(password);
-		 String sql = "INSERT INTO "+DB_NAME+"."+USER_TABLE+" (username, password, language, unit,icon)"
-                 + " VALUES (?, ?, ?, ?,?)";
-		jdbcTemplate.update(sql,userName,pass,language,unit,icon);
-		return extractUser(userName);
+			 {
+		String pass=null;
+		try {
+			pass = encript(password);
+		} catch (NoSuchAlgorithmException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		try {
+			String sql = "INSERT INTO "+DB_NAME+"."+USER_TABLE+" (username, password, language, unit,icon)"
+	                 + " VALUES (?, ?, ?, ?,?)";
+			jdbcTemplate.update(sql,userName,pass,language,unit,icon);
+			return extractUser(userName);
+			
+		} catch (DuplicateKeyException e) {
+			return null;
+		}
+		
 	}
 
 	private String encript(String password) throws NoSuchAlgorithmException {

@@ -75,6 +75,9 @@ public class UserController {
 		User user = null;
 		try {
 			user = dao.registerUser(userName, password, language, unit, icon);
+			if(user==null){
+				return "redirect:index";
+			}
 			session.setAttribute("user", user);
 			session.setAttribute((String)session.getAttribute("city")+session.getAttribute("language"), null);
 			session.setAttribute("language", user.getLanguage());

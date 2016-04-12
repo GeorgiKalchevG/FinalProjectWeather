@@ -19,7 +19,7 @@ import com.weather.model.HourForcast;
 import com.weather.model.User;
 
 public class LocationDAO implements ILocationDAO {
-	private static final String GEOIP_KEY = "f4907a66fb924bc6a9d34610ab082fd2"; //f4907a66fb924bc6a9d34610ab082fd2  e75dc720b8ce4497cd1aed66d4c1cced
+	private static final String GEOIP_KEY = "e75dc720b8ce4497cd1aed66d4c1cced"; //f4907a66fb924bc6a9d34610ab082fd2  e75dc720b8ce4497cd1aed66d4c1cced
 	private static final String CURRENTLY = "currently";
 	private static final String GEONAMES_USERNAME = "gzufi1";
 	private static final String FORECAST_IO_KEY = "034143e2c674af082f9336e044c19312";
